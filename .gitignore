@@ -50,3 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#LD stuff in my computer
+LD_IGNORE/
