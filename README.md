@@ -5,5 +5,3 @@ Just a project of mine
 The only (correct) version is gonna be the version on the versions tab!
 If you are here, this code is probably not working yet!
 Im just testing git stuff, nothing here yet
-
-## .
