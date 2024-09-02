@@ -446,25 +446,25 @@ int StartingScreen(){
 	    printf("0   | s 33       33           333    33        333  33     3    333  0\n");
 	    printf("0000000000000000000000000000000000000000000000000000000000000000000000\n");
 	    printf("ATENTION, YOU ARE PLAYING THE BETA OF THIS \"GAME\", PLEASE INFORM PESSOUA OF ANY BUGS OR CHANGES THAT SHOULD BE MADE\n");
-	    printf("Enter command [&/]\n");
-	   	String_Input;
-	   
-	    if(strcmp(Input, "start")== 0)
-		Game_Start();
-		
-	    else if(strcmp(Input, "help")== 0)
-		Help();
-		
-	    else if(strcmp(Input, "quit")== 0)
-		return 0;
-		
-	    else if(strcmp(Input, "credits")== 0)
-		Credits();
-		
-	    else if(strcmp(Input, "extras")== 0)
-		Extras();
-		
-	    else {
+        printf("Enter command [&/]\n");
+        String_Input;
+
+        if(strcmp(Input, "start")== 0)
+            Game_Start();
+
+        else if(strcmp(Input, "help")== 0)
+            Help();
+
+        else if(strcmp(Input, "quit")== 0)
+            exit(0);
+
+        else if(strcmp(Input, "credits")== 0)
+            Credits();
+
+        else if(strcmp(Input, "extras")== 0)
+            Extras();
+
+        else {
 	        
 		    while(true){
 			    printf("[Error] _> Not a valid command, need help? [Yes] [No]\n");
@@ -1395,7 +1395,7 @@ int Extras(){
 		char * line = (char *)malloc(555);
 		printf("Line Argument? (limit is 555)\n");
 		printf("&/");
-		fflush(stdin);
+		//fflush(stdin);
 		fgets(line, 555, stdin);
 		line[strlen(line) - 1] = '\0';
 		CLR;
@@ -7432,7 +7432,7 @@ void Chest(void){
 		if(arr_limit_inv[0]){
 			
 			//FARMING	
-			if(memchr(crops, true, sizeof(crops)) > 0)
+			if(memchr(crops, true, sizeof(crops)) != NULL)
 			printf("\nFarming items [%d]\n\n", c_farm_itm_c);
 			
 			//CROP 1
@@ -7482,7 +7482,7 @@ void Chest(void){
 		if(arr_limit_inv[1]){
 		
 			//LIVESTOCK
-			if(memchr(animals, true, sizeof(animals)) > 0)
+			if(memchr(animals, true, sizeof(animals)) != NULL)
 			printf("\nLivestock items [%d]\n\n", c_livestock_itm_c);
 			
 			//ANIMAL 1
@@ -7508,7 +7508,7 @@ void Chest(void){
 		if(arr_limit_inv[2]){
 		
 			//FISHING
-			if(memchr(ponds, true, sizeof(ponds))> 0)
+			if(memchr(ponds, true, sizeof(ponds)) != NULL)
 			printf("\nFishing items [%d]\n\n", c_fishing_itm_c);
 			
 			//POND 1
@@ -7580,7 +7580,7 @@ void Chest(void){
 		if(arr_limit_inv[3]){
 		
 			//FORAGING
-			if(memchr(trees, true, sizeof(trees))> 0)
+			if(memchr(trees, true, sizeof(trees)) != NULL)
 			printf("\nForaging items [%d]\n\n", c_foraging_itm_c);
 			
 			if(C_List_Quantities[102] > 0)
@@ -9277,7 +9277,9 @@ void Mountain(const char * what){
 				//Print normaly in book	
 				} else {
 					printf("%*c0    %s", cols_needed, quick_formating, All_Locations[i]);
-					for(int j = 0; j < abs(strlen(All_Locations[i]) - 15); j ++)
+                    int spaces_needed = strlen(All_Locations[i]) - 15;
+                    spaces_needed = abs(spaces_needed);
+					for(int j = 0; j < spaces_needed; j ++)
 					printf(" ");
 					
 					printf("4   4 ");
@@ -9387,8 +9389,10 @@ void Mountain(const char * what){
 					
 					printf("%*c0  Teleporting to?  4   4  Error:           0\n", cols_needed, quick_formating);
 					
-					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION); 
-					for(int j = 0; j < abs(strlen(TRY_LOCATION)- 13); j ++)
+					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION);
+                    int spaces_needed = strlen(TRY_LOCATION) - 13;
+                    spaces_needed = abs(spaces_needed);
+					for(int j = 0; j < spaces_needed; j ++)
 					printf(" "); 
 					
 					printf("4   4  Invalid Location 0\n");
@@ -9399,11 +9403,15 @@ void Mountain(const char * what){
 				
 					printf("%*c0  Teleporting to?  4   4  Teleporting to:  0\n", cols_needed, quick_formating);
 					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION);
-					for(int j = 0; j < abs(strlen(TRY_LOCATION)- 13); j ++)
+                    int spaces_needed = strlen(TRY_LOCATION) - 13;
+                    spaces_needed = abs(spaces_needed);
+                    for(int j = 0; j < spaces_needed; j ++)
 					printf(" ");
 					printf("4   4  %s",Next_Location);
-					for(int j = 0; j < abs(strlen(Next_Location)- 17); j ++)
-					printf(" ");
+                    spaces_needed = strlen(TRY_LOCATION) - 17;
+                    spaces_needed = abs(spaces_needed);
+                    for(int j = 0; j < spaces_needed; j ++)
+                    printf(" ");
 					
 					printf("0\n");
 				
@@ -9411,8 +9419,10 @@ void Mountain(const char * what){
 					
 					printf("%*c0  Teleporting to?  4   4  Error:           0\n", cols_needed, quick_formating);
 					
-					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION); 
-					for(int j = 0; j < abs(strlen(TRY_LOCATION)- 13); j ++)
+					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION);
+                    int spaces_needed = strlen(TRY_LOCATION) - 13;
+                    spaces_needed = abs(spaces_needed);
+                    for(int j = 0; j < spaces_needed; j ++)
 					printf(" "); 
 					
 					printf("4   4  Unknown Location 0\n");
@@ -9423,8 +9433,10 @@ void Mountain(const char * what){
 					
 					printf("%*c0  Teleporting to?  4   4  Error:           0\n", cols_needed, quick_formating);
 					
-					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION); 
-					for(int j = 0; j < abs(strlen(TRY_LOCATION)- 13); j ++)
+					printf("%*c0  ? _>%s", cols_needed, quick_formating, TRY_LOCATION);
+                    int spaces_needed = strlen(TRY_LOCATION) - 13;
+                    spaces_needed = abs(spaces_needed);
+                    for(int j = 0; j < spaces_needed; j ++)
 					printf(" "); 
 					
 					printf("4   4  Same Location    0\n");
@@ -14557,7 +14569,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 		short int tree_pos_chosen = rand()% 49 + 1;
 		
 		//Tree cannot spawn in the same place has user and its not in other trees place
-		if(memchr(tree_location, tree_pos_chosen, sizeof(tree_location))> 0 || tree_pos_chosen == 25)
+		if(memchr(tree_location, tree_pos_chosen, sizeof(tree_location))!= NULL || tree_pos_chosen == 25)
 		i --;
 		
 		else
@@ -14689,7 +14701,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 		for(int i = 1; i < num_trees + 1; i ++){
 			if(tree_location[i] == -55){
 				short int tree_pos_chosen = rand()% 49 + 1;
-				if(memchr(tree_location, tree_pos_chosen, sizeof(tree_location))> 0 || tree_pos_chosen == 25)
+				if(memchr(tree_location, tree_pos_chosen, sizeof(tree_location))!= NULL || tree_pos_chosen == 25)
 				i --;
 				
 				else
@@ -14949,7 +14961,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 			user_pos = X + L;
 			
 			//Current user pos is inside any of the trees?
-			if(memchr(tree_location, user_pos, sizeof(tree_location))> 0 || memchr(log_pos, user_pos, sizeof(log_pos))> 0){
+			if(memchr(tree_location, user_pos, sizeof(tree_location))!= NULL || memchr(log_pos, user_pos, sizeof(log_pos))!= NULL){
 				red;
 				printf("Try not to walk into trees or logs, please\n");
 				white;
@@ -15066,30 +15078,30 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 			
 			//This checks if tree is NOT DOWN and it actually exists, simular to the code a few lines bellow
 			//And does the same thing w logs, checks if its NOT stick and if it exists
-			if((memchr(tree_location, bckp_pos -7, sizeof(tree_location))> 0 && !tree_assisting_array[bckp_pos - 7]) || 
-			(memchr(log_pos, bckp_pos - 7, sizeof(log_pos))> 0 && !log_assisting_array[bckp_pos - 7])){
+			if((memchr(tree_location, bckp_pos -7, sizeof(tree_location))!= NULL && !tree_assisting_array[bckp_pos - 7]) || 
+			(memchr(log_pos, bckp_pos - 7, sizeof(log_pos))!= NULL && !log_assisting_array[bckp_pos - 7])){
 				bp_bckp_pos = bckp_pos - 7;
 				if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49)
 				num_trees_next_to_user ++;
 			}
 			
-			if((memchr(tree_location, bckp_pos + 7, sizeof(tree_location))> 0 && !tree_assisting_array[bckp_pos + 7]) ||
-			(memchr(log_pos, bckp_pos + 7, sizeof(log_pos))> 0 && !log_assisting_array[bckp_pos + 7])){
+			if((memchr(tree_location, bckp_pos + 7, sizeof(tree_location))!= NULL && !tree_assisting_array[bckp_pos + 7]) ||
+			(memchr(log_pos, bckp_pos + 7, sizeof(log_pos))!= NULL && !log_assisting_array[bckp_pos + 7])){
 				bp_bckp_pos = bckp_pos + 7;
 				if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49)
 				num_trees_next_to_user ++;
 			}
 			
-			if((memchr(tree_location, bckp_pos - 1, sizeof(tree_location))> 0 && !tree_assisting_array[bckp_pos - 1]) ||
-			(memchr(log_pos, bckp_pos - 1, sizeof(log_pos))> 0 && !log_assisting_array[bckp_pos - 1])){
+			if((memchr(tree_location, bckp_pos - 1, sizeof(tree_location))!= NULL && !tree_assisting_array[bckp_pos - 1]) ||
+			(memchr(log_pos, bckp_pos - 1, sizeof(log_pos))!= NULL && !log_assisting_array[bckp_pos - 1])){
 				bckp_Y = (bckp_pos - 1) / 7.1428571428571429;
 				bckp_Y += 1;
 				if(bckp_Y == Y && user_pos != 1)
 				num_trees_next_to_user ++;
 			}
 			
-			if((memchr(tree_location, bckp_pos + 1, sizeof(tree_location))> 0 && !tree_assisting_array[bckp_pos + 1]) ||
-			(memchr(log_pos, bckp_pos + 1, sizeof(log_pos))> 0 && !log_assisting_array[bckp_pos + 1])){
+			if((memchr(tree_location, bckp_pos + 1, sizeof(tree_location))!= NULL && !tree_assisting_array[bckp_pos + 1]) ||
+			(memchr(log_pos, bckp_pos + 1, sizeof(log_pos))!= NULL && !log_assisting_array[bckp_pos + 1])){
 				bckp_Y = (bckp_pos + 1) / 7.1428571428571429;
 				bckp_Y += 1;
 				if(bckp_Y == Y && user_pos != 1)
@@ -15122,7 +15134,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 				//Check if user is near tree and set the pos diference bettewn the 2
 				//Also check if this position wasnt checked b4 (pointer help)
 				//& check if position is inside board and valid
-				if(memchr(tree_location, bckp_pos -7, sizeof(tree_location))> 0 && tree_ptr == NULL){
+				if(memchr(tree_location, bckp_pos -7, sizeof(tree_location))!= NULL && tree_ptr == NULL){
 					bp_bckp_pos = bckp_pos - 7;
 					if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49){
 						move_to_tree_pos = -7;
@@ -15135,7 +15147,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 					if(!Collect)
 					tree_ptr = (char *)memchr(arr_alr_done_tree_pos, -1, sizeof(arr_alr_done_tree_pos));
 										
-					if(memchr(tree_location, bckp_pos - 1, sizeof(tree_location))> 0 && tree_ptr == NULL){
+					if(memchr(tree_location, bckp_pos - 1, sizeof(tree_location))!= NULL && tree_ptr == NULL){
 						bckp_Y = (bckp_pos - 1) / 7.1428571428571429;
 						bckp_Y += 1;
 						if(bckp_Y == Y && user_pos != 1){	//Check for not pos 1 cause pos 1 causes an invalid tree bug
@@ -15150,7 +15162,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 					if(!Collect)
 					tree_ptr = (char *)memchr(arr_alr_done_tree_pos, 1, sizeof(arr_alr_done_tree_pos));
 					
-					if(memchr(tree_location, bckp_pos + 1, sizeof(tree_location))> 0 && tree_ptr == NULL){
+					if(memchr(tree_location, bckp_pos + 1, sizeof(tree_location))!= NULL && tree_ptr == NULL){
 						bckp_Y = (bckp_pos + 1) / 7.1428571428571429;
 						bckp_Y += 1;
 						if(bckp_Y == Y){
@@ -15165,7 +15177,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 					if(!Collect)
 					tree_ptr = (char *)memchr(arr_alr_done_tree_pos, 7, sizeof(arr_alr_done_tree_pos));
 					
-					if(memchr(tree_location, bckp_pos + 7, sizeof(tree_location))> 0 && tree_ptr == NULL){
+					if(memchr(tree_location, bckp_pos + 7, sizeof(tree_location))!= NULL && tree_ptr == NULL){
 						bp_bckp_pos = bckp_pos + 7;
 						if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49)
 						move_to_tree_pos = 7;
@@ -15198,7 +15210,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 					log_ptr = (char *)memchr(arr_alr_done_tree_pos, -7, sizeof(arr_alr_done_tree_pos));
 					
 					
-					if(memchr(log_pos, bckp_pos -7, sizeof(log_pos))> 0 && log_ptr == NULL){
+					if(memchr(log_pos, bckp_pos -7, sizeof(log_pos))!= NULL && log_ptr == NULL){
 						bp_bckp_pos = bckp_pos - 7;
 						if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49){
 							move_to_log_pos = -7;
@@ -15210,7 +15222,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 						if(!Collect)
 						log_ptr = (char *)memchr(arr_alr_done_tree_pos, -1, sizeof(arr_alr_done_tree_pos));
 											
-						if(memchr(log_pos, bckp_pos - 1, sizeof(log_pos))> 0 && log_ptr == NULL){
+						if(memchr(log_pos, bckp_pos - 1, sizeof(log_pos))!= NULL && log_ptr == NULL){
 							bckp_Y = (bckp_pos - 1) / 7.1428571428571429;
 							bckp_Y += 1;
 							if(bckp_Y == Y && user_pos != 1){	//Check for not pos 1 cause pos 1 causes an invalid log bug
@@ -15224,7 +15236,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 						if(!Collect)
 						log_ptr = (char *)memchr(arr_alr_done_tree_pos, 1, sizeof(arr_alr_done_tree_pos));
 						
-						if(memchr(log_pos, bckp_pos + 1, sizeof(log_pos))> 0 && log_ptr == NULL){
+						if(memchr(log_pos, bckp_pos + 1, sizeof(log_pos))!= NULL && log_ptr == NULL){
 							bckp_Y = (bckp_pos + 1) / 7.1428571428571429;
 							bckp_Y += 1;
 							if(bckp_Y == Y){
@@ -15238,7 +15250,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 						if(!Collect)
 						log_ptr = (char *)memchr(arr_alr_done_tree_pos, 7, sizeof(arr_alr_done_tree_pos));
 						
-						if(memchr(log_pos, bckp_pos + 7, sizeof(log_pos))> 0 && log_ptr == NULL){
+						if(memchr(log_pos, bckp_pos + 7, sizeof(log_pos))!= NULL && log_ptr == NULL){
 							bp_bckp_pos = bckp_pos + 7;
 							if(bp_bckp_pos >= 1 && bp_bckp_pos <= 49)
 							move_to_log_pos = 7;
@@ -15497,11 +15509,11 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 								bckp_j += 7;
 								
 								//Check if current log position is inside position of tree or stump
-								if(memchr(tree_location, bckp_j, sizeof(tree_location))> 0)
+								if(memchr(tree_location, bckp_j, sizeof(tree_location))!= NULL)
 								can_this_tree_fall_over = false;
 								
 								//Check if current log position is inside the position of annother log
-								if(memchr(log_pos, bckp_j, sizeof(log_pos))> 0)
+								if(memchr(log_pos, bckp_j, sizeof(log_pos))!= NULL)
 								can_this_tree_fall_over = false;
 								
 								//Tree wont fall on user lol
@@ -15550,11 +15562,11 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 								bckp_j += 1;
 								
 								//Check if current log position is inside position of tree or stump
-								if(memchr(tree_location, bckp_j, sizeof(tree_location))> 0)
+								if(memchr(tree_location, bckp_j, sizeof(tree_location))!= NULL)
 								can_this_tree_fall_over = false;
 								
 								//Check if current log position is inside the position of annother log
-								if(memchr(log_pos, bckp_j, sizeof(log_pos))> 0)
+								if(memchr(log_pos, bckp_j, sizeof(log_pos))!= NULL)
 								can_this_tree_fall_over = false;
 								
 								//Tree wont fall on user lol
@@ -15741,7 +15753,9 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 			//Set all "log_pos 0" to -55, and stump axes done that are not done to "0" [Preventing bugs from happening]
 			for(int i = 1; i < num_trees + 1; i ++){
 				log_pos[i][0] = -55;
-				if(stump_axes_done[i] == 0 || stump_axes_done[i] == NULL)
+
+                //1-9-2024: What the fuck is this? (lets hope removing "|| stump_axes_done[i] == NULL" wont cause any errors!)
+				if(stump_axes_done[i] == 0)
 				stump_axes_done[i] = 0;
 			}
 			
@@ -15856,6 +15870,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 		}
 		fclose(flog_status);
 		
+        //Checking for key3 related stuff
 		if(do_key3){
 			ChangeCurPath("OTHER.temp_key3");
 			FILE * ftreeprog = fopen("TreeProg.txt", "w");
@@ -16272,7 +16287,7 @@ void Key(const char *Caller){
 						rand_fish -= 1;
 						
 						//If ID is alr present, reset it
-						if(memchr(ids_chosen, rand_fish, sizeof(ids_chosen))> 0)
+						if(memchr(ids_chosen, rand_fish, sizeof(ids_chosen))!= NULL)
 						i --;
 						
 						else
@@ -16316,7 +16331,7 @@ void Key(const char *Caller){
 					
 					
 					//check if the bckp is inside an invalid pos
-					if(memchr(closed_locations, bckp_cat_pos, sizeof(closed_locations))> 0)
+					if(memchr(closed_locations, bckp_cat_pos, sizeof(closed_locations))!= NULL)
 					valid_pos = false;
 					
 					if(!valid_pos)
@@ -16436,7 +16451,7 @@ void Key(const char *Caller){
 										rand_fish -= 1;
 										
 										//If ID is alr present, reset it
-										if(memchr(ids_chosen, rand_fish, sizeof(ids_chosen))> 0)
+										if(memchr(ids_chosen, rand_fish, sizeof(ids_chosen))!= NULL)
 										i --;
 										
 										else
@@ -16471,7 +16486,7 @@ void Key(const char *Caller){
 										
 										
 										//check if the bckp is inside an invalid pos
-										if(memchr(closed_locations, bckp_cat_pos, sizeof(closed_locations))> 0)
+										if(memchr(closed_locations, bckp_cat_pos, sizeof(closed_locations))!= NULL)
 										valid_pos = false;
 										
 										if(!valid_pos)
@@ -16636,7 +16651,7 @@ void Key(const char *Caller){
 									
 									//Make page files
 									for(int i = 0; i < 10; i ++){
-										char fn [2];
+										char fn [7];
 										itoa(i + 1, fn, 10);
 										strcat(fn, ".txt");
 										
@@ -16847,7 +16862,7 @@ void Key(const char *Caller){
 				}
 				
 				//Check if this enc key is ALR done
-				if(memchr(enc_alr_made, key_used, sizeof(enc_alr_made))> 0)
+				if(memchr(enc_alr_made, key_used, sizeof(enc_alr_made))!= NULL)
 				try_again = true;
 				
 				if(!try_again)
@@ -17146,7 +17161,7 @@ void Key(const char *Caller){
 			char map_location [10] =  { '\0' }, minigame_ext [10] = { '\0' };
 			 
 			//Roll untill its a new mini-game
-			while(memchr(minigames_alr_used, minigame_chosen, sizeof(minigames_alr_used))> 0)
+			while(memchr(minigames_alr_used, minigame_chosen, sizeof(minigames_alr_used))!= NULL)
 			minigame_chosen = rand()% 4 + 1;
 			 
 			//Softlock pervention
@@ -17204,12 +17219,12 @@ void Key(const char *Caller){
 				//(Preventing softlock because animal only has 2 spots available and user has alr passed bettewn those 2 spots creating a softlock)	
 				if(passed_too_many_times >= 5){
 					if(minigame_chosen == 2){
-						while(minigame_chosen == 2 && memchr(minigames_alr_used, minigame_chosen, sizeof(minigames_alr_used))> 0)
+						while(minigame_chosen == 2 && memchr(minigames_alr_used, minigame_chosen, sizeof(minigames_alr_used))!= NULL)
 						minigame_chosen = rand()% 4 + 1;
 					}
 				}
 				
-			} while(memchr(locs_alr_used, pos_loc, sizeof(locs_alr_used))> 0);
+			} while(memchr(locs_alr_used, pos_loc, sizeof(locs_alr_used))!= NULL);
 			
 			//Git possible position
 			switch(pos_loc){
@@ -17757,7 +17772,7 @@ void Key(const char *Caller){
 									randomized_num += 10;		//Bug fix atempt 
 							    	
 							    	//Check if number alr exists inside array, reset current num if it is
-							    	if(memchr(Rand, randomized_num, sizeof(Rand))> 0){
+							    	if(memchr(Rand, randomized_num, sizeof(Rand))!= NULL){
 							    		i --;
 							    		if(DEBUG_MODE)
 							    		printf("[DEBUG] _> 2 RANDS HAVE SAME NUMBER\n");
@@ -18182,7 +18197,7 @@ void Key(const char *Caller){
 	    					//Randomize paremeters
 	    					for(int i = 0; i < parameters; i ++){
 	    						int paremeter = rand()% 8 + 1;
-	    						if(memchr(parameters_chosen, paremeter, sizeof(parameters_chosen))> 0)
+	    						if(memchr(parameters_chosen, paremeter, sizeof(parameters_chosen))!= NULL)
 	    						i --;
 	    						
 	    						else
@@ -18918,7 +18933,7 @@ void Key(const char *Caller){
 										char minute_str [3];
 										if(doble_p_pos == 2){
 											//Double hour
-											if(final_data[question_w_par][4] != NULL){
+											if(final_data[question_w_par][4] != '\0'){
 												//Double minute
 												minute_str[0] = final_data[question_w_par] [3];
 												minute_str[1] = final_data[question_w_par] [4];
@@ -18927,7 +18942,7 @@ void Key(const char *Caller){
 											minute_str[0] = final_data[question_w_par] [3];
 										} else {
 											//Double hour
-											if(final_data[question_w_par][3] != NULL){
+											if(final_data[question_w_par][3] != '\0'){
 												//Double minute
 												minute_str[0] = final_data[question_w_par] [2];
 												minute_str[1] = final_data[question_w_par] [3];
@@ -20630,6 +20645,7 @@ int TimeCalc(const char *MODE, const long int timer, const int hour, const long 
 	fclose(ftime);
 	
 	chdir("..");
+    return 0;   //default exit (no err.)
 }
 
 int Inventory(const char *Inv_call, const int ID, const int Quantity){
@@ -20873,7 +20889,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 		if(arr_limit_inv[0]){
 			
 			//FARMING	
-			if(memchr(crops, true, sizeof(crops)) > 0)
+			if(memchr(crops, true, sizeof(crops)) != NULL)
 			printf("\nFarming items [%d]\n\n", farm_itm_c);
 			
 			//CROP 1
@@ -20923,7 +20939,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 		if(arr_limit_inv[1]){
 		
 			//LIVESTOCK
-			if(memchr(animals, true, sizeof(animals)) > 0)
+			if(memchr(animals, true, sizeof(animals)) != NULL)
 			printf("\nLivestock items [%d]\n\n", livestock_itm_c);
 			
 			//ANIMAL 1
@@ -20949,7 +20965,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 		if(arr_limit_inv[2]){
 		
 			//FISHING
-			if(memchr(ponds, true, sizeof(ponds))> 0)
+			if(memchr(ponds, true, sizeof(ponds)) != NULL)
 			printf("\nFishing items [%d]\n\n", fishing_itm_c);
 			
 			//POND 1
@@ -21021,7 +21037,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 		if(arr_limit_inv[3]){
 		
 			//FORAGING
-			if(memchr(trees, true, sizeof(trees))> 0)
+			if(memchr(trees, true, sizeof(trees)) != NULL)
 			printf("\nForaging items [%d]\n\n", foraging_itm_c );
 			
 			if(List_Quantities[102] > 0)
@@ -22564,6 +22580,8 @@ bool MakeSaveFiles(const char * what){
 		FILE * fnewachiv = fopen("StartingScreen.txt", "w");
 		fclose(fnewachiv);
 	}
+
+    return true;    //default exit (everything oki)
 }
 
 void ChangeFileLine(const char * file_name, const char * line, int line_to_modify){
