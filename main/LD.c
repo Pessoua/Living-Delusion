@@ -1,16 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include <Windows.h>
-#include <conio.h>
-#include <locale.h>
-#include <stdbool.h>
-#include <sys/stat.h> 
-#include <errno.h>
-
+#include "LivingDelusion.h"
 
 /*
 Directory Notes:
@@ -266,7 +254,7 @@ int StartingScreen(){
 	
     while(true){
 		CLR;
-	    	
+
 	    printf("0000000000000000000000000000000000000000000000000000000000000000000000\n");
 	    printf("044 4     44 4 4      4      4    4 44       4      4  4  55 55 55   0\n");
 	    printf("04 4 4  4   4 4 4 4444  4  4    44 4 4   4 44  44    4  55 5  5 5    0\n");
@@ -316,6 +304,17 @@ int StartingScreen(){
 	    printf("0000000000000000000000000000000000000000000000000000000000000000000000\n");
 	    printf("ATENTION, YOU ARE PLAYING THE BETA OF THIS \"GAME\", PLEASE INFORM PESSOUA OF ANY BUGS OR CHANGES THAT SHOULD BE MADE\n");
         printf("Enter command [&/]\n");
+
+        test_art();
+        test_extras();
+        test_file();
+        test_games();
+        test_nina();
+        test_os();
+        test_path();
+        test_style();
+        test_sys();
+
         String_Input;
 
         if(strcmp(Input, "start")== 0)
@@ -16818,7 +16817,7 @@ void Key(const char *Caller){
 				case 3:{
 					//Take out some words
 					int numb_indexes_modified = rand()% 3 + 1;
-					int modify_index_ar[numb_indexes_modified] = { 0 };
+					int modify_index_ar[numb_indexes_modified];
 					//Loop for number of indexes choosen
 					for(int i = 0; i < numb_indexes_modified; i ++){
 						//Choose index to be modified
@@ -16851,8 +16850,8 @@ void Key(const char *Caller){
 					char words_i_guess [15] = { 'A', 'g', 'Q', '(', '?', '-', '_', ':', 'w', '>', '*', 'F', 'x', ',', '@' };
 					
 					int numb_indexes_modified = rand()% 3 + 1;
-					int modify_index_ar[numb_indexes_modified] = { 0 };
-					char modify_char_cur_index[numb_indexes_modified] [2] = { '\0' };
+					int modify_index_ar[numb_indexes_modified];
+					char modify_char_cur_index[numb_indexes_modified] [2];
 					//Loop for number of indexes choosen
 					for(int i = 0; i < numb_indexes_modified; i ++){
 						//Choose index to be modified
@@ -22726,7 +22725,7 @@ void FormatTextEXT(const char * mode, const char * line, bool new_line, int skip
 		return;
 	}
 	
-	char final_formated_str [total_strlen] = { '\0' };
+	char final_formated_str [total_strlen];
 	strcpy(final_formated_str, line);
 	
 	if(has_var_port){
@@ -22755,7 +22754,7 @@ void FormatTextEXT(const char * mode, const char * line, bool new_line, int skip
 			
 			//Get the rest
 			int rest_wanted = abs((temp_strlen + what_delim) - total_strlen);
-			char str_to_strcat [rest_wanted + 1] = { '\0' };
+			char str_to_strcat [rest_wanted + 1];
 			
 			//Get the rest we are going to strcat ltr
 			for(int i = 0; i < rest_wanted; i ++){

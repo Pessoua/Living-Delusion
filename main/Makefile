@@ -1,4 +1,4 @@
-LD_BETA2: LD_BETA2.cpp
-	g++ -o LD_BETA2 LD_BETA2.cpp -lstdc++
-	./LD_BETA2
-
+run:
+	gcc -c LD.c -lstdc++ 					
+	gcc LD.o -o LD -L. -lLD_LIB 
+	.\LD								
