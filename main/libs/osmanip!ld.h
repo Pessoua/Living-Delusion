@@ -1,6 +1,6 @@
 #ifndef LD_OSMANIP_H
 #define LD_OSMANIP_H
 
-void test_os();
+int GetTerminalSize(const char * what);
 
 #endif

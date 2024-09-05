@@ -68,8 +68,15 @@ GetAppResources
 #define	bright_white SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 
 //Global Vars. (Remove LTR)
-char User_Name [50], Input [25];
+char User_Name [50];
+
+//NEEDS TO BE EXTERN
+char Input [25];
+
+//NEEDS TO BE EXTERN
 long long int INT_Input = 0;
+
+
 int backup1_skip_cp; int skip_in_vil; char wiz_inp [15] = "\0"; char Inv_call [5];
 char User_input [10], user_input1 [10], Df [15], help1[3]; char dificulty [15] = "Nightmare"; int hotel_1_t = 0; int animal_cap_day = -1; char SECRET_BOOK [5] = "NO"; char oracle_inp [10];
 int Nightmare_check; int Cp1_puzzle_trigger = 0; char back_bedroom [15] = "NO"; int pot_h = -1; char pod_order [15] = "NO"; char book_1st_time [5] = "YES";
@@ -88,7 +95,7 @@ void Mountain(const char * what);
 int Act1();
 void Pit(void);
 
-//Mini games and other global locations
+//Mini games and other global locations         All of these functions can go to games!ld.h
 int Animal(bool is_tut);
 void Crop(const short int Crop1_ID, bool is_tut);
 void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut);
@@ -97,42 +104,45 @@ void Key(const char *Caller);
 void SpecialLocations(const char * Caller);
 
 //Format text / Usefull stuff
-void ReadTextFile(const char *FileName, const char *specifications);
-void ChangeFileLine(const char * file_name, const char * line, int line_to_modify);
-bool MakeSaveFiles(const char * what);
-bool ExistDiret(const char *path);
-void CenterText(const char *line);
-void RightText(const char *line);
-void RandText(const char *line);
-void MidScreenText(const char *line);
+void ReadTextFile(const char *FileName, const char *specifications);    //Go to file!ld.h or save!ld.h if file is deleted
+bool MakeSaveFiles(const char * what);                                  //Go to save!ld.h
 void FormatTextEXT(const char * mode, const char * line, bool new_line, int skip_starting_displacement, const char * wantedcolors, bool has_var_port, int only_do_THIS_number_of_lines, int repeat_THIS_many_times);
-char * EncryptedWordsV1(short int *num_of_spaces);
-char * EncryptedWordsV2(const char * line);
+    //^Go to style!ld.h
 void ChangeCurPath(const char * please_change_to_this_line);
 void CatCurPath(const char * cat_this_line);
+    //^Both go to path!ld.h
 int DisplayAllSpecialItems(void);
 int DisplayCenterList(const char * wat_mer);
+    //^Both go to art!ld.h
 HWND WINAPI GetConsoleWindowNT(void);
 
 //Get
-bool GetNeededPaths(void);
-int GetTimeSpent(void);
-int GetTerminalSize(const char * what);
-void GetAppResources(const char * please_change_to_this_line);
-char * GetItemName(int ID);
+bool GetNeededPaths(void);  //path
+int GetTimeSpent(void);     //sys
+void GetAppResources(const char * please_change_to_this_line);  //save
+char * GetItemName(int ID); //save
 int GitItem(void);		//This one is trying its best
+    //^Git goes to Art
 
 //Art Related + scary stuff ish
-void SomethingHasGoneWrong(); 
-int Art(const char *CALLER, const int Parameter);
-void ChangeToThisColor(int INT_color, char CHAR_color);
+void SomethingHasGoneWrong();   //art
+int Art(const char *CALLER, const int Parameter);   //art
+void ChangeToThisColor(int INT_color, char CHAR_color); //style
 
-void Help(); void Credits(); void Settings(); void TipOfTheDay(); int EndOfBeta();
-void Game_Start(void); int Dificulty(); int Extras(); 
-int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day); 
-int StartingScreen(); 
-int Inventory(const char *Inv_call, const int ID, const int Quantity);
-void Chest(void);
+void Help(); 
+void Credits(); 
+void Settings();
+    //^ all go to sys
+void TipOfTheDay(); 
+    //^Art
+int EndOfBeta(); //stays here ig
+void Game_Start(void); //sys
+int Dificulty(); //sys
+int Extras();   //extras
+int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day); //sys
+int StartingScreen(); //stays here but calls art function instead
+int Inventory(const char *Inv_call, const int ID, const int Quantity); //stays here
+void Chest(void);   //stays here
 
 //Global Settings
 char game_set [15] = "Int";
@@ -173,13 +183,14 @@ char STARTING_PATH [MAX_PATH] = { '\0' }, FULL_PATH [MAX_PATH] = { '\0' }, LOCAL
 bool DEBUG_MODE = true;
 //Calc time
 clock_t time_needed;
+//^extern most of this shit
 
 void SomethingHasGoneWrong(void){
 	CLR;
 	red;
 	printf("\a");
 	printf("SOFTWARE STOPPED WORKING\n");
-	printf("LIVING DELUSION ERROR [INVALID_ACCESS_PERMITION]\n");
+	printf("LIVING DELUSION ERROR [INVALID_ACCESS_KEY]\n");
 	printf("ERROR CODE: Tm90IEFsb25l\n\n");
 	printf("PRESS ANY KEY TO REBOOT SYSTEM\n");
 	getch();
@@ -304,16 +315,6 @@ int StartingScreen(){
 	    printf("0000000000000000000000000000000000000000000000000000000000000000000000\n");
 	    printf("ATENTION, YOU ARE PLAYING THE BETA OF THIS \"GAME\", PLEASE INFORM PESSOUA OF ANY BUGS OR CHANGES THAT SHOULD BE MADE\n");
         printf("Enter command [&/]\n");
-
-        test_art();
-        test_extras();
-        test_file();
-        test_games();
-        test_nina();
-        test_os();
-        test_path();
-        test_style();
-        test_sys();
 
         String_Input;
 
@@ -21368,59 +21369,6 @@ int Art(const char *CALLER, const int Parameter){
 	return needed_row_size;
 }
 
-//Creates random words with a certain number of spaces
-char * EncryptedWordsV1(short int *num_of_spaces){
-	
-	const char possible_chars [78] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-	'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-	'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '?', '=', '+', '-', '*', '/', '#', '<', '>', '.',
-	':', '@', '_', ';', '^', ','};
-	
-	short int string_size, word_chosen, curr_word = 0;
-	char *final_str = (char *)malloc(555);
-	memset(final_str, '\0', 555);
-	
-	for(int i = 0; i < *num_of_spaces; i ++){
-		string_size = rand()% 10 + 3;
-		string_size += 2;
-		
-		for(int j = 0; j < string_size; j ++){
-			word_chosen = rand()% 78 + 1;
-			word_chosen -= 1;
-			final_str[curr_word] = possible_chars [word_chosen];
-			curr_word ++;
-		}
-		
-		final_str[curr_word] = ' ';
-		curr_word ++;
-	}
-	
-	return final_str;
-}
-
-char * EncryptedWordsV2(const char * line){
-	
-	char * final_str = (char *)malloc(sizeof(char) * 555);
-	memset(final_str, '\0', 555);
-
-	short int cur_char = 0, stop_when_value_is_reached = strlen(line);
-
-	while(cur_char < stop_when_value_is_reached){
-		while(line[cur_char] != ' ' && cur_char < stop_when_value_is_reached){
-			int rand_num = rand()% 93 + 1;
-			rand_num += 32;
-
-			final_str[cur_char] = rand_num;
-			cur_char ++;
-		}
-
-		final_str[cur_char] = ' ';
-		cur_char ++;
-	}
-
-	return final_str;
-}
-
 //Read (and format) txt files!
 void ReadTextFile(const char *FileName, const char *specifications){
 	
@@ -22452,34 +22400,6 @@ bool MakeSaveFiles(const char * what){
     return true;    //default exit (everything oki)
 }
 
-void ChangeFileLine(const char * file_name, const char * line, int line_to_modify){
-	
-	FILE * freadlines = fopen(file_name, "r");
-	FILE * ftemp = fopen("__temp.txt", "w");
-	
-	int cur_line = 0;
-	char read_line [5000] = { '\0' };
-	
-	while(fgets(read_line, 5000, freadlines)!= NULL){
-		if(line_to_modify == cur_line)
-		fprintf(ftemp, "%s\n", line);
-		
-		else
-		fprintf(ftemp, "%s", read_line);	
-			
-		cur_line ++;
-		memset(read_line, '\0', sizeof(read_line));
-	}
-	
-	fclose(freadlines);
-	fclose(ftemp);
-	
-	remove(file_name);
-	rename("__temp.txt", file_name);
-	
-	return;
-}
-
 //Copy cat of the function above but modified to navigate the "OTHER" dir instead
 void ChangeCurPath(const char * please_change_to_this_line){
 	char *final_path = (char *)malloc(MAX_PATH);
@@ -22596,35 +22516,6 @@ void CatCurPath(const char * cat_this_line){
 	return;
 }
 
-//Check if dir exists [Not made by me, thanks for whoever did it though]
-bool ExistDiret(const char *path){
-	struct stat stats;
-
-    stat(path, &stats);
-    
-    if (S_ISDIR(stats.st_mode)){
-    return true;
-	}
-	
-    return false;
-}
-
-//Used to get cur Terminal Size information (not mine, found here: https://stackoverflow.com/questions/6812224/getting-terminal-size-in-c-for-windows/12642749#12642749)
-int GetTerminalSize(const char * what){
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-    int columns, rows;
-  	
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-	
-	if(strcmp(what, "columns")== 0)
-	return columns;
-	
-	else
-	return rows;
-}
-
 //I forgot where i stole this from but its not mine (used to modify window pos and size)
 HWND WINAPI GetConsoleWindowNT(void){
     typedef HWND WINAPI(*GetConsoleWindowT)(void);
@@ -22636,63 +22527,6 @@ HWND WINAPI GetConsoleWindowNT(void){
         return NULL;
     }
     return GetConsoleWindow();
-}
-
-//Center texts thats passed through the parameter
-void CenterText(const char *line){
-	printf("%*s\n", ((GetTerminalSize("columns") - strlen(line)) / 2) + strlen(line), line);
-	return;
-}
-
-//Same has function above but it puts it in the right side of the screen
-void RightText(const char *line){
-	printf("%*s\n", (GetTerminalSize("columns") - strlen(line)) + strlen(line), line);
-	return;
-}
-
-//Same has function above but randomize X and Y value (and properly format them)
-void RandText(const char *line){
-	CLR;
-	//Color
-	short int rand_color = rand()% 3 + 1;
-	if(rand_color == 1){
-		white;
-	} else if(rand_color == 2){
-		red;
-	} else {
-		gray;
-	}
-	
-	//Randomize X
-	int rand_width = rand()% GetTerminalSize("columns") + 1;
-	//Format X
-    rand_width = (rand_width - strlen(line)) + strlen(line);
-    
-    //Randomize Y (no need for formating)
-    int rand_rows = rand()% GetTerminalSize("rows") + 1;
-    
-    //Randomize number of lines
-    const int numb_lines = rand()% 5 + 1;
-    
-    //Modify Y
-    for(int i = 0; i < rand_rows; i ++)
-    printf("\n");
-    
-    //Print result
-    for(int i = 0; i < numb_lines; i ++)
-	printf("%*s\n", rand_width, line);
-	
-	white;
-	return;
-}
-
-//Same has above but X and Y arent random but are actually divided by 2 (and formated accordingly)
-void MidScreenText(const char *line){
-	for(int i = 0; i < (GetTerminalSize("rows") / 2); i ++)
-    printf("\n");
-    
-    printf("%*s\n", ((GetTerminalSize("columns") - strlen(line)) / 2) + strlen(line), line);
-    return;
 }
 
 //Fuction to format text but VERY extended (made for specific cases)
