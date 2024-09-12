@@ -29,8 +29,11 @@
 #include "libs/games!ld.h"       //Main handler for EVERYTHING about the games (and some locations)
 #include "libs/nina!ld.h"        //Main NINA API handler
 
-//INCLUDE TESTS???
+//external tests (also dependant on LD.h and NINA API works on it)
+#include "../tools/tests!ld.h"
+
 //INCLUDE TOOLS??
+// #include "../tools/ascii!ld.h" oopsie (does not exist yet)
 
 //macros :3
 #ifdef _WIN32

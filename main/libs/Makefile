@@ -1,44 +1,36 @@
 run:
-	gcc -c -O2 art!ld.c	
-	gcc -c -O2 extras!ld.c 
-	gcc -c -O2 games!ld.c 
-	gcc -c -O2 nina!ld.c
-	gcc -c -O2 osmanip!ld.c
-	gcc -c -O2 path!ld.c
-	gcc -c -O2 save!ld.c
-	gcc -c -O2 style!ld.c 
-	gcc -c -O2 sys!ld.c
+	gcc -c -O2 *.c
 	gcc -shared -o LD_LIB.dll *.o
 	move /Y LD_LIB.dll ..
 
-art:
+art: art!ld.c
 	gcc -c -O2 art!ld.c
 
-extras:
+extras: extra!ld.c
 	gcc -c -O2 extras!ld.c
 
-games:
+games: games!ld.c
 	gcc -c -O2 games!ld.c 
 
-nina:
+nina: nina!ld.c
 	gcc -c -O2 nina!ld.c
 
-os:
+os: osmanip!ld.c
 	gcc -c -O2 osmanip!ld.c
 
-osmanip:
+osmanip: osmanip!ld.c
 	gcc -c -O2 osmanip!ld.c
 
-path:
+path: path!ld.c
 	gcc -c -O2 path!ld.c
 
-save:
+save: save!ld.c
 	gcc -c -O2 save!ld.c
 
-style:
+style: style!ld.c
 	gcc -c -O2 style!ld.c 
 
-sys:
+sys: sys!ld.c
 	gcc -c -O2 sys!ld.c
 
 dll:
