@@ -1,5 +1,11 @@
 run:
-	gcc -c -O2 *.c
+	gcc -c -O2 *.c	
+	$(MAKE) -C art full
+	$(MAKE) -C games full
+	$(MAKE) -C local full
+	$(MAKE) -C nina full
+	$(MAKE) -C os full
+	$(MAKE) -C save full
 	gcc -shared -o LD_LIB.dll *.o
 	move /Y LD_LIB.dll ..
 
@@ -36,3 +42,6 @@ sys: sys!ld.c
 dll:
 	gcc -shared -o LD_LIB.dll *.o
 	move /Y LD_LIB.dll ..
+
+clean:
+	del /s *.o

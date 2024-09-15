@@ -6,4 +6,4 @@ void RightText(const char * line);
 void MidScreenText(const char * line);
 void RandText(const char * line);
 
-#endif
+#endif /* LD_STYLE_H */

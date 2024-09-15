@@ -9,4 +9,4 @@ char * EncryptedWordsV2(const char * exampleLine);
 void StrInp(void);
 int IntInp(void);
 
-#endif
+#endif /* LD_SYS_H */

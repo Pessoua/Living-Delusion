@@ -3,4 +3,4 @@
 
 void test_extras();
 
-#endif
+#endif /* LD_EXTRAS_H */

@@ -3,4 +3,4 @@
 
 bool ExistDiret(const char * path);
 
-#endif
+#endif /* LD_PATH_H */
