@@ -25,7 +25,7 @@
 #include <errno.h>
 #include <stdint.h>
 
-//OS specific grabo
+//OS specific garbo
 #ifdef _WIN32
     #define OS "windows"
     #define PATH_MAX_LEN 520
