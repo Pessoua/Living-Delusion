@@ -27,12 +27,16 @@
 
 //OS specific garbo
 #ifdef _WIN32
-    #define OS "windows"
+    #include <Windows.h>
+    #include <conio.h>
+
     #define PATH_MAX_LEN 520
     #define CLR system("cls");
+
 #else
     #define PATH_MAX_LEN 4096
     #define CLR system("clear");
+
 #endif
 
 
@@ -45,7 +49,29 @@
 #else
     #define OS "unsuported"
 #endif
+
+//Macros that arent OS dependant
+#define Error   CLR; \
+                printf("\x1b[31m[ERROR] _> Oppsie! Not a valid command\x1b[0m\n"); \
+                sleep(1); \
+                CLR; 
                                 
+//VERY temporary thing
+#define dark_blue     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
+#define green          SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+#define light_blue     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+#define red        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+#define purple         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
+#define yellow         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+#define white          SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+#define gray       SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
+#define mid_blue   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+#define light_green    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+#define light_aqua     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+#define light_red  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+#define light_purple SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
+#define light_yellow SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+#define  bright_white SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 
 //typedefs go here (YES I STOLE THESE TYPEDEFS!)
 typedef int8_t      i8;         //From (-128 to 127)
@@ -64,9 +90,17 @@ typedef double      f18;        //Example: 3.141592653589793116
 typedef char path[PATH_MAX_LEN];      //PATH! (depends on the OS)
 
 //extern variables
+//sys styff
 extern path STARTING_PATH, FULL_PATH, LOCAL_PATH;
 extern bool DEBUG_MODE;
-extern char Input [50]; 
+extern char Input [50];
+extern clock_t time_needed;
+extern i64 INT_Input;
+
+//settings
+extern char game_set [15], dificulty[50];
+extern bool skip_intro, show_user_turn, display_all_tut_once, skip_tut_display, force_tut_display, show_tut_cutscene;
+extern bool display_tip, div_inv_sect, limit_inv, arr_limit_inv [6];
 
 //extern libs here
 #include "libs/style!ld.h"       //Text formating + Making things look better
@@ -77,7 +111,7 @@ extern char Input [50];
 #include "libs/sys!ld.h"         //Mostly system helper functions / functions "outside" the game itself
 #include "libs/osmanip!ld.h"     //Functions that require interacting with the OS in any way                    (SPLIT)
 #include "libs/games!ld.h"       //Main handler for EVERYTHING about the games (and some locations)             (SPLIT)
-#include "libs/local!ld.h"      //Main handler for location related functions                                  (SPLIT)
+#include "libs/local!ld.h"       //Main handler for location related functions                                  (SPLIT)
 #include "libs/nina!ld.h"        //Main NINA API handler                                                        (SPLIT)
 
 //Functions with "(SPLIT)" mean they have their own directory with sub-sub libraries
@@ -87,7 +121,8 @@ extern char Input [50];
 #include "../tools/tests!ld.h"
 
 //INCLUDE TOOLS??
-// #include "../tools/ascii!ld.h" oopsie (does not exist yet)
+// #include "../tools/textimg!ld.h" oopsie (does not exist yet)
+// #include "../tools/!ld.h"        h
 
 #endif /* LDMAIN_H */
 

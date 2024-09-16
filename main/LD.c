@@ -15,14 +15,6 @@ GetAppResources
 //Better way of clearing the screen
 #define CLR system("cls");
 
-//if Input is incorect
-#define Error CLR; 											\
-			  red;										 	\
-			  printf("[ERROR] _> Not a valid command.\n\n");\
-			  sleep(1); 									\
-			  CLR; 											\
-			  white;
-
 //If theres too much dialogue
 #define Small_stop	printf("[SYSTEM] _> Press anything to continue\n");	\
                     getch(); 											\
@@ -50,31 +42,12 @@ GetAppResources
 					 else										\
 					 INT_Input = 0;
 
-//Colors (SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), [COLOR]))
-#define dark_blue 	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);
-#define green 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
-#define light_blue 	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-#define red 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
-#define purple 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
-#define yellow 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
-#define white 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-#define gray 		 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-#define mid_blue	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
-#define light_green	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
-#define light_aqua	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
-#define light_red	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-#define light_purple SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
-#define light_yellow SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
-#define	bright_white SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-
 //Global Vars. (Remove LTR)
 char User_Name [50];
+char Input [50];
 
 //NEEDS TO BE EXTERN
-char Input [25];
-
-//NEEDS TO BE EXTERN
-long long int INT_Input = 0;
+i64 INT_Input = 0;
 
 
 int backup1_skip_cp; int skip_in_vil; char wiz_inp [15] = "\0"; char Inv_call [5];
@@ -144,13 +117,6 @@ int StartingScreen(); //stays here but calls art function instead
 int Inventory(const char *Inv_call, const int ID, const int Quantity); //stays here
 void Chest(void);   //stays here
 
-//Global Settings
-char game_set [15] = "Int";
-bool skip_intro = true, show_user_turn = false; 
-bool display_all_tut_once = false, skip_tut_display = false, force_tut_display = true, show_tut_cutscene = false;
-bool display_tip = true;
-bool div_inv_sect = true, limit_inv = false, arr_limit_inv [6] = { true, true, true, true, true, true };
-
 //Inventory
 long int money = 1000000; int chos_itm; char center_leave [5] = "NO"; int itm_quant; int bckp_money;
 
@@ -177,13 +143,7 @@ int ALCH_STASH_ID;
 char ANIMAL_STASH_INPUT [10], ANIMAL_STASH_STATUS [10] = "NOTFULL";
 int ANIMAL_STASH_ID, ANIMAL_STASH_QUANTITY;
 
-//Dir stuff (MAX_PATH is a constant from the windows.h library i think)
-char STARTING_PATH [MAX_PATH] = { '\0' }, FULL_PATH [MAX_PATH] = { '\0' }, LOCAL_PATH[MAX_PATH] = { '\0' }, current_save [2];
-//Debug mode enable / disable
-bool DEBUG_MODE = true;
-//Calc time
-clock_t time_needed;
-//^extern most of this shit
+char current_save [2];
 
 void SomethingHasGoneWrong(void){
 	CLR;
@@ -231,17 +191,20 @@ void TipOfTheDay(void){
     
 }
 
-int main(void){
+int main(int argc, char *argv[]){
 	
 	time_needed = clock();							// start clock
 	srand(time(NULL));								// srand(time(NULL)) makes it so all randoms in the program are always randomized even if its executed twice or more times
 	setlocale(LC_ALL, "");							// makes it able to put stuff like "á" or "õ"
 	system("title LIVING DELUSION [OPEN BETA 2]"); 	// makes the window name has "LIVING DELUSION [OPEN BETA 2]"
+                                                    
+    for(int i = 0; i < argc; i ++)
+        printf("%s\n", argv[i]);
 	
 	if(!GetNeededPaths()){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
 		printf("Hi, this is a C/C++ project made while learning the C language!\n");
-		printf("Keep in mind, this is a BETA BUILD of this project so everything you see if subject to change!\n");
+		printf("Keep in mind, this is a BETA BUILD of this project so everything you see is subject to change!\n");
 		printf("The source code is in my Github [@Pessoua] or in the .zip file\n");
 		printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
 		

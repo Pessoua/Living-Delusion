@@ -3,7 +3,7 @@
 u8 Animal(bool is_tut){
     
     //Note to reader: This is a backup of the "game_set" global setting, used for the display and movements in minigames table types, 
-    //  //makes you able to alter your gameset to whatever you want without actually altering it
+    //makes you able to alter your gameset to whatever you want without actually altering it
     char tut_game_set [5];
     strcpy(tut_game_set, game_set);
 
@@ -1050,7 +1050,7 @@ u8 Animal(bool is_tut){
         if(Leave)
             animal_got = 0;
 
-        TimeCalc("CALC", 0, 1, 0);
+        //TimeCalc("CALC", 0, 1, 0);
 
         //Key 3 hint stuff
         if(!Leave && do_key3 && rand()% 2 + 1 == 1){
