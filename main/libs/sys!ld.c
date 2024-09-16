@@ -67,7 +67,7 @@ void StrInp(void){
 int IntInp(void){
     char Input [50];
 
-    printf("inp &/");
+    printf("&/");
     scanf("%s", Input);
     
     CLR;

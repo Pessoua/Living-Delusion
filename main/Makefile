@@ -1,4 +1,8 @@
 run:
 	gcc -c LD.c -lstdc++ 					
 	gcc LD.o -o LD -L. -lLD_LIB 
-	.\LD								
+	.\LD
+
+obj:
+	gcc -c -O2 LivingDelusion.c
+	move /Y LivingDelusion.o libs/

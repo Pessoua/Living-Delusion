@@ -69,7 +69,6 @@ int Act1();
 void Pit(void);
 
 //Mini games and other global locations         All of these functions can go to games!ld.h
-//int Animal(bool is_tut);
 void Crop(const short int Crop1_ID, bool is_tut);
 void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut);
 void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const short int special_tree_ID, bool is_tut);
@@ -197,9 +196,6 @@ int main(int argc, char *argv[]){
 	srand(time(NULL));								// srand(time(NULL)) makes it so all randoms in the program are always randomized even if its executed twice or more times
 	setlocale(LC_ALL, "");							// makes it able to put stuff like "á" or "õ"
 	system("title LIVING DELUSION [OPEN BETA 2]"); 	// makes the window name has "LIVING DELUSION [OPEN BETA 2]"
-                                                    
-    for(int i = 0; i < argc; i ++)
-        printf("%s\n", argv[i]);
 	
 	if(!GetNeededPaths()){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
@@ -21270,47 +21266,6 @@ bool MakeSaveFiles(const char * what){
 	}
 
     return true;    //default exit (everything oki)
-}
-
-//Copy cat of the function above but modified to navigate the "OTHER" dir instead
-void ChangeCurPath(const char * please_change_to_this_line){
-	char *final_path = (char *)malloc(MAX_PATH);
-	memset(final_path, '\0', MAX_PATH);
-	
-	char * copy_of_arg = (char *)malloc(strlen(please_change_to_this_line) * sizeof(char) + 5);
-	memset(copy_of_arg, '\0', sizeof(copy_of_arg));
-	strcpy(copy_of_arg, please_change_to_this_line);
-	
-	strcpy(final_path, FULL_PATH);
-	strcat(final_path, "\\");
-	
-	//Seperate paremeters
-	char delim [2] = ".";
-	char * current_cat_line;
-	current_cat_line = strtok(copy_of_arg, delim);
-	if(current_cat_line == NULL){
-		chdir(final_path);
-		return;
-	}
-	
-	strcat(final_path, current_cat_line);
-	strcat(final_path, "\\");
-	
-	//Continue untill end
-	while(current_cat_line != NULL){
-		current_cat_line = strtok(NULL, delim);	
-		if(current_cat_line == NULL)
-		break;
-		
-		strcat(final_path, current_cat_line);
-		strcat(final_path, "\\");
-	}
-	
-	chdir(final_path);
-	free(final_path);
-	free(copy_of_arg);
-	
-	return;
 }
 
 //Same has function above but its made to get app resources (access localappdata)

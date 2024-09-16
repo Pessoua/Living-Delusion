@@ -1,4 +1,4 @@
-#include "../games!ld.h"
+#include "../../LivingDelusion.h"
 
 u8 Animal(bool is_tut){
     
@@ -199,14 +199,14 @@ u8 Animal(bool is_tut){
                 printf("Understood? You better...\n\n");
             }
 
-            Small_stop;
+            SmallStop;       
         }
 
         printf("Next move?\n");
 
         if((strcmp(game_set, "Char")== 0 && !is_tut) || (strcmp(tut_game_set, "Char")== 0 && is_tut)){
 
-            String_Input;
+            StrInp(); 
 
             //Happends cause lead is for animal barn thing and lure is for wild animals in the montain
             //and the whole trust system thing
@@ -308,7 +308,7 @@ u8 Animal(bool is_tut){
         } else {
 
             //Also using "string_Input" cause if the user mistaked it for a char input it would bug out but with this nothing happends so the user is safe
-            String_Input;
+            StrInp();
 
             //Int movements
             if(strcmp(Input, "1")== 0){
@@ -1031,7 +1031,7 @@ u8 Animal(bool is_tut){
             printf("Tutorial done!\n");
             printf("Again? [Y/N]\n");
 
-            String_Input;
+            StrInp();
 
             if(strcmp(Input, "y")== 0){
                 Animal(true);
@@ -1081,7 +1081,7 @@ u8 Animal(bool is_tut){
             fprintf(key3b, "%s\n", hint);
             fclose(key3b);
 
-            Small_stop;
+            SmallStop; 
             free(hint);
             CLR;
         }

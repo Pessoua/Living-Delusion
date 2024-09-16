@@ -33,9 +33,63 @@
     #define PATH_MAX_LEN 520
     #define CLR system("cls");
 
+    #define SmallStop   printf("[SYSTEM] _> Press anything to continue\n"); \
+                        getch(); \
+                        CLR;
+
 #else
     #define PATH_MAX_LEN 4096
     #define CLR system("clear");
+
+    #include <termios.h>
+
+    //STOLEN FROM: https://stackoverflow.com/questions/7469139/what-is-the-equivalent-to-getch-getche-in-linux/7469410#7469410
+    void initTermios(int echo) 
+    {
+        tcgetattr(0, &old);
+        current = old; 
+        current.c_lflag &= ~ICANON; 
+        if (echo) {
+            current.c_lflag |= ECHO; 
+        } else {
+            current.c_lflag &= ~ECHO; 
+        }
+        tcsetattr(0, TCSANOW, &current); 
+    }
+
+    void resetTermios(void) 
+    {
+        tcsetattr(0, TCSANOW, &old);
+    }
+
+    char getch_(int echo) 
+    {
+        char ch;
+        initTermios(echo);
+        ch = getchar();
+        resetTermios();
+        return ch;
+    }
+
+    char getch(void) 
+    {
+        return getch_(0);
+    }
+
+    //SURELY IT WORKS
+    #define SmallStop   printf("[SYSTEM] _> Press anything to continue\n"); \
+                        getch(); \
+                        CLR;
+    //Linux specifics
+    #ifdef __linux__
+
+    //Apple specifics
+    #elif defined(__APPLE__)
+
+    #else
+        printf("\x1b[31mUnknown OS.\n\x1b[0m");
+        exit(1);
+    #endif
 
 #endif
 
@@ -45,7 +99,7 @@
 #elif defined __linux__
     #define OS "linux"
 #elif defined(__APPLE__)
-    #define OS "mac"
+    #define OS "apple"
 #else
     #define OS "unsuported"
 #endif
@@ -122,7 +176,7 @@ extern bool display_tip, div_inv_sect, limit_inv, arr_limit_inv [6];
 
 //INCLUDE TOOLS??
 // #include "../tools/textimg!ld.h" oopsie (does not exist yet)
-// #include "../tools/!ld.h"        h
+#include "../tools/declaratives!ld.h" //Yeah lets declare every single fucking extern variable to see if that fixes a bug im currently experiencing
 
 #endif /* LDMAIN_H */
 
