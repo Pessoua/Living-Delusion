@@ -176,7 +176,6 @@ extern bool display_tip, div_inv_sect, limit_inv, arr_limit_inv [6];
 
 //INCLUDE TOOLS??
 // #include "../tools/textimg!ld.h" oopsie (does not exist yet)
-#include "../tools/declaratives!ld.h" //Yeah lets declare every single fucking extern variable to see if that fixes a bug im currently experiencing
 
 #endif /* LDMAIN_H */
 

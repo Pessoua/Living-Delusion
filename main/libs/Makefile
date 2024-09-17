@@ -6,6 +6,7 @@ run:
 	$(MAKE) -C nina full
 	$(MAKE) -C os full
 	$(MAKE) -C save full
+	$(MAKE) -C .. obj
 	gcc -shared -o LD_LIB.dll *.o
 	move /Y LD_LIB.dll ..
 
