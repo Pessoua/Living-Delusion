@@ -1,8 +1,8 @@
 #include "LivingDelusion.h"
 
-//This file only exists to define the externs used on LivingDelusion.h (compilation problems)
+//Declaring all external variable to their "starting" state, AKA the most commun states
 path STARTING_PATH = { '\0' }, FULL_PATH = { '\0' }, LOCAL_PATH = { '\0' };
-bool DEBUG_MODE = false;
+bool DEBUG_MODE = true;
 char Input [50] = { '\0' };
 clock_t time_needed = 0.0; //Long double (lul)
 i64 INT_Input = 0;

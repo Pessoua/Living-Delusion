@@ -6,3 +6,7 @@ run:
 obj:
 	gcc -c -O2 LivingDelusion.c
 	move /Y LivingDelusion.o libs/
+
+obj-dll:
+	$(MAKE) -C . obj
+	$(MAKE) -C libs/ dll

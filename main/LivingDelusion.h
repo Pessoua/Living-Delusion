@@ -26,7 +26,7 @@
 #include <stdint.h>
 
 //OS specific garbo
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64) 
     #include <Windows.h>
     #include <conio.h>
 
@@ -62,7 +62,7 @@
         tcsetattr(0, TCSANOW, &old);
     }
 
-    char getch_(int echo) 
+    chaR getch_(int echo) 
     {
         char ch;
         initTermios(echo);
@@ -84,25 +84,24 @@
     #ifdef __linux__
 
     //Apple specifics
-    #elif defined(__APPLE__)
+    #elif defined(__APPLE__) || defined(__MACH__)
 
     #else
-        printf("\x1b[31mUnknown OS.\n\x1b[0m");
-        exit(1);
+        //dont define anything
     #endif
 
 #endif
 
-
-#ifdef _WIN32
-    #define OS "windows"
-#elif defined __linux__
-    #define OS "linux"
-#elif defined(__APPLE__)
-    #define OS "apple"
-#else
-    #define OS "unsuported"
-#endif
+//Sorry if the OS names are kinda weird, im just lazy
+#if defined(_WIN32) || defined(_WIN64)  
+    #define OS_NAME "W"
+#elif defined(__linux__)  
+    #define OS_NAME "L"
+#elif defined(__APPLE__) || defined(__MACH__)  
+    #define OS_NAME "A"
+#else  
+    #define OS_NAME "U"
+#endif  
 
 //Macros that arent OS dependant
 #define Error   CLR; \

@@ -12,46 +12,16 @@ GetAppResources
 	Information / Resources in localappdata never change
 */
 
-//Better way of clearing the screen
-#define CLR system("cls");
-
-//If theres too much dialogue
-#define Small_stop	printf("[SYSTEM] _> Press anything to continue\n");	\
-                    getch(); 											\
-                    CLR;
-
-//Better way of getting string input and making it not case sensitive
-#define String_Input printf("&/");							\
-					 scanf("%s", Input);					\
-					 for(int i = 0; i < strlen(Input); i ++)\
-					 Input[i] = tolower(Input[i]); 			\
-					 CLR;
-
-//Converting STR into INT (%d scanf with strings causes issues) 
-#define INT_Protocol printf("&/");								\
-					 scanf("%s", Input);						\
-					 bool is_valid = true;						\
-					 for(int i = 0; i < strlen(Input); i ++){	\
-						 if(isalpha(Input[0])!= 0){				\
-						 	 is_valid = false;					\
-						 	 break;								\
-						 }										\
-					 }											\
-					 if(is_valid)								\
-					 INT_Input = atoi(Input);					\
-					 else										\
-					 INT_Input = 0;
-
 //Global Vars. (Remove LTR)
 char User_Name [50];
-char Input [50];
+//char Input [50];
 
 //NEEDS TO BE EXTERN
 i64 INT_Input = 0;
 
 
 int backup1_skip_cp; int skip_in_vil; char wiz_inp [15] = "\0"; char Inv_call [5];
-char User_input [10], user_input1 [10], Df [15], help1[3]; char dificulty [15] = "Nightmare"; int hotel_1_t = 0; int animal_cap_day = -1; char SECRET_BOOK [5] = "NO"; char oracle_inp [10];
+char User_input [10], user_input1 [10], Df [15], help1[3]; char dificulty [50]; int hotel_1_t = 0; int animal_cap_day = -1; char SECRET_BOOK [5] = "NO"; char oracle_inp [10];
 int Nightmare_check; int Cp1_puzzle_trigger = 0; char back_bedroom [15] = "NO"; int pot_h = -1; char pod_order [15] = "NO"; char book_1st_time [5] = "YES";
 int Inv_books; int alch_knowlege; int X; int Y; int L; char New_Day [15]; int Day_Check = -1; int animal_day = -1; char pt_brewing [15] = "NONE"; char secret_b_again [5] = "NO";
 int chest_items = 0; int slots_av = 100; char usr_animal [15] = "\0"; char Animals_Stable [15] = "EMPTY"; int final_p_dev = 0; char l_secret_1st_time [5] = "YES";
@@ -91,7 +61,7 @@ HWND WINAPI GetConsoleWindowNT(void);
 //Get
 bool GetNeededPaths(void);  //path
 int GetTimeSpent(void);     //sys
-void GetAppResources(const char * please_change_to_this_line);  //save
+void GetAppResources(const char * please_change_to_this_line);  //path
 char * GetItemName(int ID); //save
 int GitItem(void);		//This one is trying its best
     //^Git goes to Art
@@ -191,12 +161,19 @@ void TipOfTheDay(void){
 }
 
 int main(int argc, char *argv[]){
-	
+
 	time_needed = clock();							// start clock
 	srand(time(NULL));								// srand(time(NULL)) makes it so all randoms in the program are always randomized even if its executed twice or more times
 	setlocale(LC_ALL, "");							// makes it able to put stuff like "á" or "õ"
 	system("title LIVING DELUSION [OPEN BETA 2]"); 	// makes the window name has "LIVING DELUSION [OPEN BETA 2]"
-	
+
+    //RunThisAtStart();
+
+    for(u8 i = 0; i < argc; i ++)
+        printf("%s\n", argv[i]);
+
+    SmallStop;
+
 	if(!GetNeededPaths()){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
 		printf("Hi, this is a C/C++ project made while learning the C language!\n");
@@ -204,7 +181,7 @@ int main(int argc, char *argv[]){
 		printf("The source code is in my Github [@Pessoua] or in the .zip file\n");
 		printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
 		
-		Small_stop;
+		SmallStop;
 		
 		yellow;
 		MidScreenText("Have fun :)");
@@ -275,7 +252,7 @@ int StartingScreen(){
 	    printf("ATENTION, YOU ARE PLAYING THE BETA OF THIS \"GAME\", PLEASE INFORM PESSOUA OF ANY BUGS OR CHANGES THAT SHOULD BE MADE\n");
         printf("Enter command [&/]\n");
 
-        String_Input;
+        StrInp();
 
         if(strcmp(Input, "start")== 0)
             Game_Start();
@@ -296,12 +273,12 @@ int StartingScreen(){
 	        
 		    while(true){
 			    printf("[Error] _> Not a valid command, need help? [Yes] [No]\n");
-			    String_Input
+			    StrInp();
 			    
 			    if(strcmp(Input, "yes")== 0){
 			
 			        printf("You see the stuff writen on the signs on the image? Those are \"Main Commands\", that means you need to write whats on the \">\" to do starting screen things.\n");
-			        Small_stop;
+			        SmallStop;
 			        break;
 					
 			    } else if(strcmp(Input, "no")== 0){
@@ -368,7 +345,7 @@ void Game_Start(void){
 	    
 	    printf(">Go to the settings [Settings]\n");
 	    printf(">Back\n");
-	    String_Input;
+	    StrInp();
 	   	
 		if(strcmp(Input, "back?")== 0){
 			printf("[ACHIVEMENT] _> Is this an option? (Actually type out the welcome back) (Will apear when you select your save)\n");
@@ -392,7 +369,7 @@ void Game_Start(void){
 	        			red;
 	        			printf("Save limit reached, delete saves to make more\n");
 	        			white;
-	        			Small_stop;
+	        			SmallStop;
 	        			CLR;
 	        			break;
 					}
@@ -401,7 +378,7 @@ void Game_Start(void){
 	        			red;
 	        			printf("You have no saves to continue your progress\n");
 	        			white;
-	        			Small_stop;
+	        			SmallStop;
 	        			CLR;
 	        			break;
 					}
@@ -427,7 +404,7 @@ void Game_Start(void){
 				
 		        printf(">Back\n");
 		        
-		        String_Input;
+		        StrInp();
 		        
 		        if(strcmp(Input, "1")== 0 || strcmp(Input, "2")== 0 || strcmp(Input, "3")== 0){
 		        	
@@ -616,7 +593,7 @@ int Extras(){
 		printf("ARG\tFormatTextEXT\t - The extended formating function, many arguments\n");
 		
 		printf("\n\n");
-		Small_stop;	
+		SmallStop;	
 	}
 		
 	//CORE
@@ -660,7 +637,7 @@ int Extras(){
 	else if(strcmp(Extras_Input, "change_path")== 0){
 		printf("Arguments\n");
 		printf("New path?\n");
-		String_Input;
+		StrInp();
 		for(int i = 0; i < 50; i++)
 		Input[i] = toupper(Input[i]);
 		
@@ -668,13 +645,13 @@ int Extras(){
 		ChangeCurPath(Input);
 		green;
 		printf("Changed path! [Will be changed to original though]\n");
-		Small_stop; 
+		SmallStop; 
 		white;
 	}
 	
 	else if(strcmp(Extras_Input, "dir")== 0){
 		system("dir"); 
-		Small_stop;
+		SmallStop;
 	}
 	
 	else if(strcmp(Extras_Input, "end")== 0)
@@ -682,7 +659,7 @@ int Extras(){
 	
 	else if(strcmp(Extras_Input, "extrashelp")== 0){
 		printf("Go to %s\\Help Notes\n\n", LOCAL_PATH);
-		Small_stop;
+		SmallStop;
 	}
 	
 	else if(strcmp(Extras_Input, "itemname")== 0){
@@ -707,7 +684,7 @@ int Extras(){
 		
 		printf("Item name? %s\n", catch_item_id);
 		free(catch_item_id);
-		Small_stop;
+		SmallStop;
 	}
 	
 	else if(strcmp(Extras_Input, "gititem")== 0)
@@ -723,7 +700,7 @@ int Extras(){
 		
 		while(true){ 
 		printf("What argument do you want to use? [SHOW] [CALC] [ID] [CHECK]\n");
-		String_Input;
+		StrInp();
 		
 		//Argument "SHOW"
 		if(strcmp(Input, "show")== 0){
@@ -770,7 +747,7 @@ int Extras(){
 			if(inv_return > 0 || inv_return < 0)
 			printf("Overflow value? -> %d\n", (int) inv_return);
 			
-			Small_stop;
+			SmallStop;
 			break;
 		}
 		
@@ -822,7 +799,7 @@ int Extras(){
 			else
 			printf("User does not have that item!\n");
 			
-			Small_stop;
+			SmallStop;
 			break;
 			
 		} else { Error; }
@@ -834,7 +811,7 @@ int Extras(){
 	else if(strcmp(Extras_Input, "key")== 0){
 		while(true){
 			printf("What Location? (Must be a valid Location)\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "forest")== 0 || strcmp(Input, "cascade")== 0 || strcmp(Input, "fungi")== 0
 			|| strcmp(Input, "geysers")== 0 || strcmp(Input, "blossom")== 0 || strcmp(Input, "peak")== 0){
@@ -855,7 +832,7 @@ int Extras(){
 	else if (strcmp(Extras_Input, "specialloc")== 0){
 		while(true){
 			printf("What Location? (Must be a valid Location)\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "forest")== 0 || strcmp(Input, "cascade")== 0 || strcmp(Input, "fungi")== 0
 			|| strcmp(Input, "geysers")== 0 || strcmp(Input, "blossom")== 0 || strcmp(Input, "peak")== 0){
@@ -877,7 +854,7 @@ int Extras(){
 		
 		while(true){
 			printf("Argument 1 - [CHECK] / [CALC]\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "check")== 0 || strcmp(Input, "calc")== 0)
 			break;
@@ -896,7 +873,7 @@ int Extras(){
 			while(true){
 
 				printf("What parameter do you want to check? [Timer] [Hour] [Day]\n");
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "timer")== 0){
 					ext_timer = 1; ext_day = 0; ext_hour = 0;
@@ -948,17 +925,17 @@ int Extras(){
 			TimeCalc("CALC_EXT", ext_timer, ext_hour, ext_day);
 		}
 		
-		Small_stop;
+		SmallStop;
 		
 	}
 	
 	else if(strcmp(Extras_Input, "gettime")== 0){
 		printf("Seconds spent? %d\n", GetTimeSpent());
-		Small_stop;
+		SmallStop;
 	}
 	
 	else if (strcmp(Extras_Input, "randwords")== 0){
-		short int num_spaces;
+		u8 num_spaces;
 		
 		printf("Arguments (Return value can only be 555 chars long at max)\n\n");
 		printf("Number of Spaces?\n");
@@ -972,7 +949,7 @@ int Extras(){
 		
 		free(returned_string);
 		
-		Small_stop;
+		SmallStop;
 	}
 	
 	else if(strcmp(Extras_Input, "randwordsv2")== 0){
@@ -990,7 +967,7 @@ int Extras(){
 		
 		printf("Returned string? %s\n", catch_the_return_value);
 		free(catch_the_return_value);
-		Small_stop;
+		SmallStop;
 	}
 	
 	//ART
@@ -1002,7 +979,7 @@ int Extras(){
 		
 		printf("Change Current path, recomended argument to be:\n");
 		printf("<subdir1>.<subdir2>.<subdir3>\n");
-		String_Input;
+		StrInp();
 		
 		if(strcmp(Extras_Input, "changeapppath")== 0)
 		ChangeCurPath(Input);
@@ -1029,7 +1006,7 @@ int Extras(){
 	
 	else if (strcmp(Extras_Input, "mountain")== 0){
 		printf("What argument do you want?\n");
-		String_Input;
+		StrInp();
 		
 		Mountain(Input);
 	}
@@ -1190,7 +1167,7 @@ int Extras(){
 		
 		while(true){
 			printf("What tutorial?\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "tree")== 0 || strcmp(Input, "animal")== 0 || strcmp(Input, "animals")== 0 || strcmp(Input, "fish")== 0 || strcmp(Input, "crop")== 0){
 				break;
@@ -1229,7 +1206,7 @@ int Extras(){
 		CLR;
 		
 		CenterText(line);
-		Small_stop;
+		SmallStop;
 		free(line);
 	}
 	
@@ -1243,7 +1220,7 @@ int Extras(){
 		CLR;
 		
 		RightText(line);
-		Small_stop;
+		SmallStop;
 		free(line);
 	}
 	
@@ -1258,7 +1235,7 @@ int Extras(){
 		CLR;
 		
 		RandText(line);
-		Small_stop;
+		SmallStop;
 		free(line);
 	}
 	
@@ -1272,7 +1249,7 @@ int Extras(){
 		CLR;
 		
 		MidScreenText(line);
-		Small_stop;
+		SmallStop;
 		free(line);
 	}
 	
@@ -1296,7 +1273,7 @@ int Extras(){
 				red;
 				printf("Invalid Argument\n");
 				white;
-				Small_stop;
+				SmallStop;
 			}	
 		}
 		
@@ -1347,7 +1324,7 @@ int Extras(){
 		
 		FormatTextEXT(mode, line, new_l, starting_disp, wanted_colors, false, force_number_of_lines, repeat_number_of_lines);
 		printf("\n");
-		Small_stop;
+		SmallStop;
 		free(line);
 		free(mode);
 	}
@@ -1356,7 +1333,7 @@ int Extras(){
 		
 		red;
 		printf("[SYSTEM] _> Invalid commmand, type \"Help\" for help or \"Back\" to go back to the main screen.\n");
-		Small_stop;
+		SmallStop;
 		
 	}
 
@@ -1379,7 +1356,7 @@ void Help(){
     printf(">Table Movement [Table] (Insides in the movement on the pit and mini games)\n");
     printf(">Bug Fixes [Bug] (Program broke? Try these!)\n");
     printf(">Back (Takes you back to the main menu)\n");
-    String_Input;
+    StrInp();
     
     if (strcmp(Input, "input")== 0){
     	
@@ -1397,7 +1374,7 @@ void Help(){
         printf("Also if the action choise is longer than 2 words a \"[]\" will apear after the action and you MUST write whatever is inside of it or it wont work\n");
         printf("End.\n\n");
         
-        Small_stop;
+        SmallStop;
 
     } else if (strcmp(Input, "output")== 0){
     	
@@ -1407,7 +1384,7 @@ void Help(){
 		printf("Theres a version for Linux / Windows / Linux\n");
 		printf("End.\n\n");
 		
-		Small_stop;
+		SmallStop;
 		
 	} else if (strcmp(Input, "saves")== 0){
     	
@@ -1419,7 +1396,7 @@ void Help(){
         printf("You can modify that information [But thats cheating] but you need to know what you are doing or else the system may break!\n");
         printf("You can modify your save path on the \"Settings\"\n\n");
 		
-		Small_stop;
+		SmallStop;
 		 
 	} else if (strcmp(Input, "table")== 0){
     	
@@ -1454,7 +1431,7 @@ void Help(){
     	printf("Hope you dont have any more questions\n");
     	printf("End.\n\n");
     	
-    	Small_stop;
+    	SmallStop;
 
 	} else if (strcmp(Input, "bug")== 0){
 		
@@ -1465,7 +1442,7 @@ void Help(){
 			printf(">Permanently delete all LIVING_DELUSION files [Remove]\n");
 			printf(">Back\n");
 			
-			String_Input;
+			StrInp();
 					
 			if(strcmp(Input, "dir")== 0){
 				printf("-> Check if \"path.txt\" file is in the same folder has the .exe file\n");
@@ -1474,14 +1451,14 @@ void Help(){
 				printf("-> Change the code and compile it yourself if nothing works\n");
 				printf("[NOTE]: If it still does not work, check if it has permitions to make files inside of THAT directory\n");
 				printf("Make sure to run the .exe file with admin permitions to make sure its not a permitions issue\n");
-				Small_stop;
+				SmallStop;
 				
 			} else if(strcmp(Input, "remove")== 0){
 				printf("-> Check your %%APPDATA%% (&& %%LOCALAPPDATA%%) file for a LIVING_DELUSION folder and just delete it\n");
 				printf("-> Also check the path thats on \"path.txt\" in the same dir has the .exe file\n");
 				printf("-> It is recommended to check both %%APPDATA%% and \"path.txt\"\n");
 				printf("[NOTE]: You can do this on the settings\n");
-				Small_stop;
+				SmallStop;
 				
 			} else if(strcmp(Input, "back")== 0){
 				break;
@@ -1525,7 +1502,7 @@ void Credits(){ //Possibly add more
 	CenterText("KEY 4 PUZZLE 3 -> EXPORTED FROM \"https://pixabay.com/vectors/document-paper-sheet-written-lined-38200/\"");
     
     CenterText("Thanks for playing! I hope you enjoyed my small C/C++ project :D\n\n");
-    Small_stop;
+    SmallStop;
 }
 
 void Settings(){
@@ -1557,7 +1534,7 @@ void Settings(){
     printf(">Delete Data [Data]\n");
     printf(">Back\n");
     printf("Change?\n");
-   	String_Input;
+   	StrInp();
     
     if(strcmp(Input, "intro")== 0){
 	    
@@ -1573,7 +1550,7 @@ void Settings(){
 		    printf("Want to change Skip Intro value?\n");
 		    printf(">Yes\n");
 		    printf(">No\n");
-		    String_Input;
+		    StrInp();
 		    
 		    if(strcmp(Input,"yes")== 0){
 		        
@@ -1616,7 +1593,7 @@ void Settings(){
 		    printf(">Game Set [Game]\n");
 		    printf(">Show User Turn [Turn]\n");
 		    printf(">Back\n");
-		    String_Input;
+		    StrInp();
 		    
 		    if(strcmp(Input, "game")== 0){
 		        
@@ -1694,7 +1671,7 @@ void Settings(){
 		    printf(">Show Cutscene? [Cutscene]\n");
 		    printf(">Back\n\n");
 		    printf("Change to?\n");
-		    String_Input;
+		    StrInp();
 		    
 		    if (strcmp(Input, "display")== 0){
 		        
@@ -1777,7 +1754,7 @@ void Settings(){
 			printf("Want to change Display Tip value?\n");
 			printf(">Yes\n");
 			printf(">No\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "yes")== 0){
 				
@@ -1872,7 +1849,7 @@ void Settings(){
 		
 		chdir(CUSTOM_PATH);
 		strcpy(FULL_PATH, CUSTOM_PATH);
-		Small_stop;
+		SmallStop;
 		exit(0);
 		
 	} else if (strcmp(Input, "inventory")== 0){
@@ -1896,7 +1873,7 @@ void Settings(){
 			printf(">Divide into section [Divide]\n");
 			printf(">Limit inventory [Limit]\n");
 			printf(">Back\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "divide")== 0){
 				
@@ -1930,13 +1907,13 @@ void Settings(){
 				}
 				
 				printf("\n\n");
-				Small_stop;
+				SmallStop;
 				
 			} else if(strcmp(Input, "limit")== 0){
 				
 				if(div_inv_sect){
 					printf("[SETTINGS] _> Please turn off divide inventory before trying to change this paremeter!\n");
-					Small_stop;
+					SmallStop;
 						
 				} else {
 		
@@ -1955,7 +1932,7 @@ void Settings(){
 						printf(">Back\n");
 						
 						printf("Please select what you want to change\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "farming")== 0)
 						aur = 0;
@@ -2026,7 +2003,7 @@ void Settings(){
 			printf(">All saves [All] ([!]Will cause a game crash[!])\n");
 			printf(">Everything related to LIVING DELUSION [Everything]\n");
 			printf(">Back\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "save")== 0){
 				
@@ -2057,7 +2034,7 @@ void Settings(){
 				temp_dir[strlen(temp_dir) - 1] = '\0';
 				temp_dir[strlen(temp_dir) - 1] = '\0';
 				
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "1")== 0 || strcmp(Input, "2")== 0 || strcmp(Input, "3")== 0 || strcmp(Input, "-1")== 0){
 						
@@ -2085,7 +2062,7 @@ void Settings(){
 							red;
 							printf("Are you sure you want to delete SAVE%s? (All your progress on that save file will be lost) [Yes] [No]\n", save_to_be_deleted);
 							white;
-							String_Input;
+							StrInp();
 							
 							if(strcmp(Input, "yes")== 0){
 								//Security check! (No way!!)
@@ -2151,7 +2128,7 @@ void Settings(){
 									white;
 									
 									free(SEC_PATH);
-									Small_stop;
+									SmallStop;
 									
 								}
 								
@@ -2188,7 +2165,7 @@ void Settings(){
 					printf("Are you sure you want to delete all SAVES? (All your progress will be lost) [Yes] [No]\n");
 					printf("WARNING: This action will crash your game!\n");
 					white;
-					String_Input;
+					StrInp();
 								
 					if(strcmp(Input, "yes")== 0){
 						while(FULL_PATH[strlen(FULL_PATH) - 1] != 'N')
@@ -2243,7 +2220,7 @@ void Settings(){
 							white;
 							
 							free(SEC_PATH);
-							Small_stop;
+							SmallStop;
 							
 						}
 						
@@ -2267,7 +2244,7 @@ void Settings(){
 					printf("WARNING: This action will lock you out of the game (Download the game again if you want to play again)!\n");
 					printf("NOTE: .exe file and other files will need to be manually deleted though\n");
 					white;
-					String_Input;
+					StrInp();
 					
 					if(strcmp(Input, "yes")== 0){
 						while(true){
@@ -2275,7 +2252,7 @@ void Settings(){
 							printf("Final warning, this process cannot be reverted.\n");
 							printf("[Continue] [Nevermind]\n");
 							white;
-							String_Input;
+							StrInp();
 							
 							if(strcmp(Input, "continue")== 0){
 								
@@ -2381,7 +2358,7 @@ void Settings(){
 									
 									white;
 									free(SEC_PATH);
-									Small_stop;
+									SmallStop;
 								}
 								
 							} else if(strcmp(Input, "nevermind")== 0){
@@ -2437,14 +2414,14 @@ int Act1(){
 	    sleep(5);
 	    Art("Act1", 0);
 	    sleep(5);
-	    Small_stop;
+	    SmallStop;
 	    
 	    while(true){
 		    printf("You wake up deep in the water, the light is getting smaller and smaller by the second\n");
 		    printf("What are you going to do?\n");
 		    printf(">Swim\n");
 		    printf(">Stay\n");
-		    String_Input;
+		    StrInp();
 		    
 		    if (strcmp(Input, "swim")== 0){
 		        printf("You swam back to the surface"); break;
@@ -2466,7 +2443,7 @@ int Act1(){
         printf(">Village\n");
         printf(">Pit\n");
         printf(">Statues\n");
-        String_Input;
+        StrInp();
         
         if (strcmp(Input, "pit")== 0){
         
@@ -2477,7 +2454,7 @@ int Act1(){
         printf("There is a voice from inside you saying \"JUMP OFF, JUMP OFF\"\n");
         printf("Do it?\n");
         printf("[Y] [N]\n");
-        String_Input;
+        StrInp();
         
         if(strcmp (Input, "y")== 0){
            
@@ -2558,7 +2535,7 @@ int Act1(){
 	        printf(">Tavern [Hotel]\n");
 	        printf(">Back\n");
 	        printf("Where to?\n");
-	        String_Input;
+	        StrInp();
 	        
 	        if (strcmp(Input,"teller")== 0 || strcmp(Input, "sw")== 0){
 	        	
@@ -2593,7 +2570,7 @@ int Act1(){
         printf("Some type of ritual, creepy\n");
         
         //Get custom glitched name for the ritual god or smt
-        short int num_spaces = 1;
+        u8 num_spaces = 1;
         char *returned_string = EncryptedWordsV1(&num_spaces);
         printf("[NPC] %s: \"Prove your worth\"\n", returned_string);
         free(returned_string);
@@ -2601,11 +2578,11 @@ int Act1(){
         while(true){
 	        printf(">Prove\n");
 	        printf(">Do not [Back]\n");
-	        String_Input;
+	        StrInp();
 	        
 	        if(strcmp(Input, "prove")== 0){
 	        	printf("Implemented in BETA 3 (sorry)\n");
-	        	Small_stop;
+	        	SmallStop;
 	        	break;
 	        	
 			} else if(strcmp(Input, "back")== 0){
@@ -2638,7 +2615,7 @@ void Teller(void){
 		    printf(">Inventory\n");
 		    printf(">Completion\n"); 
 		    printf(">Nevermind [Leave]\n"); 
-		    String_Input;
+		    StrInp();
 		    
 		    if(strcmp(Input, "Leave")!= 0){
 		    	
@@ -2737,7 +2714,7 @@ void Center(void){
 				printf(">Foraging\n");
 				printf(">Extras\n");
 				printf(">Leave\n");
-				String_Input;
+				StrInp();
 				what_npc = 0;
 			}
 			
@@ -2805,7 +2782,7 @@ void Center(void){
 						default:
 							break;
 					}
-					Small_stop;
+					SmallStop;
 				}
 				
 				while(true){
@@ -2848,7 +2825,7 @@ void Center(void){
 									break;
 							}
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -3186,7 +3163,7 @@ void Center(void){
 				
 				if(what_npc != 1 && access("Mer1.txt", F_OK)!= 0){
 					CenterText("[NPC] Anfigo: \"Here is what i buy and sell:\"");
-					Small_stop;
+					SmallStop;
 				}
 				
 				while(true){
@@ -3206,7 +3183,7 @@ void Center(void){
 							printf("[NPC] Anfigo: \"I still have your %s (%dx) from earlier\"\n", GetItemName(mer_id - 1), mer_quant);
 							printf("[NPC] Anfigo: \"What should i do with them?\"\n");
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -3324,7 +3301,7 @@ void Center(void){
 				Art("MERCHANT", 2);
 				if(what_npc != 2 && access("Mer2.txt", F_OK)!= 0){
 					CenterText("[NPC] Synist: \"Here is the list of items that i buy and sell:\"");
-					Small_stop;
+					SmallStop;
 				}
 				
 				char Animal_Names [9] [25] = {
@@ -3374,7 +3351,7 @@ void Center(void){
 							
 							printf("[NPC] Synist: \"What should i do?\"\n");
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -3589,7 +3566,7 @@ void Center(void){
 					printf("\n");
 					
 					cant_skip = false;
-					String_Input;
+					StrInp();
 					
 					short int hit_index;
 					bool is_valid_arg = false;
@@ -3662,7 +3639,7 @@ void Center(void){
 						cant_skip = true; red;
 						CenterText("[NPC] Synist: \"Type the id or the name of the item you want\" [Type \"back\" to leave]");
 						white;
-						Small_stop;
+						SmallStop;
 					}
 					
 					if(!cant_skip)
@@ -3674,7 +3651,7 @@ void Center(void){
 				Art("MERCHANT", 3);
 				if(what_npc != 3 && access("Mer3.txt", F_OK)!= 0){
 					CenterText("[NPC] Lavist: \"Bellow lies a list of what i trade:\"");
-					Small_stop;
+					SmallStop;
 				}
 				
 				char Fish_Names [48] [25] = {
@@ -3731,7 +3708,7 @@ void Center(void){
 							
 							printf("[NPC] Lavist: \"What do you wish to do with them?\"\n");
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -3969,7 +3946,7 @@ void Center(void){
 					printf("\n");
 					
 					cant_skip = false;
-					String_Input;
+					StrInp();
 					
 					short int hit_index;
 					bool is_valid_arg = false;
@@ -4042,7 +4019,7 @@ void Center(void){
 						cant_skip = true; red;
 						CenterText("[NPC] Lavist: \"I cannot understand what you want, type the ID or the Name of the item you wish\" [Type \"back\" to leave]");
 						white;
-						Small_stop;
+						SmallStop;
 					}
 					
 					if(!cant_skip)
@@ -4053,7 +4030,7 @@ void Center(void){
 				Art("MERCHANT", 4);
 				if(what_npc != 4 && access("Mer4.txt", F_OK)!= 0){
 					CenterText("[NPC] Firment: \"Welcome, please take a look at the list of items i trade:\"");
-					Small_stop;
+					SmallStop;
 				}
 				
 				char Foraging_Names [14] [25] = {
@@ -4105,7 +4082,7 @@ void Center(void){
 							printf("[NPC] Firment: \"Hey friend, i still have your %s (%dx) from when we last meet\"\n", Foraging_Names[mer_id - 102], mer_quant);
 							printf("[NPC] Firment: \"What should i do with these?\"\n");
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -4349,7 +4326,7 @@ void Center(void){
 					printf("\n");
 					
 					cant_skip = false;
-					String_Input;
+					StrInp();
 					
 					short int hit_index;
 					bool is_valid_arg = false;
@@ -4419,7 +4396,7 @@ void Center(void){
 						cant_skip = true; red;
 						CenterText("[NPC] Firment: \"Hey, just type the ID or the Name of the item you want to get!\" [Type \"back\" to leave]");
 						white;
-						Small_stop;
+						SmallStop;
 					}
 					
 					if(!cant_skip)
@@ -4430,7 +4407,7 @@ void Center(void){
 				Art("MERCHANT", 5);
 				if(what_npc != 5 && access("Mer5.txt", F_OK)!= 0){
 					CenterText("[NPC] Maidiste: \"I awaited you, see what i trade in this list:\"");
-					Small_stop;
+					SmallStop;
 				}
 				
 				char Extras_Names [8] [25] = {
@@ -4474,7 +4451,7 @@ void Center(void){
 							printf("[NPC] Maidiste: \"Myself is still holding onto your %s (%dx).\"\n", Extras_Names[mer_id - 126], mer_quant);
 							printf("[NPC] Maidiste: \"I want knowledge on what to do now\"\n");
 							printf("[Trash] [Hold] [Claim]\n");
-							String_Input;
+							StrInp();
 							
 							//Delete file and forget ab stash
 							if(strcmp(Input, "trash")== 0){
@@ -4708,7 +4685,7 @@ void Center(void){
 					printf("\n");
 					
 					cant_skip = false;
-					String_Input;
+					StrInp();
 					
 					short int hit_index;
 					bool is_valid_arg = false;
@@ -4777,7 +4754,7 @@ void Center(void){
 						cant_skip = true; red;
 						CenterText("[NPC] Maidiste: \"Type the ID or the Name of the item you want\"...");
 						white;
-						Small_stop;
+						SmallStop;
 					}
 					
 					if(!cant_skip)
@@ -4819,7 +4796,7 @@ void Center(void){
 				
 				while(true){
 					printf("Do you want to Buy or Sell?\n");
-					String_Input;
+					StrInp();
 					
 					//Check the prices on the temp file put up by the display function
 					ChangeCurPath("OTHER.temp");
@@ -4858,13 +4835,13 @@ void Center(void){
 								printf("Not enough inventory space, will go to stash\n");
 								white;
 								bought_item = false;
-								Small_stop;
+								SmallStop;
 								
 							} else {
 								yellow;
 								printf("Bought.\n");
 								white;
-								Small_stop;
+								SmallStop;
 							}
 							
 						} else {
@@ -4872,7 +4849,7 @@ void Center(void){
 							printf("Not enough money.\n");
 							money += Item_Buy * Item_Quant;
 							white;
-							Small_stop;
+							SmallStop;
 							
 						}
 						
@@ -4892,14 +4869,14 @@ void Center(void){
 							yellow;
 							printf("Sold.\n");
 							white;
-							Small_stop;
+							SmallStop;
 													
 						//Dosent have the items needed	
 						} else {
 							red;
 							printf("Not enough items.\n");
 							white;
-							Small_stop;
+							SmallStop;
 							
 						}
 						break;
@@ -4917,7 +4894,7 @@ void Center(void){
 				strcat(temp_line, money_temp);
 				printf("%*s\n", ((GetTerminalSize("columns") - strlen(temp_line)) / 2) + strlen(temp_line), temp_line);
 				white;
-				Small_stop;	
+				SmallStop;	
 			
 			}
 		}
@@ -4946,7 +4923,7 @@ void Garden(void){
 		    printf(">I want to get some animals [Animals]\n");
 		    printf(">I want to visit the Stable [Stable]\n");
 		    printf(">Nevermind [Back]\n");
-		    String_Input;
+		    StrInp();
 		    
 		    if(strcmp(Input, "crops")== 0){
 		    	
@@ -5066,7 +5043,7 @@ void Garden(void){
 					} else {
 						printf("[NPC] Herman: \"Better luck next time i guess...\"\n");
 					}
-				    Small_stop;
+				    SmallStop;
 					
 					ChangeCurPath("STASH.Animals");
 					fopen("StableInfo.txt", "w");
@@ -5153,7 +5130,7 @@ void Garden(void){
 						 
 					 
 		    			printf("[NPC] Herman: \"So what do i do with them? [Leave] [Wait] [Colect]\"\n");
-						String_Input;
+						StrInp();
 								
 						if(strcmp(Input, "leave")== 0){
 									
@@ -5214,7 +5191,7 @@ void Garden(void){
 		    		printf("[NPC] Herman: \"In this world, Animals are VERY limited so we dont kill them, we use the products they can give us and trow them back into the wild\"\n");
 		    		printf("[NPC] Herman: \"So you colect Animals for us and we treat them and release them back into the wild, worry not though, we will give you items has a reward when we release them\"\n");
 		    		printf("[NPC] Herman: \"Maybe come back when you get some Animals in here!\"\n\n");
-		    		Small_stop;
+		    		SmallStop;
 				} else {
 					
 					//Items
@@ -5368,7 +5345,7 @@ void Wizard(void){
 	        printf("[NPC] Boise: \"Oh hello there, im a little bit sick, could you bring me a Mint tea? Ill anwser your questions after\"\n");// (Mint tea should be underlined)
 	        printf("You nod and leave\n");
 	        wiz_1st_time = false;
-	        Small_stop;  
+	        SmallStop;  
 			
 			//Register started quest
 	 		ChangeCurPath("QUESTS.Started");
@@ -5389,7 +5366,7 @@ void Wizard(void){
 	    			while(true){
 	    				CLR;
 		    			printf("You have a mint tea, do you want to give it to Boise? [YES] [NO]\n");
-		    			String_Input;
+		    			StrInp();
 		    			
 		    			if(strcmp(Input, "yes")== 0)
 		    			break;
@@ -5415,7 +5392,7 @@ void Wizard(void){
 					printf("[HELP] _> (The alchemist in the Library Sells it)\n");
 				}
 				
-				Small_stop;
+				SmallStop;
 			} else {
 				
 				while(true){
@@ -5427,7 +5404,7 @@ void Wizard(void){
 					printf(">About this book i found... [Book]\n");					
 					
 					printf(">Nevermind [Back]\n");
-					String_Input;
+					StrInp();
 					
 					if(strcmp(Input, "pit")== 0){
 						
@@ -5439,7 +5416,7 @@ void Wizard(void){
 						printf("[NPC] Boise: \"I wont try to stop you, my brother even promissed to help newcomers traverse the pit, if you decide to jump, look for a house there and tell him i sent you\"\n");
 						printf("[NPC] Boise: \"Good luck! (If you dare to go in, that is)\"\n");
 						
-						Small_stop;
+						SmallStop;
 						
 						//Register change in file (no need for variable)
 						ChangeCurPath("OTHER.triggers.story");
@@ -5464,7 +5441,7 @@ void Wizard(void){
 							printf("[NPC] Boise: \"My point being, try not to aproach her, she is very dangerous, even more with the powers she learned over the years studying\"\n");
 							printf("[NPC] Boise: \"But, if you feel the need to be suicidal and try to end her \"master plan\" i can try to help you, whoever you need to know a little more, go explore the pit or something\"\n");
 							printf("[NPC] Boise: \"I hope you arent crazy enough to go after her but we never know, adventurers are always such dumb humans, hehe, go explore the world\"\n\n");
-							Small_stop;
+							SmallStop;
 						
 						}
 						
@@ -5515,7 +5492,7 @@ void Library(void){
 		    CLR;
 		    printf("You enter the Scriptorium and are stumbled with huge bookshelfs\n");
 		    printf("Pick one at random? [Y] [N]\n");
-		    String_Input;
+		    StrInp();
 		    
 	        if(strcmp(Input, "y")== 0){
 	            
@@ -5554,7 +5531,7 @@ void Library(void){
 		    
 	    }
 	    
-	    Small_stop;
+	    SmallStop;
 	    
 	    while(true){
 	    	CLR;
@@ -5564,7 +5541,7 @@ void Library(void){
 	        printf(">\"The Secret Library\" [Library]\n");
 	        printf(">\"Shadows of Imagination\" [Imagination]\n");
 	        printf(">\"Pages of Destiny\" [Destiny]\n");
-	        String_Input;
+	        StrInp();
 	        
 	        if(strcmp(Input, "garden")== 0){
 	            
@@ -5615,7 +5592,7 @@ void Library(void){
 	    fprintf(flibdone, "%d\n", Lib_tut);
 	    fclose(flibdone);
 	    
-	    Small_stop;
+	    SmallStop;
 	    
     }
 
@@ -5627,7 +5604,7 @@ void Library(void){
             printf(">Alchemist's Corner [Alchemist]\n");
             printf(">Monastic Cell [Cell]\n");
             printf(">Back [Back]\n");
-            String_Input;
+            StrInp();
             
             if(strcmp(Input, "scriptorium")== 0){
             	
@@ -5636,7 +5613,7 @@ void Library(void){
                 printf("[NPC] Sarah: \"Everything here is written by the monks, dont disturb the peace\"\n\n");
                 printf("You look around and find theres nothing to be done here\n");
                 printf("You decide to go back since it was just a bunch of monks writing\n\n");
-                Small_stop;
+                SmallStop;
                 
             } else if(strcmp(Input, "tapestry")== 0){
                 
@@ -5692,11 +5669,11 @@ void Library(void){
 						CLR;
 						printf("[NPC] Sarah: \"Oh? You have enough items to finish the \"Rotten Skies\" art\"\n");
 						printf("[NPC] Sarah: \"Do you want to finish it? [Y] [N]\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "y")== 0){
 							Art("PAINT", 1);
-							Small_stop;
+							SmallStop;
 							printf("[NPC] Sarah: \"Well then\"\n");
 							printf("[NPC] Sarah: \"Here is your reward on the behalf of the monks\"\n");
 							printf("+ 250 coins!\n");
@@ -5709,7 +5686,7 @@ void Library(void){
 							done_paintings[0] = true;
 							money += 250; 
 							printf("[INVENTORY] _> Items Updated!\n");
-							Small_stop;
+							SmallStop;
 							break;
 							
 						} else if(strcmp(Input, "n")== 0){
@@ -5739,11 +5716,11 @@ void Library(void){
 						CLR;
 						printf("[NPC] Sarah: \"Oh? You have enough items to finish the \"Dirty Kings\" art\"\n");
 						printf("[NPC] Sarah: \"Do you want to finish it? [Y] [N]\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "y")== 0){
 							Art("PAINT", 2);
-							Small_stop;
+							SmallStop;
 							printf("[NPC] Sarah: \"Well then\"\n");
 							printf("[NPC] Sarah: \"Here is your reward on the behalf of the monks\"\n");
 							printf("+ 1000 coins!\n");
@@ -5757,7 +5734,7 @@ void Library(void){
 							done_paintings[1] = true;
 							money += 1000; 
 							printf("[INVENTORY] _> Items Updated!\n");
-							Small_stop;
+							SmallStop;
 							break;
 							
 						} else if(strcmp(Input, "n")== 0){
@@ -5787,11 +5764,11 @@ void Library(void){
 						CLR;
 						printf("[NPC] Sarah: \"Oh? You have enough items to finish the \"Falling\" art\"\n");
 						printf("[NPC] Sarah: \"Do you want to finish it? [Y] [N]\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "y")== 0){
 							Art("PAINT", 3);
-							Small_stop;
+							SmallStop;
 							printf("[NPC] Sarah: \"Well then\"\n");
 							printf("[NPC] Sarah: \"Here is your reward on the behalf of the monks\"\n");
 							printf("+ 5000 coins!\n");
@@ -5805,7 +5782,7 @@ void Library(void){
 							done_paintings[2] = true;
 							money += 5000; 
 							printf("[INVENTORY] _> Items Updated!\n");
-							Small_stop;
+							SmallStop;
 							break;
 							
 						} else if(strcmp(Input, "n")== 0){
@@ -5850,13 +5827,13 @@ void Library(void){
                     printf("\"Falling\" - 3x Fast Tuna & 3x Epic Salmon & 2x Algae\n");
                     printf("You think to yourself: \"Well these are materials that are pretty eazy to get (most of them)\"\n\n");
                     printf("Start painting quest(s)? [YES] [NO]\n");
-                    String_Input;
+                    StrInp();
                     
                     if(strcmp(Input, "yes")== 0){
                     	
                         while(true){
                             printf("What panting(s)? [Skies] [Kings] [Falling] [ALL] [Back]\n");
-                            String_Input;
+                            StrInp();
                             
                             if(strcmp(Input, "skies")== 0){
                             	
@@ -5991,7 +5968,7 @@ void Library(void){
                 printf("Sarah takes you to the Alchemist's Corner\n");
                 printf("[NPC] Sarah: \"Good luck out there, ive heard hes grummpy sometimes\"\n");
                 printf("You nod and aproach the Alchemist\n");
-                Small_stop;
+                SmallStop;
                 
                 while(true){
                 	bool wants_to_leave = false;
@@ -6001,7 +5978,7 @@ void Library(void){
                     printf(">I have a question about potions [Ask]\n");
                     printf(">I need help with potions [Pots]\n");
                     printf(">Sorry, wrong place [Back]\n");
-                    String_Input
+                    StrInp();
                     
                     if(strcmp(Input, "ask")== 0){
                     	
@@ -6011,11 +5988,11 @@ void Library(void){
 							printf(">Why are the items required to make a potion so specific? [Items]\n");
 							printf(">Can you list me the effects of each potion? [Effects]\n");
 							printf(">Nevermind [Back]\n");
-							String_Input;
+							StrInp();
 							
 							if(strcmp(Input, "time")== 0){
 								printf("[NPC] Grimold: \"POTIONS NORMALY LAST FOR A DAY, THERE IS NO OTHER WAY TO SURPASS THAT TIME.\"\n");
-								Small_stop;
+								SmallStop;
 								
 							} else if(strcmp(Input, "items")== 0){
 								printf("[NPC] Grimold: \"BECAUSE I HAVE TO COMPRESS THE ITEMS INTO A FINE FORM, \"\n");
@@ -6023,7 +6000,7 @@ void Library(void){
 								printf("[NPC] Grimold: \"MIX IT WITH WATER, \"\n");
 								printf("[NPC] Grimold: \"AND FEED MY CAT.\"\n");
 								printf("[NPC] Grimold: \"(LAST STEP IS THE MOST IMPORTANT)\"\n");
-								Small_stop;
+								SmallStop;
 								
 							} else if(strcmp(Input, "effects")== 0){
 								printf("[NPC] Grimold: \"LIST:\"\n\n");
@@ -6037,7 +6014,7 @@ void Library(void){
 		                        printf("Lots of Fish Bones \t| PLACEHOLDER\n");
 		                        printf("High Risk, Low Reward \t| 1/4 chance to begin thundering or else it rains\n");
 		                        printf("Im Special! \t\t| Your dungeon statistics are buffered to max + 10\n\n");
-								Small_stop;
+								SmallStop;
 								
 							} else if(strcmp(Input, "back")== 0){
 								
@@ -6071,7 +6048,7 @@ void Library(void){
 	                			CLR;
 	                    		printf("[NPC] Grimold: \"I STILL HAVE YOUR \"%s\" POTION\"\n", pot_name);
 	                    		printf("[NPC] Grimold: \"WANT IT?\" [Trash] [Hold] [Claim]\n");
-	                    		String_Input;
+	                    		StrInp();
 	                    		
 	                    		if(strcmp(Input, "trash")== 0){
 	                    			//User dont want? We get rid of it :>
@@ -6205,7 +6182,7 @@ void Library(void){
 	                        
 	                        printf("You say \"I want..\" ");
 	                        printf("[Refresher] [Mint] [Woods] [Hidden] [Time] [Happy] [Early] [Fish] [Risk] [Special] [NONE]\n");
-	                        String_Input;
+	                        StrInp();
 	                        
 	                        if(strcmp(Input, "none")== 0 || strcmp(Input, "back")== 0){
 	                            
@@ -6384,7 +6361,7 @@ void Library(void){
 	                        	//Make order
 	                        	while(true){
 		                        	printf("[NPC] Grimold: \"I SEE YOU HAVE THE ITEMS, DO WE HAVE A DEAL? [YES] [NO]\"\n");
-		                        	String_Input;
+		                        	StrInp();
 		                        	
 		                        	if(strcmp(Input, "yes")== 0){
 		                        		//Checking stuff for potion
@@ -6439,7 +6416,7 @@ void Library(void){
 								//Let it not apear if error
 								if(!no_check){
 									printf("[NPC] Grimold: \"NO ITEMS, NO POTION.\"\n");
-									Small_stop;
+									SmallStop;
 								}
 							}
 	                    }
@@ -6449,7 +6426,7 @@ void Library(void){
 						
 					} else {
 						printf("[NPC] Grimold: \"I WILL NOT MAKE 2 POTIONS AT ONCE.\"\n");
-						Small_stop;
+						SmallStop;
 					}
             		
                     } else if (strcmp(Input, "back")== 0){
@@ -6472,7 +6449,7 @@ void Library(void){
         printf(">\"The Secret Library\" [Library]\n");
         printf(">\"Shadows of Imagination\" [Imagination]\n");
         printf(">\"Pages of Destiny\" [Destiny]\n");
-        String_Input;
+        StrInp();
         
         if (strcmp(Input, "garden")== 0){
             
@@ -6518,12 +6495,12 @@ void Library(void){
         
         }
         
-        Small_stop;
+        SmallStop;
         
         while(true){
         	CLR;
             printf("Read annother? [Y] [N]\n");
-            String_Input;
+            StrInp();
             
             if (strcmp(Input, "y")== 0){
                 
@@ -6577,7 +6554,7 @@ void Library(void){
 	            	printf("You find nothing of use so you leave\n\n");
 				}
 				
-				Small_stop;
+				SmallStop;
                 
             } else if (strcmp(Input, "back")== 0){
                 
@@ -6606,7 +6583,7 @@ void Hotel(void){
     	FILE * fhoteldone = fopen("HotelDone.txt", "w");
     	fclose(fhoteldone);
     	
-    	Small_stop;
+    	SmallStop;
     } else {
     	short int hotel_recep_rand = rand()% 3 + 1;
     	
@@ -6642,7 +6619,7 @@ void Hotel(void){
 		printf(">I want to pay your debt [Debt]\n");
 		
 		printf(">Ill see you around! [Back]\n");
-		String_Input;
+		StrInp();
 		
 		if(strcmp(Input, "bedroom")== 0){
 			while(true){
@@ -6654,12 +6631,12 @@ void Hotel(void){
 			    printf(">Water the plant [Water]\n");    
 			    printf(">Store Items [Store]\n"); 
 			    printf(">Leave\n");
-			    String_Input;
+			    StrInp();
 			    
 			    if(strcmp(Input, "time")== 0){
 			    	
 			    	printf("Whats the time? Its %d\n", TimeCalc("CHECK", 0, 1, 0));
-			    	Small_stop;
+			    	SmallStop;
 			    	
 				} else if(strcmp(Input, "sleep")== 0){
 			    	int sleep_hour; 
@@ -6688,7 +6665,7 @@ void Hotel(void){
 				
 					printf("You slept for %d hours!\n", sleep_hour);
 					printf("Back to figuring out this place we go :)\n");
-					Small_stop;
+					SmallStop;
 					
 				} else if (strcmp(Input, "sit")== 0){
 					//Same thing has "sleep" but its randomized bettewn 1 and 4 hours
@@ -6705,7 +6682,7 @@ void Hotel(void){
 			    	
 			    	printf("You sat for %d hours!\n", time_sitting);
 					printf("Back to figuring out this place we go :)\n");
-					Small_stop;
+					SmallStop;
 					
 				} else if (strcmp(Input, "water")== 0){
 					long int plant_day, plant_water = 0; 
@@ -6781,7 +6758,7 @@ void Hotel(void){
 						remove("PlantWater.txt");
 					}
 					
-					Small_stop;
+					SmallStop;
 					
 				} else if (strcmp(Input, "store")== 0){
 					
@@ -6867,14 +6844,14 @@ void Hotel(void){
 			}
 			
 			printf("[NPC] Blanverth: \"Thank you for listening to my rambles\"\n\n");
-			Small_stop;
+			SmallStop;
 			
 		} else if(strcmp(Input, "debt")== 0 && alr_chated_w_recp && !debt_payed){
 			while(true){
 				printf("[NPC] Blanverth: \"What? You cant be serious, right?\"\n");
 				printf("[NPC] Blanverth: \"Well, my debt is around ~100k, sooo\"\n");
 				printf("[NPC] Blanverth: \"Still want to pay it? [Yes] [No] (Your current money is %d)\"\n", money);
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "yes")== 0){
 					money -= 100000;
@@ -6895,13 +6872,13 @@ void Hotel(void){
 						printf("[NPC] Blanverth: \"I knew it was too much for you...\"\n");
 					}
 					
-					Small_stop;
+					SmallStop;
 					break;
 					
 				} else if(strcmp(Input, "no")== 0){
 					printf("[NPC] Blanverth: \"Ah, dont scare me like that i tought you were serious for a moment\"\n");
 					printf("[NPC] Blanverth: \"(Im going to have a heart attack with this guy around some day)\"\n");
-					Small_stop;
+					SmallStop;
 					break;
 					
 				} else {
@@ -7004,7 +6981,7 @@ void Chest(void){
 		printf(">Take out Items [Take]\n"); 
 		printf(">View Storage [View]\n"); 
 		printf(">Not now [Back]\n");
-		String_Input;
+		StrInp();
 		
 		strcpy(bckp_chest_inp, Input);
 		
@@ -7027,7 +7004,7 @@ void Chest(void){
 				red;
 				printf("Empty Inventory!\n");
 				white;
-				Small_stop;
+				SmallStop;
 				
 			} else {
 			
@@ -7202,7 +7179,7 @@ void Chest(void){
 			red;
 			printf("\n\nNothing but spider webs here\n\n");
 			white;
-			Small_stop;
+			SmallStop;
 			break;
 		} else {
 			if(div_inv_sect){
@@ -7218,7 +7195,7 @@ void Chest(void){
 					printf(">Alchemy\n");
 					printf(">Extras\n");
 					printf(">Leave\n");
-					String_Input;
+					StrInp();
 					
 					for(int i = 0; i < 6; i ++)
 					arr_limit_inv[i] = false;
@@ -7475,7 +7452,7 @@ void Chest(void){
 		printf("\n");
 			
 		if(strcmp(bckp_chest_inp, "view")== 0){
-		Small_stop;
+		SmallStop;
 		
 		} else if(strcmp(bckp_chest_inp, "take")== 0){
 			int call_id, call_quantity;
@@ -7510,13 +7487,13 @@ void Chest(void){
 				green;
 				printf("\n\nYou took out the items with no problem!\n\n");
 				white;
-				Small_stop;
+				SmallStop;
 			} else {
 				C_List_Quantities[call_id] += returned_val;
 				red;
 				printf("\n\nYour inventory filled up, returning overflow items to your chest...\n\n");
 				white;
-				Small_stop;
+				SmallStop;
 			}
 			
 			break;
@@ -7660,13 +7637,13 @@ void Pit(void){
 			printf(">Im going to explore around...[Explore]\n");
 			
 			printf(">I want to go back [Back]\n");
-			String_Input;
+			StrInp();
 			
 			if (strcmp(Input, "pit")== 0){
 				
 				printf("[NPC] Severus: \"I still dont know why they call it the pit, but, forget everything you heard about the \"Pit\" because everything you think you knows its probably wrong\n");
 				printf("[NPC] Severus: \"Well, we are actually just inside a big mountain, outside this house its a smaller cave that has exit to the main mountain, go explore the cave and the entrance to the outside!\"\n");
-				Small_stop;
+				SmallStop;
 				knows_ab_pit = true;
 				
 			} else if (strcmp(Input, "boise")== 0){
@@ -7674,7 +7651,7 @@ void Pit(void){
 				printf("[NPC] Severus: \"Oh my old brother sent you? Haha, i knew he was still alive.\"\n");
 				printf("[NPC] Severus: \"Ill make sure to give him a visit soon, just let him know im still alive\"\n");
 				printf("[NPC] Severus: \"You know, he used to explore the mountain too with some girl\"\n");
-				Small_stop;
+				SmallStop;
 				
 			} else if (strcmp(Input, "explore")== 0){
 				
@@ -7684,7 +7661,7 @@ void Pit(void){
 					printf("You exit the small but cosy house and found yourself at a very small cave, with one big exit\n");
 					printf("The exit looks natural, very big hole in the wall, giving access to the montain\n");
 					printf("Not long after you go back to the cosy house\n");
-					Small_stop;
+					SmallStop;
 					int keys = 0;
 					Mountain("day");
 				
@@ -7746,7 +7723,7 @@ void Pit(void){
 		printf(">Im going to explore now, bai bai [Leave]\n");
 		printf(">I want to go back up [Up]\n");
 		
-		String_Input;
+		StrInp();
 		
 		if(strcmp(Input, "goal")== 0){
 			
@@ -7764,7 +7741,7 @@ void Pit(void){
 			printf("[NPC] Severus: \"Ill be here if you need help to get back up to the cave or want to talk about your progress\"\n");
 			printf("[NPC] Severus: \"Now that i have someone that is willing to help me save this world i will put double the time into researching how to survive the Peak!\"\n");
 				
-			Small_stop;
+			SmallStop;
 			
 			knows_ab_goal = true;
 			
@@ -7778,7 +7755,7 @@ void Pit(void){
 			printf("[NPC] Severus: \"What are teleporters? Well my wizzard bother made them for me so i can travel around the montain easier\"\n");
 			printf("[NPC] Severus: \"I havent used them in a while, so you might need to fix them, but they should work fine afterwards\"\n");
 			printf("[NPC] Severus: \"EVERY, BUT I MEAN EVERY location we need to explore has one, so, use them.\"\n");
-			Small_stop;
+			SmallStop;
 			
 		} else if(strcmp(Input, "keys")== 0){
 			
@@ -7798,7 +7775,7 @@ void Pit(void){
 						printf("[NPC] Severus: \"Let me know if you need help finding the rituals locations, i have a small diary from someone named \"Celestia\" i found down there with cryptic notes\"\n");
 						printf("[NPC] Severus: \"Maybe i can help you find the next ritual(s) location(s), but the puzzles are up to you, im too old for it, haha...\"\n");
 						
-						Small_stop;
+						SmallStop;
 				}
 			
 			}
@@ -7877,7 +7854,7 @@ void Pit(void){
 	printf("[HELP] _> Type \"item\" to use an item or drink a potion!\n\n");
 	white;
 	
-	Small_stop;
+	SmallStop;
 	*/
 }
 
@@ -8023,7 +8000,7 @@ void Mountain(const char * what){
 		//REMOVE LATER
 		is_in_minigame = true;
 	
-		String_Input;
+		StrInp();
 		
 		memset(Movement_Made, '\0', sizeof(Movement_Made));
 		strcpy(Movement_Made, Input);
@@ -8190,7 +8167,7 @@ void Mountain(const char * what){
 			red;
 			CenterText("Your compass is spinning in circles! It couldnt find that structure!");
 			white;
-			Small_stop;
+			SmallStop;
 			return;
 		}
 		
@@ -8642,7 +8619,7 @@ void Mountain(const char * what){
 				printf("What location do you seek?\n");
 				printf(">Key\n");
 				printf(">Special Location [Special]\n");
-				String_Input;
+				StrInp();
 				
 				char next_path [30] = { '\0' };
 				printf("You read the sign:\n");
@@ -8680,7 +8657,7 @@ void Mountain(const char * what){
 			white;
 			
 			printf("\n");
-			Small_stop;
+			SmallStop;
 			Mountain("move");
 			
 		} else if(strcmp(Movement_Made, "book")== 0 && is_in_signs){	//Book lol
@@ -8692,7 +8669,7 @@ void Mountain(const char * what){
 				free(getthis);	
 				yellow;			printf("[HELP] _> Ask the Wizard for help on how to the item!\n\n");
 				white;
-				Small_stop;
+				SmallStop;
 				
 			} else if(last_item_code_used == 11 + INT_current_location){
 				
@@ -8702,7 +8679,7 @@ void Mountain(const char * what){
 				yellow;
 				printf("Congrats, you fixed the book!\n");
 				white;
-				Small_stop;
+				SmallStop;
 				
 				Mountain("book");
 				
@@ -9280,7 +9257,7 @@ void Mountain(const char * what){
 		for(int i = 0; i < lines_needed - 1; i ++)
 		printf("\n");
 		
-		Small_stop;
+		SmallStop;
 		
 		//Register new location if no error occured
 		if(strcmp(Next_Location, "SAME")!= 0){
@@ -9293,7 +9270,7 @@ void Mountain(const char * what){
 		return;
 	
 	} else {
-		red; printf("Invalid argument on function \"Mountain\" (bozo)\n"); Small_stop; white;
+		red; printf("Invalid argument on function \"Mountain\" (bozo)\n"); SmallStop; white;
 	}
 	
 }
@@ -9317,7 +9294,7 @@ int GitItem(void){
 		printf(">Register in the Book [Book]\n");
 		
 		printf(">Nevermind [Back]\n");
-		String_Input;
+		StrInp();
 		
 		if(strcmp(Input, "item")== 0){ 
 			
@@ -9811,7 +9788,7 @@ int GitItem(void){
 											CenterText("This signal is not 5 charecters long.");
 											CenterText("ERR: (SIGNAL_SIZE_UNDEF)");
 											white;
-											Small_stop;
+											SmallStop;
 											
 										} else {
 											ChangeCurPath("OTHER.temp");
@@ -9871,7 +9848,7 @@ int GitItem(void){
 							if(ITEM_CODE / 50 != 1 && ITEM_CODE != -2)
 							ITEM_CODE = cur_line;
 							
-							Small_stop;
+							SmallStop;
 							break;
 							
 						} else if(strcmp(Input, "n")== 0){
@@ -9924,7 +9901,7 @@ int GitItem(void){
 					}
 				}
 				printf(">Back\n");
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "back")== 0)
 				break;
@@ -10016,7 +9993,7 @@ int GitItem(void){
 					
 					free(line);
 					
-					Small_stop;
+					SmallStop;
 				
 				} else {
 					/*
@@ -10088,7 +10065,7 @@ int GitItem(void){
 										GetAppResources("switchbacktomain.Help Notes");
 										ReadTextFile("Writing in the book.txt", "showformating.slowread10000");
 										ChangeCurPath("OTHER.books");
-										Small_stop;
+										SmallStop;
 										hit_something = true;
 										break;
 									}
@@ -10118,7 +10095,7 @@ int GitItem(void){
 											red;
 											printf("Missing main argument on change line command (ARGUMENT_MISSING)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10128,7 +10105,7 @@ int GitItem(void){
 											red;
 											printf("Error on change line command argument (LINE_UNKNOWN)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10158,7 +10135,7 @@ int GitItem(void){
 											red;
 											printf("Missing main argument on line related command (ARGUMENT_MISSING)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10175,7 +10152,7 @@ int GitItem(void){
 											red;
 											printf("Error on line command argument (LINE_UNKNOWN)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10193,7 +10170,7 @@ int GitItem(void){
 												red;
 												printf("Error on line argument related to line manipulation (INDEX_UNKNOWN)\n");
 												white;
-												Small_stop;
+												SmallStop;
 												hit_something = true;
 												break;
 											}
@@ -10231,7 +10208,7 @@ int GitItem(void){
 													red;
 													printf("Error on removesome line argument (INDEX_UNKNOWN)\n");
 													white;
-													Small_stop;
+													SmallStop;
 													hit_something = true;
 													break;
 												}
@@ -10294,7 +10271,7 @@ int GitItem(void){
 													red;
 													printf("Error on edit line argument (TOO_LARGE)\n");
 													white;
-													Small_stop;
+													SmallStop;
 													hit_something = true;
 													break;
 												}
@@ -10349,7 +10326,7 @@ int GitItem(void){
 											red;
 											printf("Missing main argument on page command (ARGUMENT_MISSING)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10366,7 +10343,7 @@ int GitItem(void){
 											red;
 											printf("Missing sub argument on page command (ARGUMENT_MISSING)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10377,7 +10354,7 @@ int GitItem(void){
 											red;
 											printf("Error on page command argument (PAGE_UNKNOWN)\n");
 											white;
-											Small_stop;
+											SmallStop;
 											hit_something = true;
 											break;
 										}
@@ -10421,7 +10398,7 @@ int GitItem(void){
 												red;
 												printf("Error on copy page argument (UNKNOWN_PAGE)\n");
 												white;
-												Small_stop;
+												SmallStop;
 												hit_something = true;
 												break;
 											}
@@ -10434,7 +10411,7 @@ int GitItem(void){
 												red;
 												printf("Error on copy page argument (SAME_FILE)\n");
 												white;
-												Small_stop;
+												SmallStop;
 												hit_something = true;
 												break;
 											}
@@ -10489,7 +10466,7 @@ int GitItem(void){
 											light_aqua;
 											printf("Your current output rules are: %s\n", wanted_declarations);
 											white;
-											Small_stop;
+											SmallStop;
 											
 										//Copy over if no
 										} else {
@@ -10718,7 +10695,7 @@ int DisplayAllSpecialItems(void){
 		red;
 		printf("You have no special Items.\n");
 		white;
-		Small_stop;
+		SmallStop;
 		return -1;
 	}
 	
@@ -10846,7 +10823,7 @@ int DisplayAllSpecialItems(void){
 	light_blue; CenterText("Please select an item...");
 	CenterText("You can always type \"Back\" to leave!"); white;
 	
-	String_Input;
+	StrInp();
 	
 	//FREE MY BOY HE DID NOTHING WRONG
 	if(strcmp(Input, "back")== 0)
@@ -11254,7 +11231,7 @@ int DisplayCenterList(const char * wat_mer){
 			printf("\n");
 		}
 		
-		String_Input;
+		StrInp();
 		
 		if(strcmp(Input, "back")== 0){
 			fclose(fgetbuy);
@@ -11380,7 +11357,7 @@ int DisplayCenterList(const char * wat_mer){
 				break;
 		}
 		white;
-		Small_stop;
+		SmallStop;
 	}
 	
 	fclose(fgetbuy);
@@ -11571,13 +11548,13 @@ void Crop(const short int Crop1_ID, bool is_tut){
 				printf("Understood? You better...\n\n");
 			}
 					
-			Small_stop;
+			SmallStop;
 		}
 		
 		printf("Next move?\n");
 		
 		if((strcmp(game_set, "Char")== 0 && !is_tut) || (strcmp(tut_game_set, "Char")== 0 && is_tut)){
-		String_Input;
+		StrInp();
 		
 			//Movements
 			if(strcmp(Input, "up")== 0)
@@ -11616,8 +11593,8 @@ void Crop(const short int Crop1_ID, bool is_tut){
 			
 		} else {
 			
-			//Also using "string_Input" cause if the user mistaked it for a char input it would bug out but with this nothing happends so the user is safe
-			String_Input;
+			//Also using "StrInp();" cause if the user mistaked it for a char input it would bug out but with this nothing happends so the user is safe
+			StrInp();
 			
 			//Int movements
 			if(strcmp(Input, "1")== 0)
@@ -11903,7 +11880,7 @@ void Crop(const short int Crop1_ID, bool is_tut){
 			printf("Tutorial done!\n");
 			printf("Again? [Y/N]\n");
 		
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "y")== 0){
 				short int temp = 1;
@@ -11948,7 +11925,7 @@ void Crop(const short int Crop1_ID, bool is_tut){
 			fprintf(key3b, "%s\n", hint);
 			fclose(key3b);
 			
-			Small_stop;
+			SmallStop;
 			free(hint);
 			CLR;
 		}
@@ -12190,7 +12167,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 				printf("Understood? You better...\n\n");
 			}
 			
-			Small_stop;
+			SmallStop;
 		}
 		
 		if(DEBUG_MODE){
@@ -12202,7 +12179,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 		printf("Next move?\n");
 			
 			if((strcmp(game_set, "Char")== 0 && !is_tut) || (strcmp(tut_game_set, "Char")== 0 && is_tut)){
-			String_Input;
+			StrInp();
 			
 				//Movements
 				if(strcmp(Input, "up")== 0)
@@ -12254,8 +12231,8 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 				
 			} else {
 				
-				//Also using "string_Input" cause if the user mistaked it for a char input it would bug out but with this nothing happends so the user is safe
-				String_Input;
+				//Also using "StrInp();" cause if the user mistaked it for a char input it would bug out but with this nothing happends so the user is safe
+				StrInp();
 				
 				//Int movements
 				if(strcmp(Input, "1")== 0)
@@ -12845,7 +12822,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 						printf(">Let it go [Go]\n");
 						printf(">Keep it in the trap for later [Keep]\n");
 						
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "go")== 0){
 							
@@ -12888,7 +12865,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 						
 						}
 						
-						Small_stop;
+						SmallStop;
 					}
 				
 				} else {
@@ -13120,7 +13097,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 			fprintf(key3b, "%s\n", hint);
 			fclose(key3b);
 			
-			Small_stop;
+			SmallStop;
 			free(hint);
 			CLR;
 		}
@@ -13139,7 +13116,7 @@ void Fish(const short int Fish1_ID, const char *what_pond, bool is_tut){
 			printf("Tutorial done!\n");
 			printf("Again? [Y/N]\n");
 					
-			String_Input;
+			StrInp();
 					
 			if(strcmp(Input, "y")== 0){
 				short int temp = 0;
@@ -13552,14 +13529,14 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 				printf("Understood? You better...\n\n");
 			}
 			
-			Small_stop;
+			SmallStop;
 		}
 		
 		//Movements depending on game set status
 		printf("Next move?\n");
 			
 			if((strcmp(game_set, "Char")== 0 && !is_tut) || (strcmp(tut_game_set, "Char")== 0 && is_tut)){
-			String_Input;
+			StrInp();
 			
 				if(strcmp(Input, "up")== 0){
 				Y -= 1; stored_move = 1; }
@@ -13621,7 +13598,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 				
 			} else {
 				
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "1")== 0){
 				Y -= 1; stored_move = 1; }
@@ -14116,7 +14093,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 					light_blue;
 					printf("Woops! Your inventory was full so, might has well empty it sooner or later!\n");
 					white;
-					Small_stop;
+					SmallStop;
 					
 				} else {
 					
@@ -14459,7 +14436,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 						light_blue;
 						printf("Woops! Your inventory was full so, might has well empty it sooner or later!\n");
 						white;
-						Small_stop;
+						SmallStop;
 						
 					} else {
 					
@@ -14649,7 +14626,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 			fprintf(key3b, "%s\n", hint);
 			fclose(key3b);
 			
-			Small_stop;
+			SmallStop;
 			free(hint);
 			CLR;
 		}
@@ -14683,7 +14660,7 @@ void Tree(bool is_invasive, const char *num_spot, const short int Log1_ID, const
 			printf("Tutorial done!\n");
 			printf("Again? [Y/N]\n");
 					
-			String_Input;
+			StrInp();
 					
 			if(strcmp(Input, "y")== 0){
 				short int temp = 0;
@@ -14769,7 +14746,7 @@ void Key(const char *Caller){
 				printf("[NPC] Drakolin: \"Will you PLEASE help us out?\"\n");
 				printf(">Yes\n");
 				printf(">Yes\n");
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "yes")== 0){
 					CLR;
@@ -14785,7 +14762,7 @@ void Key(const char *Caller){
 			printf("[NPC] Drakolin: \"Thanks, i knew i could count on you :D\"\n");
 			
 			starting_chat_done = true;
-			Small_stop;
+			SmallStop;
 		}
 		
 		bool key1rq [5];
@@ -14855,7 +14832,7 @@ void Key(const char *Caller){
 			}
 		}
 		
-		Small_stop;
+		SmallStop;
 		
 	} else if(strcmp(Caller, "Cascade")== 0){
 		if(needs_starting_chat){
@@ -14896,7 +14873,7 @@ void Key(const char *Caller){
 			printf("[CAT] Nina: \"Meow, meow!\"\n");
 			printf("(So, good luck!)\n");
 			starting_chat_done = true;
-			Small_stop;
+			SmallStop;
 		}
 		
 		short int i_table_pos[26], closed_locations[9];
@@ -14945,7 +14922,7 @@ void Key(const char *Caller){
 			printf(">I have a fish for you [Fish]\n");
 			printf(">Nevermind [Leave]\n");
 			
-			String_Input;
+			StrInp();
 			if(strcmp(Input, "map")== 0){
 				
 				//set up positions
@@ -15004,7 +14981,7 @@ void Key(const char *Caller){
 							
 				}
 				
-				Small_stop;
+				SmallStop;
 				
 			} else if(strcmp(Input, "moves")== 0){
 			
@@ -15107,7 +15084,7 @@ void Key(const char *Caller){
 				}
 				
 				printf("[CAT] Nina: \"Meow meow meow?\" (Got it?)\n");
-				Small_stop;
+				SmallStop;
 			
 				} else if(strcmp(Input, "fish")== 0){
 					
@@ -15123,7 +15100,7 @@ void Key(const char *Caller){
 						printf(">Go right [Right]\n");
 						printf(">Go down [Down]\n");
 						printf(">Nevermind... [Back]\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "up")== 0){
 							a = 0;
@@ -15239,13 +15216,13 @@ void Key(const char *Caller){
 								}
 							
 							}
-							Small_stop; 
+							SmallStop; 
 						}
 						
 						if(cat_pos == key_pos){
 							printf("[CAT] Nina: \"Meow, meow meow meow meow meow meow...\" (There, i got your so precious key...)\n");
 							printf("[CAT] Nina: \"Meow meow meow meow\" (Leave me be now)\n");
-							Small_stop;
+							SmallStop;
 							Art("KEY", 2);
 							new_key = true;
 						}
@@ -15285,7 +15262,7 @@ void Key(const char *Caller){
 			ChangeCurPath("OTHER.books");
 			FILE * fkey3book = fopen("Key3Book.txt", "w");
 			fclose(fkey3book);
-			Small_stop;
+			SmallStop;
 			
 		} else if(access("TempKey3Trigger.txt", F_OK)== 0){
 			//Key 3 alr done trigger
@@ -15293,7 +15270,7 @@ void Key(const char *Caller){
 			RightText("[NPC] CreatureInTheWall: \"You cracked my encriptions\"");
 			RightText("[NPC] CreatureInTheWall: \"I know you are worthy to get the key\"");
 			RightText("[NPC] CreatureInTheWall: \"See you\"");
-			Small_stop;
+			SmallStop;
 			
 		} else {
 			
@@ -15331,7 +15308,7 @@ void Key(const char *Caller){
 				
 				ChangeCurPath("STORY.Key3");
 				RightText("[NPC] CreatureInTheWall: \"So?\" [Solve] [Hint] [Nevermind]\n");
-				String_Input;
+				StrInp();
 				
 				if(strcmp(Input, "solve")== 0){
 					if(DEBUG_MODE)
@@ -15365,10 +15342,10 @@ void Key(const char *Caller){
 							RightText("[NPC] CreatureInTheWall: \"Well then...\"\n");
 							RightText("[NPC] CreatureInTheWall: \"Congrats\"\n");
 							RightText("[NPC] CreatureInTheWall: \"Here is the key like i promised\"\n");
-							Small_stop;
+							SmallStop;
 							CLR;
 							Art("KEY", 3);
-							Small_stop;
+							SmallStop;
 							new_key = true;
 							
 							//Delete old book
@@ -15377,7 +15354,7 @@ void Key(const char *Caller){
 							
 							while(true){
 								RightText("[NPC] CreatureInTheWall: \"Do you want to keep the hint book? [YES] [NO]\"\n");
-								String_Input;
+								StrInp();
 								
 								if(strcmp(Input, "yes")== 0){
 									
@@ -15459,7 +15436,7 @@ void Key(const char *Caller){
 					
 						while(true){
 							RightText("[NPC] CreatureInTheWall: \"10.000 Coins. [Okay] [Nevermind]\"\n");
-							String_Input;
+							StrInp();
 							
 							if(strcmp(Input, "okay")== 0){
 								
@@ -15545,7 +15522,7 @@ void Key(const char *Caller){
 		if(make_new_key){
 			make_new_key = false;
 			//get new line to decode
-			short int num_spaces = 1;
+			u8 num_spaces = 1;
 			char * New_Line = EncryptedWordsV1(&num_spaces);
 			char * Hint_Given = (char *)malloc(555);
 			char * Unencrypted_Word = (char *)malloc(35);
@@ -16062,7 +16039,7 @@ void Key(const char *Caller){
 			free(New_Line);
 			free(Hint_Given);
 			free(Unencrypted_Word);
-			Small_stop;
+			SmallStop;
 		}
 		
 	} else if(strcmp(Caller, "Geysers")== 0){
@@ -16085,7 +16062,7 @@ void Key(const char *Caller){
 			printf("[NPC] Keeper: \"Well, i guess you can figure out the rest yourself!\"\n");
 			printf("[NPC] Keeper: \"Have fun!\"\n");
 			starting_chat_done = true;
-			Small_stop;
+			SmallStop;
 			
 		}
 		
@@ -16271,7 +16248,7 @@ void Key(const char *Caller){
 			//Git key
 			if(cur_room >= 10){
 				Art("KEY", 4);
-				Small_stop;
+				SmallStop;
 				leave_dung = true;
 				new_key = true;
 				break;
@@ -16352,7 +16329,7 @@ void Key(const char *Caller){
 				CenterText("###################################################################");
 				
 					printf("Next action?\n");
-					String_Input;
+					StrInp();
 					
 					if(strcmp(Input, "dice")== 0 || strcmp(Input, "attack")== 0){
 						//Give error if ur trying monster room inputs inside a puzzle room
@@ -16365,7 +16342,7 @@ void Key(const char *Caller){
 						short int dmg_dealt = 0;
 						
 						Art("DUNGEON", 9);
-						Small_stop;
+						SmallStop;
 						
 						short int dice_dmg = rand()% 20;
 						
@@ -16416,7 +16393,7 @@ void Key(const char *Caller){
 							light_blue;
 							printf("Got 'em!\n");
 							white;
-							Small_stop;
+							SmallStop;
 							break;
 						}
 						
@@ -16479,7 +16456,7 @@ void Key(const char *Caller){
 									printf("While in ANSWER mode you need to say what position the highest number was\n\n");
 									
 									printf("Understood? You better...\n\n");
-									Small_stop;
+									SmallStop;
 
 								}
 								
@@ -16567,7 +16544,7 @@ void Key(const char *Caller){
 								while(true){
 									CLR;
 								    printf("What was the highest number?\n");
-								    String_Input;
+								    StrInp();
 								    
 								    ///Convert into string and back to integer to not have that annoying bug happend
 								   	if(isdigit(Input[0])){
@@ -16619,7 +16596,7 @@ void Key(const char *Caller){
 										printf("Tutorial done!\n");
 										printf("Again? [Y/N]\n");
 												
-										String_Input;
+										StrInp();
 												
 										if(strcmp(Input, "y")== 0){
 										z --; break;
@@ -16675,7 +16652,7 @@ void Key(const char *Caller){
 									printf("And then type it out when it asks you to\n");
 									printf("You can fail 1 character and it still counts\n");
 									printf("Understood? You better...\n\n");
-									Small_stop;
+									SmallStop;
 								}
 							
 								//Wrong indexes patience is always 1
@@ -16709,7 +16686,7 @@ void Key(const char *Caller){
 									CLR;
 									//Get returned string
 									bool valid_str = true;
-									short int num_spaces = 1;
+									u8 num_spaces = 1;
 									char *returned_string = EncryptedWordsV1(&num_spaces);
 									
 									//Set up to put the string in the middle again
@@ -16849,7 +16826,7 @@ void Key(const char *Caller){
 										printf("Tutorial done!\n");
 										printf("Again? [Y/N]\n");
 												
-										String_Input;
+										StrInp();
 												
 										if(strcmp(Input, "y")== 0){
 											z--; break;
@@ -16901,7 +16878,7 @@ void Key(const char *Caller){
 									printf("Your objective here is to anwser those questions correctly\n");
 									printf("Depending on the dificulty more or less arguments and questions will generate\n");
 									printf("Understood? You better...\n\n");
-									Small_stop;
+									SmallStop;
 								}
 							
 							bool is_dif_hard = false;
@@ -17752,7 +17729,7 @@ void Key(const char *Caller){
 								bool is_wrong = false; 
 								
 								while(true){
-									String_Input;
+									StrInp();
 																				
 									if(strcmp(Input, correct_awnser)== 0){
 										green;
@@ -17838,7 +17815,7 @@ void Key(const char *Caller){
 								printf("Tutorial done!\n");
 								printf("Again? [Y/N]\n");
 										
-								String_Input;
+								StrInp();
 										
 								if(strcmp(Input, "y")== 0){
 									z --; break;
@@ -17858,14 +17835,14 @@ void Key(const char *Caller){
 						} //PUZZLES END HERE
 						
 						printf("\n");
-						Small_stop;
+						SmallStop;
 						
 						//Puzzle done? go to next room
 						if(puzzle_times_done == 2){
 							green;
 							printf("Puzzles over!\n");
 							white;
-							Small_stop;
+							SmallStop;
 							break;
 						}
 						
@@ -17874,7 +17851,7 @@ void Key(const char *Caller){
 					} else if(strcmp(Input, "item")== 0){
 						
 						Art("DUNGEON", 10);
-						Small_stop;
+						SmallStop;
 						
 						while(true){
 							//Code "stolen" from chest function :>
@@ -17894,7 +17871,7 @@ void Key(const char *Caller){
 								red;
 								printf("Empty Inventory!\n");
 								white;
-								Small_stop;
+								SmallStop;
 								break;
 							} else {
 								int Quantity, ID;
@@ -17963,7 +17940,7 @@ void Key(const char *Caller){
 									user.hp = bckp_hp;
 									
 									white;
-									Small_stop;
+									SmallStop;
 									break;
 								} else {
 									red;
@@ -17974,7 +17951,7 @@ void Key(const char *Caller){
 									printf("-> No nutritinal value\n");
 									printf("-> Wont help you in your current situation\n");
 									white;
-									Small_stop;
+									SmallStop;
 								}
 							
 							}
@@ -18089,7 +18066,7 @@ void Key(const char *Caller){
 					red;
 					printf("You fainted!\n");
 					white;
-					Small_stop;
+					SmallStop;
 					user.hp = 10;
 					leave_dung = true;
 					break;
@@ -18296,14 +18273,14 @@ void Key(const char *Caller){
 			printf("[NPC] Astro: \"Bring me the item i am looking for...\"\n");
 			printf("[NPC] Astro: \"Good luck.\"\n");
 			starting_chat_done = true;
-			Small_stop;
+			SmallStop;
 		}
 		
 	} else if(strcmp(Caller, "Peak")== 0){
 		if(needs_starting_chat){
 			
 			starting_chat_done = true;
-			Small_stop;
+			SmallStop;
 		}
 		
 	} else {
@@ -18311,7 +18288,7 @@ void Key(const char *Caller){
 		red;
 		printf("Unknown key (Key Function ARG error)\n");
 		white;
-		Small_stop;
+		SmallStop;
 		return;
 	}
 	
@@ -18583,7 +18560,7 @@ void SpecialLocations(const char * Caller){
 			printf(">Check a bird house [House]\n");
 			
 			printf(">Nothing to do...[Back]\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "fix")== 0){
 				if(number_of_houses_broken == 0){
@@ -18602,7 +18579,7 @@ void SpecialLocations(const char * Caller){
 						printf("Complete the bird house?\n");
 						printf(">Yes\n");
 						printf(">No\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "yes")== 0){
 							
@@ -18622,7 +18599,7 @@ void SpecialLocations(const char * Caller){
 									red;
 									printf("Looks like you dont have enough items!\n");
 									white;
-									Small_stop;
+									SmallStop;
 									break;
 									
 								} else {
@@ -18635,7 +18612,7 @@ void SpecialLocations(const char * Caller){
 									white;
 									house[0].can_have_bird = true;
 									number_of_houses_broken --;
-									Small_stop;
+									SmallStop;
 									break;
 									
 								}
@@ -18655,7 +18632,7 @@ void SpecialLocations(const char * Caller){
 									red;
 									printf("Looks like you dont have enough items!\n");
 									white;
-									Small_stop;
+									SmallStop;
 									break;
 									
 								} else {
@@ -18668,7 +18645,7 @@ void SpecialLocations(const char * Caller){
 									white;
 									house[2].can_have_bird = true;
 									number_of_houses_broken --;
-									Small_stop;
+									SmallStop;
 									break;
 								}
 							}
@@ -18696,7 +18673,7 @@ void SpecialLocations(const char * Caller){
 						printf("Finish the bird house?\n");
 						printf(">Yes\n");
 						printf(">No\n");
-						String_Input;
+						StrInp();
 						
 						if(strcmp(Input, "yes")== 0){
 							
@@ -18717,7 +18694,7 @@ void SpecialLocations(const char * Caller){
 								red;
 								printf("Looks like you dont have enough items!\n");
 								white;
-								Small_stop;
+								SmallStop;
 								break;
 								
 							} else {
@@ -18731,7 +18708,7 @@ void SpecialLocations(const char * Caller){
 								white;
 								number_of_unfinished_h --;
 								house[1].can_have_bird = true;
-								Small_stop;
+								SmallStop;
 								break;
 							}
 							
@@ -18760,7 +18737,7 @@ void SpecialLocations(const char * Caller){
 						}	
 						printf(">Back\n");
 						
-						String_Input;
+						StrInp();
 						
 						//To leave
 						if(strcmp(Input, "back")!= 0)
@@ -18810,7 +18787,7 @@ void SpecialLocations(const char * Caller){
 								}
 								
 								free(what_item);
-								Small_stop;
+								SmallStop;
 								break;
 								
 							}
@@ -18823,7 +18800,7 @@ void SpecialLocations(const char * Caller){
 									white;
 									Inventory("CALC", 210, 1);
 									number_of_h_w_itm --;
-									Small_stop;
+									SmallStop;
 									break;
 									
 								} else {
@@ -18864,7 +18841,7 @@ void SpecialLocations(const char * Caller){
 									}
 									
 									free(item_name);
-									Small_stop;
+									SmallStop;
 									break;
 								}
 								
@@ -18894,7 +18871,7 @@ void SpecialLocations(const char * Caller){
 								}
 								
 								free(catch_new_name);
-								Small_stop;
+								SmallStop;
 								break;
 								
 							}
@@ -18978,7 +18955,7 @@ void SpecialLocations(const char * Caller){
 			printf(">Fishing Permit [Permit]\n");
 			
 			printf(">Nothing to shop here [Back]\n");
-			String_Input;
+			StrInp();
 			
 			if(strcmp(Input, "traps")== 0){
 				while(true){
@@ -18988,41 +18965,40 @@ void SpecialLocations(const char * Caller){
 					printf("[NPC] Fisherman: \"Well, you need to buy some traps?\"\n");
 					printf("[NPC] Fisherman: \"How many do you need?\"\n");
 					printf("[NPC] Fisherman: \"I sell them for 50 coins each!\"\n");
-					String_Input;
-					INT_Protocol;
-					
-					if(INT_Input <= 0){
+					i64 trapsBought = IntInp();
+
+					if(trapsBought <= 0){
 						Error;	
 						
 					} else {
 						bool failed = false;
 						
 						//Check moni
-						if(money - (INT_Input * 50) < 0){
+						if(money - (trapsBought * 50) < 0){
 							printf("[NPC] Fisherman: \"Looks like you dont have enough money for that.\"\n");
 							failed = true;
 						} else 
-						money -= INT_Input * 50;
+						    money -= trapsBought * 50;
 						
 						int overspill = 0;
 						
 						//Check Item overflow
 						if(!failed)
-						overspill = Inventory("CALC", 135, INT_Input);
+						    overspill = Inventory("CALC", 135, trapsBought);
 						
 						if(overspill > 0 && !failed){
 							printf("[NPC] Fisherman: \"Looks like you dont have enough inventory space for that.\"\n");
-							int displacement = INT_Input - overspill;
+							int displacement = trapsBought - overspill;
 							displacement = -displacement;
 							Inventory("CALC", 135, displacement);
 							failed = true;
 						}
 						
 						if(!failed){
-							printf("[NPC] Fisherman: \"You bought %dx Traps!\"\n", INT_Input);	
+							printf("[NPC] Fisherman: \"You bought %dx Traps!\"\n", trapsBought);	
 						}
 						
-						Small_stop;
+						SmallStop;
 						break;
 					}	
 				}
@@ -19043,7 +19019,7 @@ void SpecialLocations(const char * Caller){
 				
 				knows_ab_permit = true;
 				
-				Small_stop;
+				SmallStop;
 				
 			} else if(strcmp(Input, "permit")== 0 && !has_permit){
 				while(true){
@@ -19052,7 +19028,7 @@ void SpecialLocations(const char * Caller){
 					printf("[NPC] Fisherman: \"Are you sure you what to buy a Fishing Permit? It requires a golden fish.\"\n");
 					printf(">Yes i am sure [Yes]\n");
 					printf(">Nevermind [No]\n");
-					String_Input;
+					StrInp();
 					
 					if(strcmp(Input, "yes")== 0){
 						bool has_fish = Inventory("CHECK", 134, -1);
@@ -19072,12 +19048,12 @@ void SpecialLocations(const char * Caller){
 							FILE * fgotfishingpermit = fopen("HasFishingPermit.txt", "w");
 							fclose(fgotfishingpermit);
 							
-							Small_stop;
+							SmallStop;
 						
 						//No fish :<	
 						} else {
 							printf("[NPC] Fisherman: \"Looks like you didnt have the golden fish, too bad\"\n");
-							Small_stop;
+							SmallStop;
 						}
 						break;
 						
@@ -19120,7 +19096,7 @@ void SpecialLocations(const char * Caller){
 				CenterText("FOLLOW THE PATH");
 				CenterText("YOUR TIME WILL COME");
 				white;
-				Small_stop;
+				SmallStop;
 				return;
 			}
 		}
@@ -19132,7 +19108,7 @@ void SpecialLocations(const char * Caller){
 			printf("Examine?\n");
 			printf(">Yes\n");
 			printf(">No\n");
-			String_Input;	
+			StrInp();	
 			
 			if(strcmp(Input, "yes")== 0){
 				
@@ -19147,7 +19123,7 @@ void SpecialLocations(const char * Caller){
 				CenterText("FOLLOW OUR VOICES");
 				CenterText("SEE YOU SOON");
 				white;
-				Small_stop;
+				SmallStop;
 				break;
 				
 			} else if(strcmp(Input, "no")== 0){
@@ -19171,7 +19147,7 @@ void SpecialLocations(const char * Caller){
 		red;
 		printf("Unknown Location (SpecialLocations Function ARG error)\n");
 		white;
-		Small_stop;
+		SmallStop;
 		return;
 	}
 	
@@ -19571,7 +19547,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 			red;
 			printf("\n\nNothing but spider webs here\n\n");
 			white;
-			Small_stop;
+			SmallStop;
 			return -99999;
 		} else {
 			if(div_inv_sect){
@@ -19587,7 +19563,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 					printf(">Alchemy\n");
 					printf(">Extras\n");
 					printf(">Leave\n");
-					String_Input;
+					StrInp();
 					
 					for(int i = 0; i < 6; i ++)
 					arr_limit_inv[i] = false;
@@ -19841,7 +19817,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 		printf("\n");
 			
 		if(strcmp(Inv_call, "SHOW")== 0){
-		Small_stop;
+		SmallStop;
 		
 		} else if(strcmp(Inv_call, "ID")== 0){
 			int call_id, call_quantity;
@@ -19937,7 +19913,7 @@ int Inventory(const char *Inv_call, const int ID, const int Quantity){
 					List_Quantities[ID] += Quantity;
 					Overflow_Value = 0;
 				}
-				Small_stop;
+				SmallStop;
 				
 			//Negative quantity handeling
 			} else {
@@ -20634,7 +20610,7 @@ bool GetNeededPaths(void){
 				printf("Your path.txt folder has an invalid directory on it (OVER ASCII LIMIT), please change it in the settings\n");
 				printf("Check your local directory: %s\\Resources\\Path (if it exists)\n", LOCAL_PATH);
 				printf("In the mean time the save file will be in your %%APPDATA%% folder, (%s)\n", FULL_PATH);
-				Small_stop;
+				SmallStop;
 				white;
 				
 				valid_dir = false;
@@ -20657,7 +20633,7 @@ bool GetNeededPaths(void){
 			printf("Your path.txt folder has an invalid directory on it (NON EXISTANT), please change it in the settings\n");
 			printf("Check your starting directory: %s\\Resources\\Path (if it exists)\n", LOCAL_PATH);
 			printf("In the mean time the save file will be in your %%APPDATA%% folder, (%s)\n", FULL_PATH);
-			Small_stop;
+			SmallStop;
 			white;
 				
 			valid_dir = false;
@@ -20730,7 +20706,7 @@ bool GetNeededPaths(void){
 		printf("[DEBUG] _> STARTER:\t %s\n", STARTING_PATH);
 		printf("[DEBUG] _> LOCAL:\t %s\n", LOCAL_PATH);
 		printf("[DEBUG] _> ROAMING:\t %s\n\n", FULL_PATH);
-		Small_stop;
+		SmallStop;
 	}
 	
 	if(!there_is_dir && !appdata_done)
@@ -21055,7 +21031,7 @@ bool MakeSaveFiles(const char * what){
 		    printf(">Nightmare\n");
 				 
 		    printf("[Use the names inside the \"[]\"]\n");
-		    String_Input;
+		    StrInp();
 		    
 		    CLR;
 		    light_blue;
@@ -21128,7 +21104,7 @@ bool MakeSaveFiles(const char * what){
 			red;
 			printf("NO DIFICULTY, SAVE FILE CORRUPTED");
 			white;
-			Small_stop;
+			SmallStop;
 			FILE * fdif = fopen("Dificulty.txt", "w");
 			fprintf(fdif, "Lucid");
 			fclose(fdif);
