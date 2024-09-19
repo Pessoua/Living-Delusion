@@ -96,6 +96,9 @@ i64 IntInp(void){
 
 //Stuff for LD to run better
 bool RunThisAtStart(void){
+    if(OS_NAME[0] == 'U')
+        ExitEarly(1, "Unknown operating system!");
+
     bool pathPreviouslyExist = false;
      
     //set up \x1b (windows only cuz windows big stupid)
@@ -143,18 +146,24 @@ bool RunThisAtStart(void){
     return pathPreviouslyExist;
 }
 
-//TODO: Exit message with "FormatTextEXT"
-void exitEarly(u8 errCode, const char * errMsg){
-    
-    for(int i = 0; i < 5; i ++){
-        CLR;
-        RandText(errMsg);
-        usleep(100000);
-        CLR;
-    }
+void ExitEarly(u8 errCode, char * errMsg){
 
-    if(DEBUG_MODE)
-        printf("\x1b[31mExited with error code %d, with \"%s\" error message\n", errCode, errMsg);
+    CLR;
+    if(DEBUG_MODE){
+        printf("\x1b[31m[DEBUG] _> Exited with error code %d, with \"%s\" error message\n", errCode, errMsg);
+        sleep(2);
+    }
+    CLR;
+
+    //Adding the stupi ansi escape codes to make it red
+    char newErrMsg [strlen(errMsg) + 15];
+    strcpy(newErrMsg, "\x1b[31m");
+    strcat(newErrMsg, errMsg);
+    strcat(newErrMsg, "\x1b[0m");
+
+    MidScreenText(newErrMsg);
+    CenterText("\x1b[31mPress anything to crash the game!\x1b[0m");
+    getch();
 
     exit(errCode);
 }

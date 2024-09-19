@@ -172,6 +172,13 @@ int main(int argc, char *argv[]){
     for(u8 i = 0; i < argc; i ++)
         printf("%s\n", argv[i]);
 
+    /*
+     * if it does not start with -, show error~
+     * you can enable DEBUG_MODE with -d
+     * and change paths with -l [PATH] for local and -a [PATH] for app
+     * use a switch statement to see if its valid
+     */
+
     SmallStop;
 
 	if(!GetNeededPaths()){

@@ -10,3 +10,8 @@ obj:
 obj-dll:
 	$(MAKE) -C . obj
 	$(MAKE) -C libs/ dll
+
+test:
+	gcc -c LDtest.c -lstdc++
+	gcc LDtest.o -o test -L. -lLD_LIB
+	.\test
