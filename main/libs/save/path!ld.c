@@ -1,4 +1,4 @@
-#include "../LivingDelusion.h"
+#include "../save!ld.h"
 
 //Check if dir exists [Not made by me, thanks for whoever did it though]
 bool ExistDiret(const char * path){
@@ -52,5 +52,4 @@ void ChangeCurPath(const char * changeToThis){
     free(argCopy);
 
     return;
-}
 

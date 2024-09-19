@@ -1,6 +1,7 @@
 run:
 	gcc -c -O2 *.c	
 	$(MAKE) -C art full
+	$(MAKE) -C ext full
 	$(MAKE) -C games full
 	$(MAKE) -C local full
 	$(MAKE) -C nina full
@@ -10,29 +11,32 @@ run:
 	gcc -shared -o LD_LIB.dll *.o
 	move /Y LD_LIB.dll ..
 
-art: art!ld.c
-	gcc -c -O2 art!ld.c
+art:
+	$(MAKE) -C art full
+
+ext: 
+	$(MAKE) -C ext full
 
 extras: extra!ld.c
 	gcc -c -O2 extras!ld.c
 
-games: games!ld.c
-	gcc -c -O2 games!ld.c 
+games: 
+	$(MAKE) -C games full
+
+local:
+	$(MAKE) -C local full
 
 nina: nina!ld.c
-	gcc -c -O2 nina!ld.c
+	$(MAKE) -C nina full
 
-os: osmanip!ld.c
-	gcc -c -O2 osmanip!ld.c
+os:
+	$(MAKE) -C os full
 
-osmanip: osmanip!ld.c
-	gcc -c -O2 osmanip!ld.c
+osmanip:
+	$(MAKE) -C os full
 
-path: path!ld.c
-	gcc -c -O2 path!ld.c
-
-save: save!ld.c
-	gcc -c -O2 save!ld.c
+save:
+	$(MAKE) -C save full
 
 style: style!ld.c
 	gcc -c -O2 style!ld.c 

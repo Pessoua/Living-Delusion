@@ -17,6 +17,9 @@ exit: exit!ld.c
 check: check!ld.c
 	gcc -c -O2 check!ld.c
 
+path: path!ld.c
+	gcc -c -O2 path!ld.c
+
 dll:
 	gcc -c -O2 *.c
 	move /Y *.o ..

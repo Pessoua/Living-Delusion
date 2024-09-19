@@ -62,7 +62,7 @@
         tcsetattr(0, TCSANOW, &old);
     }
 
-    chaR getch_(int echo) 
+    char getch_(int echo) 
     {
         char ch;
         initTermios(echo);
@@ -157,11 +157,11 @@ extern bool display_tip, div_inv_sect, limit_inv, arr_limit_inv [6];
 
 //extern libs here
 #include "libs/style!ld.h"       //Text formating + Making things look better
-#include "libs/art!ld.h"         //Ascii art display handlrs and more                                          (SPLIT)
-#include "libs/path!ld.h"        //Helper path functions
+#include "libs/art!ld.h"         //Ascii art display handlrs and more                                           (SPLIT)
 #include "libs/save!ld.h"        //Main save files handler + file I/O helper :3                                 (SPLIT)
 #include "libs/extras!ld.h"      //Main extras handler (depends on most libs)
 #include "libs/sys!ld.h"         //Mostly system helper functions / functions "outside" the game itself
+#include "libs/ext!ld.h"         //Same has sys but the functions used are more related to the game             (SPLIT)
 #include "libs/osmanip!ld.h"     //Functions that require interacting with the OS in any way                    (SPLIT)
 #include "libs/games!ld.h"       //Main handler for EVERYTHING about the games (and some locations)             (SPLIT)
 #include "libs/local!ld.h"       //Main handler for location related functions                                  (SPLIT)

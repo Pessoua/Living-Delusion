@@ -12,4 +12,7 @@ i64 IntInp(void);
 //Setting up terminal and calling other functions to start the setup
 bool RunThisAtStart(void);
 
+//Exit manager
+void exitEarly(u8 errCode, const char * errMsg);
+
 #endif /* LD_SYS_H */

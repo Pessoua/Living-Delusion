@@ -74,17 +74,17 @@ void ChangeToThisColor(int INT_color, char CHAR_color); //style
 void Help(); 
 void Credits(); 
 void Settings();
-    //^ all go to sys
-void TipOfTheDay(); 
+    //^ all go to ext
+void TipOfTheDay();
     //^Art
 int EndOfBeta(); //stays here ig
-void Game_Start(void); //sys
-int Dificulty(); //sys
+void Game_Start(void); //ext
+int Dificulty(); //ext
 int Extras();   //extras
-int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day); //sys
+int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day); //ext
 int StartingScreen(); //stays here but calls art function instead
-int Inventory(const char *Inv_call, const int ID, const int Quantity); //stays here
-void Chest(void);   //stays here
+int Inventory(const char *Inv_call, const int ID, const int Quantity); //ext
+void Chest(void);   //ext
 
 //Inventory
 long int money = 1000000; int chos_itm; char center_leave [5] = "NO"; int itm_quant; int bckp_money;

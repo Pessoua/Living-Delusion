@@ -142,3 +142,19 @@ bool RunThisAtStart(void){
 
     return pathPreviouslyExist;
 }
+
+//TODO: Exit message with "FormatTextEXT"
+void exitEarly(u8 errCode, const char * errMsg){
+    
+    for(int i = 0; i < 5; i ++){
+        CLR;
+        RandText(errMsg);
+        usleep(100000);
+        CLR;
+    }
+
+    if(DEBUG_MODE)
+        printf("\x1b[31mExited with error code %d, with \"%s\" error message\n", errCode, errMsg);
+
+    exit(errCode);
+}
