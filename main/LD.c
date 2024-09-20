@@ -169,15 +169,53 @@ int main(int argc, char *argv[]){
 
     //RunThisAtStart();
 
-    for(u8 i = 0; i < argc; i ++)
-        printf("%s\n", argv[i]);
+    //Argc stuff, modifying some settings via command line
+    for(u8 i = 1; i < argc; i ++){
+        if(argv[i][0] == '-'){
+            switch(argv[i][1]){
+                //Enable DEBUG mode
+                case 'd':
+                    printf("\x1b[33mDebug mode is now active\x1b[0m\n");
+                    DEBUG_MODE = true;
+                    break;
 
-    /*
-     * if it does not start with -, show error~
-     * you can enable DEBUG_MODE with -d
-     * and change paths with -l [PATH] for local and -a [PATH] for app
-     * use a switch statement to see if its valid
-     */
+                //Set LOCAL_PATH to the next argv
+                case 'l':
+                    printf("\x1b[33mSet LOCAL_PATH to \"%s\"\x1b[0m\n", argv[i + 1]);
+                    strcpy(LOCAL_PATH, argv[i + 1]);
+                    i ++;
+                    //Check if new LOCAL_PATH is oki here
+                    break;
+
+                //Set FULL_PATH to the next argv
+                case 'a':
+                    printf("\x1b[33mSet FULL_PATH to \"%s\"\x1b[0m\n", argv[i + 1]);
+                    strcpy(FULL_PATH, argv[i + 1]);
+                    i ++;
+                    //Check if new FULL_PATH is oki here
+                    break;
+
+                //Set STARTING_PATH to the next argv
+                case 's':
+                    printf("\x1b[33mSet STARTING_PATH to \"%s\"\x1b[0m\n", argv[i + 1]);
+                    strcpy(STARTING_PATH, argv[i + 1]);
+                    i ++;
+                    //Check if new STARTING_PATH is okie here
+                    break;
+
+                //Get version
+                case 'v':
+                    printf("\x1b[33mVersion - Public Beta 2\x1b[0m\n");
+                    break;
+
+                default:
+                    printf("\x1b[31mUnknown argv argument \"%s\"\x1b[0m\n", argv[i]);
+                    break;
+            }
+
+        } else 
+            printf("\x1b[31mUnknown argv argument \"%s\"\x1b[0m\n", argv[i]);
+    }
 
     SmallStop;
 

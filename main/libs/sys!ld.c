@@ -139,8 +139,6 @@ bool RunThisAtStart(void){
 
         printf("[DEBUG]_> \x1b[31mFOREGROUND Red Color test\x1b[0m\n");
         printf("[DEBUG]_> \x1b[41mBACKGROUND Red Color test\x1b[0m\n");
-
-        SmallStop;
     }
 
     return pathPreviouslyExist;

@@ -52,4 +52,4 @@ void ChangeCurPath(const char * changeToThis){
     free(argCopy);
 
     return;
-
+}

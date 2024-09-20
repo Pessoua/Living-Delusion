@@ -1,7 +1,10 @@
 run:
-	gcc -c LD.c -lstdc++ 					
-	gcc LD.o -o LD -L. -lLD_LIB 
-	.\LD
+	$(MAKE) -C . link 
+	.\LD -d
+
+link:
+	gcc -c LD.c -lstdc++
+	gcc LD.o -o LD -L. -lLD_LIB
 
 obj:
 	gcc -c -O2 LivingDelusion.c

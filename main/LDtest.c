@@ -12,7 +12,7 @@ int main(void){
     time_needed = clock();                              
     srand(time(NULL));                              
     setlocale(LC_ALL, "");                          
-    system("title LIVING DELUSION [OPEN BETA 2]");
+    system("title (test ver.) LIVING DELUSION [OPEN BETA 2]");
 
     DEBUG_MODE = true;
 
