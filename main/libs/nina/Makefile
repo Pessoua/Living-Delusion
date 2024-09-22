@@ -1,19 +1,22 @@
+DOTHAT = gcc -c -O2
+MOVE = move /Y *.o ..
+
 full:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)
 
 test:
-	gcc -c -O2 *.c
+	$(DOTHAT) *.c
 
 make: make!ld.c
-	gcc -c -O2 make!ld.c
+	$(DOTHAT) make!ld.c
 
 read: read!ld.c
-	gcc -c -O2 read!ld.c
+	$(DOTHAT) read!ld.c
 
 dll:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)
 	$(MAKE) -C .. dll
 
 clean:

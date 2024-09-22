@@ -138,26 +138,56 @@ void SomethingHasGoneWrong(void){
 
 //Display tip :>
 void TipOfTheDay(void){
-	
-    yellow;
+   
+    printf("\x1b[0m");
+
+    switch(rand()% 10 + 1){
+        case 1:
+            MidScreenText("This is not a tip, its a fact! Living Delusion was started in 9/10/2023 :>");
+            break;
+
+        case 2:
+            MidScreenText("The best way to start a colecting mini game is to stay still in the first input!");
+            break;
+
+        case 3:
+            MidScreenText("Explore the mountain to the fullest!");
+            break;
+
+        case 4:
+            MidScreenText("Gotta get 100%!");
+            break;
+
+        case 5:
+            MidScreenText("Use, uhh, whatever keyblinds your terminal emulator uses :guy_smile_giving_tumbs_up:");
+            break;
+
+        case 6:
+            MidScreenText("Every special item is usefull in some way");
+               break;
+
+        case 7:
+            MidScreenText("Start every key when you can!");
+            break;
+
+        case 8:
+            MidScreenText("PLACEHOLDER (8)");
+            break;
     
-    short int tip = rand() % 10 + 1; 
-    
-	CLR;
-    
-	if (tip == 1){ MidScreenText("This is not a tip, its a fact! Living Delusion was started in 9/10/2023 :>"); }
-    else if (tip == 2){ MidScreenText("The best way to start a colecting mini game is to stay still in the first input!"); }
-    else if (tip == 3){ MidScreenText("Explore the mountain to the fullest!"); }
-    else if (tip == 4){ MidScreenText("Gotta get 100%!"); }
-    else if (tip == 5){ MidScreenText("Use CTRL + SCROLL WHEEL to zoom in and out!"); }
-    else if (tip == 6){ MidScreenText("Every special item is usefull in some way"); }
-    else if (tip == 7){ MidScreenText("Start every key when you can!"); }
-    else if (tip == 8){ MidScreenText("PLACEHOLDER (8)"); }
-    else if (tip == 9){ MidScreenText("PLACEHOLDER (9)"); }
-    else { MidScreenText("Report bugs!"); }
-    
-   	white;
-    
+        case 9:
+            MidScreenText("PLACEHOLDER (9)");
+            break;
+
+        case 10:
+            MidScreenText("PLACEHOLDER (10)");
+            break;
+
+        //This will never happend
+        default:
+            break;
+    }
+
+    printf("\x1b[0m");    
 }
 
 int main(int argc, char *argv[]){
@@ -223,7 +253,7 @@ int main(int argc, char *argv[]){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
 		printf("Hi, this is a C/C++ project made while learning the C language!\n");
 		printf("Keep in mind, this is a BETA BUILD of this project so everything you see is subject to change!\n");
-		printf("The source code is in my Github [@Pessoua] or in the .zip file\n");
+		printf("The source code is in my Github [@Pessoua]\n");
 		printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
 		
 		SmallStop;

@@ -1,34 +1,37 @@
+DOTHAT = gcc -c -O2
+MOVE = move /Y *.o ..
+
 full:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)
 
 test:
-	gcc -c -O2 *.c
+	$(DOTHAT) *.c
 
 time: time!ld.c
-	gcc -c -O2 time!ld.c
+	$(DOTHAT) time!ld.c
 
 inv: inventory!ld.c
-	gcc -c -O2 inventory!ld.c
+	$(DOTHAT) inventory!ld.c
 
 inventory: inventory!ld.c
-	gcc -c -O2 inventory!ld.c
+	$(DOTHAT) inventory!ld.c
 
 set: settings!ld.c
-	gcc -c -O2 settings!ld.c
+	$(DOTHAT) settings!ld.c
 
 settings: settings!ld.c
-	gcc -c -O2 settings!ld.c
+	$(DOTHAT) settings!ld.c
 
 start: start!ld.c
-	gcc -c -O2 start!ld.c
+	$(DOTHAT) start!ld.c
 	
 help: help!ld.c
-	gcc -c -O2 help!ld.c
+	$(DOTHAT) help!ld.c
 
 dll:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)
 	$(MAKE) -C .. dll
 
 clean:

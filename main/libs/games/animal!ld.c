@@ -20,6 +20,10 @@ u8 Animal(bool is_tut){
     short int animal_pos = rand()% 25 + 1, next_animal_move;
     u8 animal_got = 0;
 
+    coords player;
+    player.x = 0;
+    player.y = 0;
+
     if(DEBUG_MODE)
         printf("[DEBUG] _> Starting animal pos? %d\n", animal_pos);
 

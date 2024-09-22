@@ -1,25 +1,28 @@
+DOTHAT = gcc -c -O2
+MOVE = move /Y *.o ..
+
 full:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)	
 
 test:
-	gcc -c -O2 *.c
+	$(DOTHAT) *.c
 
 animal: animal!ld.c
-	gcc -c -O2 animal!ld.c
+	$(DOTHAT) animal!ld.c
 
 crop: crop!ld.c
-	gcc -c -O2 crop!ld.c
+	$(DOTHAT) crop!ld.c
 
 fish: fish!ld.c
-	gcc -c -O2 fish!ld.c
+	$(DOTHAT) fish!ld.c
 
 tree: tree!ld.c
-	gcc -c -O2 tree!ld.c
+	$(DOTHAT) tree!ld.c
 
 dll:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)	
 	$(MAKE) -C .. dll
 
 clean:

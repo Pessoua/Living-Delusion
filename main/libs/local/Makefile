@@ -1,40 +1,43 @@
+DOTHAT = gcc -c -O2
+MOVE = move /Y *.o ..
+
 full:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c	
+	$(MOVE)
 
 test:
-	gcc -c -O2 *.c
+	$(DOTHAT) *.c
 
 teller: teller!ld.c
-	gcc -c -O2 teller!ld.c
+	$(DOTHAT) teller!ld.c
 
 center: center!ld.c
-	gcc -c -O2 center!ld.c
+	$(DOTHAT) center!ld.c
 
 garden: garden!ld.c
-	gcc -c -O2 garden!ld.c
+	$(DOTHAT) garden!ld.c
 
 wizard: wizard!ld.c
-	gcc -c -O2 wizard!ld.c
+	$(DOTHAT) wizard!ld.c
 
 library: library!ld.c
-	gcc -c -O2 library!ld.c
+	$(DOTHAT) library!ld.c
 
 hotel: hotel!ld.c
-	gcc -c -O2 hotel!ld.c
+	$(DOTHAT) hotel!ld.c
 
 mountain: mountain!ld.c
-	gcc -c -O2 mountain!ld.c
+	$(DOTHAT) mountain!ld.c
 
 key: keys!ld.c
-	gcc -c -O2 keys!ld.c
+	$(DOTHAT) keys!ld.c
 
 special: special!ld.c
-	gcc -c -O2 special!ld.c
+	$(DOTHAT) special!ld.c
 
 dll:
-	gcc -c -O2 *.c
-	move /Y *.o ..
+	$(DOTHAT) *.c
+	$(MOVE)
 	$(MAKE) -C .. dll
 
 clean:

@@ -1,52 +1,57 @@
+DOTHAT = gcc -c -O2
+FILE = $(MAKE) -C
+LINK = gcc -shared -o LD_LIB.dll *.o
+MOVE = move /Y LD_LIB.dll ..
+
 run:
-	gcc -c -O2 *.c	
-	$(MAKE) -C art full
-	$(MAKE) -C ext full
-	$(MAKE) -C games full
-	$(MAKE) -C local full
-	$(MAKE) -C nina full
-	$(MAKE) -C os full
-	$(MAKE) -C save full
-	$(MAKE) -C .. obj
-	gcc -shared -o LD_LIB.dll *.o
-	move /Y LD_LIB.dll ..
+	$(DOTHAT) *.c	
+	$(FILE) art full
+	$(FILE) ext full
+	$(FILE) games full
+	$(FILE) local full
+	$(FILE) nina full
+	$(FILE) os full
+	$(FILE) save full
+	$(FILE) .. obj
+	$(LINK)
+	$(MOVE)
 
 art:
-	$(MAKE) -C art full
+	$(FILE) art full
 
 ext: 
-	$(MAKE) -C ext full
+	$(FILE) ext full
 
-extras: extra!ld.c
-	gcc -c -O2 extras!ld.c
+extras: extras!ld.c
+	$(DOTHAT) extras!ld.c
 
 games: 
-	$(MAKE) -C games full
+	$(FILE) games full
 
 local:
-	$(MAKE) -C local full
+	$(FILE) local full
 
 nina: nina!ld.c
-	$(MAKE) -C nina full
+	$(FILE) nina full
 
 os:
-	$(MAKE) -C os full
+	$(FILE) os full
 
 osmanip:
-	$(MAKE) -C os full
+	$(FILE) os full
 
 save:
-	$(MAKE) -C save full
+	$(FILE) save full
 
 style: style!ld.c
-	gcc -c -O2 style!ld.c 
+	$(DOTHAT) style!ld.c 
 
 sys: sys!ld.c
-	gcc -c -O2 sys!ld.c
+	$(DOTHAT) sys!ld.c
 
 dll:
-	gcc -shared -o LD_LIB.dll *.o
-	move /Y LD_LIB.dll ..
+	$(LINK)
+	$(MOVE)
 
 clean:
 	del /s *.o
