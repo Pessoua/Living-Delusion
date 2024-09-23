@@ -23,5 +23,10 @@ test: LDtest.c
 	$(CC) LDtest.o -o test $(LIB)	
 	.\test
 
+test-that:
+	$(MAKE) -C libs/ style
+	$(MAKE) -C libs/ dll
+	$(MAKE) test
+
 clean:
 	del /q *.o 

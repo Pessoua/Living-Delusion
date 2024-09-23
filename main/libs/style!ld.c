@@ -8,14 +8,13 @@ u8 FormatText(Format * extraArgs){
      *
      * typedef struct {
      *    char * msg;
-    *    bool newLine;
-     *     u16 repeatTimes, displaceX, displaceY, modeId;
+     *    bool newLine;
+     *    u16 repeatTimes, displaceX, displaceY, modeId;
      * } Format;
      */
 
     //Git strlen
-    u16 finalStrlen = (u16) extraArgs->displaceX;
-    finalStrlen += strlen(extraArgs->msg) + GetStrlenOfANSI(extraArgs->msg);
+    u16 finalStrlen = strlen(extraArgs->msg) + GetStrlenOfANSI(extraArgs->msg);
 
     //Rand mode has a dependency for diplaceX
     if(extraArgs->displaceX == 0 && extraArgs->modeId == 3)
@@ -29,7 +28,7 @@ u8 FormatText(Format * extraArgs){
         extraArgs->displaceY = rand()% GetTerminalSize("rows") + 1;
 
     //Displace Y
-    if(extraArgs->displaceY){
+    if(extraArgs->displaceY != 0){
         for(u16 i = 0; i < extraArgs->displaceY; i ++)
             printf("\n");
     }
@@ -38,18 +37,21 @@ u8 FormatText(Format * extraArgs){
     if(extraArgs->repeatTimes == 0 && extraArgs->modeId == 3)
         extraArgs->repeatTimes = rand()% 5 + 1;
 
+    if(extraArgs->repeatTimes == 0)
+        extraArgs->repeatTimes ++;
+
     //Repeat ... times
     for(u16 i = 0; i < extraArgs->repeatTimes; i ++){
         switch(extraArgs->modeId){
             //Center and Mid
             case 0:
             case 2:
-                printf("%*s", ((GetTerminalSize("columns") - finalStrlen) / 2) + finalStrlen, extraArgs->msg);
+                printf("%*s", (((GetTerminalSize("columns") - finalStrlen) / 2) + finalStrlen) + extraArgs->displaceX, extraArgs->msg);
                 break;
 
                 //Right
             case 1:
-                printf("%*s", (GetTerminalSize("columns") - strlen(extraArgs->msg)) + finalStrlen, extraArgs->msg);
+                printf("%*s", ((GetTerminalSize("columns") - strlen(extraArgs->msg)) + finalStrlen) + extraArgs->displaceX, extraArgs->msg);
                 break;
 
                 //Rand
@@ -62,6 +64,10 @@ u8 FormatText(Format * extraArgs){
                 return 1;
                 break;
         }
+
+        //need 2 have a newline for each iteration of the loop if we are doing a loop lol
+        if(i < extraArgs->repeatTimes - 1)
+            printf("\n");
     }
 
     //New line?
