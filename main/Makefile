@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = -c -O2 -lstdc++
+FLAGS = -c -O2 -lstdc++ -Wall -Wextra
 LIB = -L. -lLD_LIB
 
 run: LD.c
@@ -19,7 +19,7 @@ obj-dll:
 	$(MAKE) -C libs/ dll
 
 test: LDtest.c
-	$(CC) $(FLAGS) LDtest.c
+	$(CC) $(FLAGS) -Wall -Wextra LDtest.c
 	$(CC) LDtest.o -o test $(LIB)	
 	.\test
 

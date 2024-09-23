@@ -5,18 +5,20 @@ u16 GetStrlenOfANSI(const char * line);
 
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){ 
-    CenterText("Hello World!");
-
     Format test;
 
-    test.msg = "Hello World!";
+    printf("erm what");
+
+    test.msg = "\x1b[31mBeep boop\x1b[0m";
     test.newLine = true;
-    test.repeatTimes = 1;
-    test.displaceX = -11;
+    test.repeatTimes = 0;
+    test.displaceX = -8;
     test.displaceY = 0;
-    test.modeId = 0;
+    test.modeId = 1;
    
-    printf("%d", FormatText(&test));
+    //everything works :D
+
+    FormatText(&test);
 
     return;
 }

@@ -28,7 +28,7 @@ u8 FormatText(Format * extraArgs){
         extraArgs->displaceY = rand()% GetTerminalSize("rows") + 1;
 
     //Displace Y
-    if(extraArgs->displaceY != 0){
+    if(extraArgs->displaceY > 0){
         for(u16 i = 0; i < extraArgs->displaceY; i ++)
             printf("\n");
     }
@@ -37,21 +37,25 @@ u8 FormatText(Format * extraArgs){
     if(extraArgs->repeatTimes == 0 && extraArgs->modeId == 3)
         extraArgs->repeatTimes = rand()% 5 + 1;
 
-    if(extraArgs->repeatTimes == 0)
-        extraArgs->repeatTimes ++;
+    if(extraArgs->repeatTimes < 1)
+        extraArgs->repeatTimes = 1;
+
+    //Cannot have negative Y displacement for obvious reasons
+    if(extraArgs->displaceY < 1)
+        extraArgs->displaceY = 1;
 
     //Repeat ... times
     for(u16 i = 0; i < extraArgs->repeatTimes; i ++){
         switch(extraArgs->modeId){
             //Center and Mid
             case 0:
-            case 2:
+            case 2:                
                 printf("%*s", (((GetTerminalSize("columns") - finalStrlen) / 2) + finalStrlen) + extraArgs->displaceX, extraArgs->msg);
                 break;
 
                 //Right
             case 1:
-                printf("%*s", ((GetTerminalSize("columns") - strlen(extraArgs->msg)) + finalStrlen) + extraArgs->displaceX, extraArgs->msg);
+                printf("%*s", (i32)((GetTerminalSize("columns") - strlen(extraArgs->msg)) + finalStrlen) + extraArgs->displaceX, extraArgs->msg);
                 break;
 
                 //Rand
@@ -87,7 +91,7 @@ void CenterText(const char * line){
 //Same has function above but it puts it in the right side of the screen
 void RightText(const char * line){
     u16 actualStrlen = strlen(line) + GetStrlenOfANSI(line);
-    printf("%*s\n", (GetTerminalSize("columns") - strlen(line)) + actualStrlen, line);
+    printf("%*s\n", (i32)(GetTerminalSize("columns") - strlen(line)) + actualStrlen, line);
     return;
 }
 

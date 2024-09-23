@@ -159,7 +159,7 @@ void TipOfTheDay(void){
             break;
 
         case 5:
-            MidScreenText("Use, uhh, whatever keyblinds your terminal emulator uses :guy_smile_giving_tumbs_up:");
+            MidScreenText("Use, uhh, whatever keyblinds your terminal emulator uses to zoom in if you need to! :guy_smile_giving_tumbs_up:");
             break;
 
         case 6:
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]){
 
                 //Get version
                 case 'v':
-                    printf("\x1b[33mVersion - Public Beta 2\x1b[0m\n");
+                    printf("\x1b[33mVersion - Public Beta 2 (0.2.0)\x1b[0m\n");
                     break;
 
                 default:

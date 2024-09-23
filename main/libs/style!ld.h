@@ -5,7 +5,8 @@
 typedef struct {
     char * msg;
     bool newLine;
-    u16 repeatTimes, displaceX, displaceY, modeId;
+    i32 repeatTimes, displaceX, displaceY;
+    u8 modeId;
 } Format;
 
 //Advanced w optional args

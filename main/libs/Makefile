@@ -1,4 +1,4 @@
-DOTHAT = gcc -c -O2
+DOTHAT = gcc -c -O2 -Wall -Wextra
 FILE = $(MAKE) -C
 LINK = gcc -shared -o LD_LIB.dll *.o
 MOVE = move /Y LD_LIB.dll ..
