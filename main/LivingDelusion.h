@@ -8,7 +8,7 @@
  * Includes ALL of the sub-libraries that will be used (and the sub-sub libraries inside the sub libraries)
  * Also includes some global macros, variables, typedefs from stdint
  *
- */ 
+ */
 
 //standart libs here
 #include <stdlib.h>
