@@ -11,13 +11,21 @@ extrasReturn * extras(char * watCommand){
     extrasReturn * funRet = malloc(sizeof(extrasReturn));
     funRet->errorType = 0;
 
+    printf("PASSED 1\n");
+
     //CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
 
-    char * context1;
-    char * context2;
+    char * context1 = NULL;
+    char * context2 = NULL;
+
+    char * command = NULL;
+
+    printf("PASSED 1\n");
 
     //do stuff with output (lul)
-    char * command = strtok_r(watCommand, " ", &context1);
+    command = strtok_r(watCommand, " ", &context1); //strtok has an error btw
+
+    printf("PASSED 1\n");
 
     //Use FOR loop to get the LINE where the command lives
     i16 watFunction = -1;
@@ -27,6 +35,8 @@ extrasReturn * extras(char * watCommand){
     char * watFlags = (char *)malloc(sizeof(char) * 25);
     char * watArgumentType = (char *)malloc(sizeof(char) * 25);
     //Yes you are limited to 25 flags and 25 arguments.
+
+    printf("PASSED 1\n");
 
     //USE FILE FROM config/ on LOCALAPPDATA
     FILE * fcmd = fopen("commands.csv", "r");
@@ -38,10 +48,15 @@ extrasReturn * extras(char * watCommand){
      * [command_name], [flags (flags are ALWAYS in caps], [argument types (argument types are ALWAYS in lowercase)]
      */
 
+    printf("PASSED 1\n");
+
     u16 curLine = 0;
     char nextCmdLine [1024] = "abc";
 
+    printf("PASSED 2\n");
+
     while(fgets(nextCmdLine, 1024, fcmd) != NULL){
+        nextCmdLine[strlen(nextCmdLine) - 1] = '\0';
         curLine ++;
 
         char * tokenToCheck = strtok_r(nextCmdLine, ",", &context2);
@@ -77,6 +92,8 @@ extrasReturn * extras(char * watCommand){
         }
     }
 
+    printf("PASSED 3\n");
+
     //Get parameters and flags
     
     fclose(fcmd);
@@ -91,8 +108,12 @@ extrasReturn * extras(char * watCommand){
     char * arguments [numArgs];
     u16 curFlag = 0, curArg = 0;
 
+    printf("PASSED 4\n");
+
     //Continue with flag searchinG
     while(command != NULL){
+        printf("%s\n", flags); //temporary 
+
         bool isValid = false;
         command = strtok_r(NULL, " ", &context1);
 

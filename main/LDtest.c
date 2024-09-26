@@ -5,22 +5,11 @@ void DoFuniHere(void);
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){ 
 
-    char * str = (char *)malloc(sizeof(char) * 25);
- 
-    strcpy(str, "hello");
-    strcat(str, " world");
+    extrasReturn * catchNextExtras;
 
-    printf("%lld\n", sizeof(str));
+    catchNextExtras = extras("cmd1 -Y"); 
 
-    char * newStr = (char *)realloc(str, sizeof(char) * strlen(str));
-    str = newStr;
-
-    printf("%lld\n", sizeof(str));
-
-    printf("str -> %s\n", str);
-
-
-    free(str);
+    printf("Error -> %d\n", catchNextExtras->errorType); 
 
     return;
 }

@@ -24,7 +24,7 @@ test: LDtest.c
 	.\test
 
 test-that:
-	$(MAKE) -C libs/ style
+	$(MAKE) -C libs/ extras 
 	$(MAKE) -C libs/ dll
 	$(MAKE) test
 
