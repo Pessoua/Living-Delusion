@@ -23,7 +23,7 @@ typedef struct {
 
 } extrasReturn;
 
-extrasReturn * extras(const char * watCommand);
+extrasReturn * extras(char * watCommand);
 
 //Functions that return a struct need their own functions to return the pointer
 

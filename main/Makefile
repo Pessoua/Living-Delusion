@@ -19,7 +19,7 @@ obj-dll:
 	$(MAKE) -C libs/ dll
 
 test: LDtest.c
-	$(CC) $(FLAGS) -Wall -Wextra LDtest.c
+	$(CC) $(FLAGS) LDtest.c
 	$(CC) LDtest.o -o test $(LIB)	
 	.\test
 
