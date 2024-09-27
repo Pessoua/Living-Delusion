@@ -15,17 +15,17 @@ extrasReturn * extras(char * watCommand){
 
     //CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
 
-    char * context1 = NULL;
-    char * context2 = NULL;
-
-    char * command = NULL;
-
-    printf("PASSED 1\n");
+    char *context1 = NULL, *context2 = NULL, *command; 
 
     //do stuff with output (lul)
     command = strtok_r(watCommand, " ", &context1); //strtok has an error btw
 
-    printf("PASSED 1\n");
+    if (command == NULL) {
+
+        printf("strtok_r error: %s\n", strerror(errno));
+
+        // Handle error
+    }
 
     //Use FOR loop to get the LINE where the command lives
     i16 watFunction = -1;
@@ -36,8 +36,6 @@ extrasReturn * extras(char * watCommand){
     char * watArgumentType = (char *)malloc(sizeof(char) * 25);
     //Yes you are limited to 25 flags and 25 arguments.
 
-    printf("PASSED 1\n");
-
     //USE FILE FROM config/ on LOCALAPPDATA
     FILE * fcmd = fopen("commands.csv", "r");
 
@@ -45,11 +43,9 @@ extrasReturn * extras(char * watCommand){
      * Heres a tiny example of what a line inside commands.csv will look like
      * command, T, Y, i, f, b
      *
-     * [command_name], [flags (flags are ALWAYS in caps], [argument types (argument types are ALWAYS in lowercase)]
+     * [command_name], [flags (flags are ALWAYS in uppercase], [argument types (argument types are ALWAYS in lowercase)]
      */
-
-    printf("PASSED 1\n");
-
+    
     u16 curLine = 0;
     char nextCmdLine [1024] = "abc";
 
@@ -64,31 +60,34 @@ extrasReturn * extras(char * watCommand){
         //Start getting flags and argument types from valid command
         if(strcmp(tokenToCheck, command)== 0){
             watFunction = curLine;
+            printf("watFunction? %d\n", watFunction);
             while(tokenToCheck != NULL){
                 tokenToCheck = strtok_r(NULL, ",", &context2);
 
+                if(tokenToCheck == NULL)
+                    break;
+
+                printf("tokenToCheck -> %s\n", tokenToCheck);
+                printf("tokenToCheck[0] -> %c\n", tokenToCheck[0]);
+
+                printf("PASSED LOOP\n");
+
                 //Its a flag
                 if(isupper(tokenToCheck[0])){
-                    if(numFlags == 0)
-                        strcpy(watFlags, tokenToCheck);
+                    printf("tokenToCheck[0] -> %c\n", tokenToCheck[0]);
+                    printf("numFlags -> %d\n", numFlags);
 
-                    else
-                        strcat(watFlags, tokenToCheck);
-
+                    watFlags[numFlags] = tokenToCheck[0];
                     numFlags ++;
 
                 //Its an argument
                 } else {
-                    if(numArgs == 0)
-                        strcpy(watArgumentType, tokenToCheck);
-
-                    else
-                        strcat(watArgumentType, tokenToCheck);
-
+                    watArgumentType[numArgs] = tokenToCheck[0];
                     numArgs ++;
 
                 }
             }
+            break;
         }
     }
 
@@ -119,6 +118,9 @@ extrasReturn * extras(char * watCommand){
 
         //Is a flag.
         if(command[0] == '-'){
+
+            printf("command -> %s\n", command);
+            printf("watFlags -> %s\n", watFlags);
 
             //Too many flags!
             if(curFlag > numFlags){

@@ -7,7 +7,11 @@ void DoFuniHere(void){
 
     extrasReturn * catchNextExtras;
 
-    catchNextExtras = extras("cmd1 -Y"); 
+    //need to do tis else it wont malloc the str and the str will be READ ONLY
+    char *cmd = strdup("cmd1 -Y");
+    catchNextExtras = extras(cmd); 
+
+    //TODO: Erm, fix the fucking dynamic array for flags and argument types lul
 
     printf("Error -> %d\n", catchNextExtras->errorType); 
 
