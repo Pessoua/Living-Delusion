@@ -8,11 +8,12 @@ void DoFuniHere(void){
     extrasReturn * catchNextExtras;
 
     //need to do tis else it wont malloc the str and the str will be READ ONLY
-    char *cmd = strdup("cmd1 -Y");
+    char *cmd = strdup("cmd1 -Y 2 12.1");
     catchNextExtras = extras(cmd); 
 
-    //TODO: Erm, fix the fucking dynamic array for flags and argument types lul
-
+    //TODO: global flags, like "-!A" (- is flag indicator, ! is global indicator, A is what flag we want)
+    //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value)) 
+    
     printf("Error -> %d\n", catchNextExtras->errorType); 
 
     return;
