@@ -8,7 +8,12 @@ void DoFuniHere(void){
     extrasReturn * catchNextExtras;
 
     //need to do tis else it wont malloc the str and the str will be READ ONLY
-    char *cmd = strdup("cmd1 -!D -Y 2 12.1");
+    char *cmd = strdup("cmd1 -!D -Y \"12 12\"");
+        
+    /*for(int i = 0; i < strlen(cmd); i ++)
+        printf("cmd[i]? %c\n", cmd[i]);
+
+    printf("cmd -> %s\n", cmd);*/
     catchNextExtras = extras(cmd); 
 
     //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value)) 

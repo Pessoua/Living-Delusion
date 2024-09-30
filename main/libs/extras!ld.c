@@ -108,7 +108,7 @@ extrasReturn * extras(char * watCommand){
 
     //Optional arg stuff
     u8 optArgsCount = 1;
-    char * optinalArgs = (char *)malloc(sizeof(char));
+    char * optionalArgs = (char *)malloc(sizeof(char));
 
     //Continue with flag / argument searching
     while(true){
@@ -159,12 +159,12 @@ extrasReturn * extras(char * watCommand){
                         }
 
                         //Set (new) optional argument
-                        char * optinalArgsBckp = (char *)realloc(optinalArgs, sizeof(char) * (optArgsCount + strlen(command) + 1));
+                        char * optionalArgsBckp = (char *)realloc(optionalArgs, sizeof(char) * (optArgsCount + strlen(command) + 1));
                         strcat(optionalArgsBckp, ",");
                         strcat(optionalArgsBckp, command);
 
-                        optinalArgs = optinalArgsBckp;
-                        free(optinalArgsBckp);
+                        optionalArgs = optionalArgsBckp;
+                        free(optionalArgsBckp);
 
                         optArgsCount ++;
                         break;
@@ -231,8 +231,24 @@ extrasReturn * extras(char * watCommand){
 
                 case 's':   //string
                     //needs to be like "string" lol
-                    
-                    
+                   
+                    /*
+                     * get number of characters left for next " (aka end)
+                     * see if the str is actually valid
+                     * displace context1 ptr
+                     * malloc new array, strcpy the new array into the other array
+                     */
+
+                    //Checking if str is valid (start)
+                    if(command[0] != '\"')
+                        isValidArg = false;
+    
+                    for(u16 i = 1; ; i ++){
+                        if(command[i] == '\"')
+                            //reached end
+                        
+                        else if(command[i] == '\0')
+                    }
 
                     break;
 
@@ -302,7 +318,11 @@ extrasReturn * extras(char * watCommand){
 
             } else if(!reachedVoid){
                 printf("PASSED reachedVoid check\n");
-                arguments[curArg] = command;
+
+                //We already modify the arguments array inside the string case so no need for this
+                if(watArgumentType[curArg] != 's')
+                    arguments[curArg] = command;
+
                 curArg ++;
                 printf("passed increment + strcpy\n");
             }
@@ -327,7 +347,7 @@ extrasReturn * extras(char * watCommand){
             break;
     }
 
-    free(optinalArgs);
+    free(optionalArgs);
 
     printf("watFlags -> %s\n", watFlags);
     printf("watArgumentType -> %s\n", watArgumentType);
