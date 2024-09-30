@@ -13,6 +13,6 @@ i64 IntInp(void);
 bool RunThisAtStart(void);
 
 //Exit manager
-void ExitEarly(u8 errCode, char * errMsg);
+void ExitEarly(u16 errCode, char * errMsg);
 
 #endif /* LD_SYS_H */

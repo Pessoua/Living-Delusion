@@ -144,7 +144,7 @@ bool RunThisAtStart(void){
     return pathPreviouslyExist;
 }
 
-void ExitEarly(u8 errCode, char * errMsg){
+void ExitEarly(u16 errCode, char * errMsg){
 
     CLR;
     if(DEBUG_MODE){

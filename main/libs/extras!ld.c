@@ -2,12 +2,14 @@
 
 /* 
  * Instead of extras having the like scanf thing we make it so its a function that ONLY takes input like:
- * Extras(const char * command);
+ * extras(thisCommand);
  * And also make it so extras IS the troubleshooting manual too (from ../../tools)
  */
 
 extrasReturn * extras(char * watCommand){
     
+    bool debugMode = false;
+
     extrasReturn * funRet = malloc(sizeof(extrasReturn));
     funRet->errorType = 0;
 
@@ -18,13 +20,11 @@ extrasReturn * extras(char * watCommand){
     char *context1 = NULL, *context2 = NULL, *command; 
 
     //do stuff with output (lul)
-    command = strtok_r(watCommand, " ", &context1); //strtok has an error btw
+    command = strtok_r(watCommand, " ", &context1);
 
-    if (command == NULL) {
-
-        printf("strtok_r error: %s\n", strerror(errno));
-
-        // Handle error
+    if(command == NULL){
+        funRet->errorType = 5;
+        return funRet;
     }
 
     //Use FOR loop to get the LINE where the command lives
@@ -38,9 +38,8 @@ extrasReturn * extras(char * watCommand){
 
     //USE FILE FROM config/ on LOCALAPPDATA
     FILE * fcmd = fopen("commands.csv", "r");
-    if(fcmd == NULL){
-        //handle file err.
-    }
+    if(fcmd == NULL)
+        ExitEarly(701, "Couldnt find commands.csv, please re-make your LOCALAPPDATA"); 
     
     /*
      * Heres a tiny example of what a line inside commands.csv will look like
@@ -54,6 +53,7 @@ extrasReturn * extras(char * watCommand){
 
     printf("PASSED 2\n");
 
+    //Entering file and getting stuff to check
     while(fgets(nextCmdLine, 1024, fcmd) != NULL){
         nextCmdLine[strlen(nextCmdLine) - 1] = '\0';
         curLine ++;
@@ -73,7 +73,7 @@ extrasReturn * extras(char * watCommand){
                 if(isupper(tokenToCheck[0])){
                     watFlags[numFlags] = tokenToCheck[0];
                     numFlags ++;
-
+                    
                 //Its an argument
                 } else {
                     watArgumentType[numArgs] = tokenToCheck[0];
@@ -81,15 +81,13 @@ extrasReturn * extras(char * watCommand){
 
                 }
             }
-            free(tokenToCheck);
             break;
+
         }
     }
 
     printf("PASSED 3\n");
 
-    //Get parameters and flags
-    
     fclose(fcmd);
     
     if(watFunction == -1){
@@ -100,14 +98,19 @@ extrasReturn * extras(char * watCommand){
     //These one store the real user input thats gonna be used later
     char flags [numFlags];
     char * arguments [numArgs];
+    
     for(int i = 0; i < numArgs; i ++)
         arguments[i] = NULL;
 
-    u16 curFlag = 0, curArg = 0;
+    u8 curFlag = 0, curArg = 0;
 
     printf("PASSED 4\n");
 
-    //Continue with flag searchinG
+    //Optional arg stuff
+    u8 optArgsCount = 1;
+    char * optinalArgs = (char *)malloc(sizeof(char));
+
+    //Continue with flag / argument searching
     while(true){
         bool isValid = false;   
         command = strtok_r(NULL, " ", &context1);
@@ -134,17 +137,58 @@ extrasReturn * extras(char * watCommand){
                 }
             }
 
-            //Add new flag            
-            if(isValid){
-                flags[curFlag] = command[1];
-                curFlag ++;
+            //Is global
+            if(command[1] == '!'){
+                //Global flags dont count has flags because they dont interact with the functions themselfs
+                switch(command[2]){
+                    case 'D':   //Debug mode
+                        debugMode = true;
+                        printf("[EXT DEBUG] _> debug mode activated\n");
+                        break;
 
-                //Invalid Flag.
+                    case 'O':  //Optional Arguments
+                        //Get what argument to make optional
+                        command = strtok_r(NULL, " ", &context1);
+
+                        //check if int is valid for argument number
+                        for(u16 i = 0; i < strlen(command); i ++){
+                            if(!isdigit(command[i])){
+                                funRet->errorType = 6;                            
+                                return funRet;
+                            }
+                        }
+
+                        //Set (new) optional argument
+                        char * optinalArgsBckp = (char *)realloc(optinalArgs, sizeof(char) * (optArgsCount + strlen(command) + 1));
+                        strcat(optionalArgsBckp, ",");
+                        strcat(optionalArgsBckp, command);
+
+                        optinalArgs = optinalArgsBckp;
+                        free(optinalArgsBckp);
+
+                        optArgsCount ++;
+                        break;
+
+                    default:
+                        funRet->errorType = 2;
+                        return funRet;
+                        break;
+                }
+
             } else {
-                funRet->errorType = 2;
-                return funRet;
-            }
+                //Add new flag            
+                if(isValid){
+                    flags[curFlag] = command[1];
+                    curFlag ++;
 
+                    //Invalid Flag.
+                } else {
+                    funRet->errorType = 2;
+                    return funRet;
+                }
+                
+            }
+        
         //Its an argument
         } else {
 
@@ -162,11 +206,8 @@ extrasReturn * extras(char * watCommand){
                 case 'i':   //int
 
                     for(u16 i = 0; i < strlen(command); i ++){
-                        printf("PASSED L1\n");
                         if(!isdigit(command[i])){
-                            printf("PASSED L2\n");
                             if(i == 0){
-                                printf("PASSED L3\n");
                                 if(command[0] != '-'){        
                                     isValidArg = false;
                                     break;
@@ -179,7 +220,6 @@ extrasReturn * extras(char * watCommand){
                         }
                     }
                     
-                    printf("PASSED L BREAK\n");
                     break;
 
                 case 'c':   //char
@@ -190,7 +230,10 @@ extrasReturn * extras(char * watCommand){
                     break;
 
                 case 's':   //string
-                    //dont need to check for anything :P
+                    //needs to be like "string" lol
+                    
+                    
+
                     break;
 
                 case 'f':   //float
@@ -273,18 +316,25 @@ extrasReturn * extras(char * watCommand){
     //Parsing this command with the csv line
     switch(watFunction){
         case 1:
+            //Parse flags
+            
+            //Parse arguments
+
+            //Call funtion
             break;
 
         default:
             break;
     }
 
+    free(optinalArgs);
+
     printf("watFlags -> %s\n", watFlags);
     printf("watArgumentType -> %s\n", watArgumentType);
 
-    for(int i = 0; i < numArgs; i ++)
-        printf("arguments[i]? %s\n", arguments[i]);
-
+    if(debugMode)
+        for(int i = 0; i < numArgs; i ++)
+            printf("[EXT DEBUG] _> arguments[i]? %s\n", arguments[i]);
 
     return funRet;
 }
