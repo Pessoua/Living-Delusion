@@ -1,6 +1,7 @@
 #include "LivingDelusion.h"
 
 void DoFuniHere(void);
+void DoFuniHereBckp(void);
 
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){ 
@@ -8,17 +9,30 @@ void DoFuniHere(void){
     extrasReturn * catchNextExtras;
 
     //need to do tis else it wont malloc the str and the str will be READ ONLY
-    char *cmd = strdup("cmd1 -!D -Y \"12 12\"");
-        
-    /*for(int i = 0; i < strlen(cmd); i ++)
-        printf("cmd[i]? %c\n", cmd[i]);
-
-    printf("cmd -> %s\n", cmd);*/
+    char *cmd = strdup("cmd1 -!D -Y \"12 a 12\"");
     catchNextExtras = extras(cmd); 
 
-    //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value)) 
+    //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value))
+    //TODO: finish string handler
     
     printf("Error -> %d\n", catchNextExtras->errorType); 
+
+    return;
+}
+
+void DoFuniHereBckp(void){
+
+    char abc [50] = "abs\"\"";
+
+    for(int i = 0; i < strlen(abc); i ++){
+        printf("abc[i] -> %c\n", abc[i]);
+        if(abc[i] == '\"')
+            printf("YES! pos %d\n", i);
+
+    }
+
+    if(abc[strlen(abc) - 1] == '\"')
+        printf("YES!\n");
 
     return;
 }
@@ -33,6 +47,8 @@ int main(void){
     DEBUG_MODE = true;
 
     DoFuniHere();
+    
+    //DoFuniHereBckp();
 
     return 0;
 } 

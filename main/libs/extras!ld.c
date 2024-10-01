@@ -66,6 +66,8 @@ extrasReturn * extras(char * watCommand){
             while(tokenToCheck != NULL){
                 tokenToCheck = strtok_r(NULL, ",", &context2); 
 
+                //TODO: does not detect the full string!
+
                 if(tokenToCheck == NULL)
                     break;
 
@@ -101,6 +103,9 @@ extrasReturn * extras(char * watCommand){
     
     for(int i = 0; i < numArgs; i ++)
         arguments[i] = NULL;
+
+    //TODO: remove this shit lol
+    numArgs = 4;
 
     u8 curFlag = 0, curArg = 0;
 
@@ -231,23 +236,38 @@ extrasReturn * extras(char * watCommand){
 
                 case 's':   //string
                     //needs to be like "string" lol
-                   
-                    /*
-                     * get number of characters left for next " (aka end)
-                     * see if the str is actually valid
-                     * displace context1 ptr
-                     * malloc new array, strcpy the new array into the other array
-                     */
 
                     //Checking if str is valid (start)
                     if(command[0] != '\"')
                         isValidArg = false;
-    
-                    for(u16 i = 1; ; i ++){
-                        if(command[i] == '\"')
-                            //reached end
-                        
-                        else if(command[i] == '\0')
+  
+                    if(isValidArg){ 
+                        //Holds the whole string to then pass into arguments[curArg]
+                        char * reallocedArg = (char *)malloc(sizeof(char) * strlen(command) + 1);
+                        strcpy(reallocedArg, command);
+
+                        //strtok everything lol
+                        while(true){
+                            //Valid end
+                            if(command[strlen(command) - 1] == '\"'){
+                                arguments[curArg] = reallocedArg; 
+                                break;
+                            }
+
+                            command = strtok_r(NULL, " ", &context1);
+
+                            //no string end lol
+                            if(command == NULL){
+                                isValidArg = false;
+                                break;
+                            }
+
+                            //Scary, but we resize the array that holds the string inputted
+                            char * tempReallocedArg = (char *)realloc(reallocedArg, sizeof(char) * (strlen(reallocedArg) + strlen(command) + 1));
+                            reallocedArg = tempReallocedArg;
+                            free(tempReallocedArg);
+                        }
+                        free(reallocedArg);
                     }
 
                     break;
