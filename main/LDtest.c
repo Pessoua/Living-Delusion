@@ -39,8 +39,8 @@ int main(void){
 
     DEBUG_MODE = true;
 
-    //DoFuniHere(); 
-    DoFuniHereBckp();
+    DoFuniHere(); 
+    //DoFuniHereBckp();
 
     return 0;
 } 

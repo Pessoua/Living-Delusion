@@ -8,7 +8,7 @@
 
 extrasReturn * extras(char * watCommand){
     
-    bool debugMode = false;
+    bool debugMode = false, isContext3Update = true;
 
     extrasReturn * funRet = malloc(sizeof(extrasReturn));
     funRet->errorType = 0;
@@ -17,7 +17,7 @@ extrasReturn * extras(char * watCommand){
 
     //CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
 
-    char *context1 = NULL, *context2 = NULL, *command; 
+    char *context1 = NULL, *context2 = NULL, *context3 = NULL, *context4 = NULL, *command; 
 
     //do stuff with output (lul)
     command = strtok_r(watCommand, " ", &context1);
@@ -99,10 +99,7 @@ extrasReturn * extras(char * watCommand){
 
     //These one store the real user input thats gonna be used later
     char flags [numFlags];
-    char * arguments [numArgs];
-    
-    for(int i = 0; i < numArgs; i ++)
-        arguments[i] = NULL;
+    char arguments [numArgs] [4096];
 
     //TODO: remove this shit lol
     numArgs = 6;
@@ -117,13 +114,24 @@ extrasReturn * extras(char * watCommand){
 
     //Continue with flag / argument searching
     while(true){
-        bool isValid = false;   
-        command = strtok_r(NULL, " ", &context1);
+        bool isValid = false;  
 
-        if(command == NULL)
-            break;
+        //check if its a possible start of a string (dont displace context buffer if it is)
+        if(context1[0] != '\"' || watArgumentType[curArg] != 's'){
+            command = strtok_r(NULL, " ", &context1);
 
-        printf("command -> %s\n", command);
+            printf("whats inside context1? %s\n", context1);
+
+            if(command == NULL)
+                break;
+
+            printf("command -> %s\n", command);
+
+        } else {
+            context4 = (char *)malloc(sizeof(char) * strlen(context1));
+            strcpy(context4, context1);
+            command = strtok_r(NULL, " ", &context4);
+        }
 
         //Is a flag.
         if(command[0] == '-'){
@@ -197,6 +205,14 @@ extrasReturn * extras(char * watCommand){
         //Its an argument
         } else {
 
+            /*if(watArgumentType[curArg] == 's'){
+                if(isContext3Update){
+                    strtok_r(watCommand, "\"", &context3);
+                    isContext3Update = false;
+                } else
+                    strtok_r(NULL, "\"", &context3);
+            }*/
+
             printf("PASSED NEXT ARG\n");
             printf("watArgumentType[curArg]? %c\n", watArgumentType[curArg]);
 
@@ -238,10 +254,32 @@ extrasReturn * extras(char * watCommand){
                     //needs to be like "string" lol
 
                     //Checking if str is valid (start)
-                    if(command[0] != '\"')
+                    
+                    printf("context1? %s\n", context1);
+
+                    char * getStr = strtok_r(context1, "\"", &context3);
+                    printf("getStr? %s\n", getStr);
+
+                    if(getStr[strlen(getStr) - 1] != '\"')
                         isValidArg = false;
   
-                    if(isValidArg){ 
+                    else 
+                         strcpy(arguments[curArg], getStr);
+
+                    printf("arguments[curArg]? %s\n", arguments[curArg]);
+
+                        /*char * nextStr = strtok_r(NULL, "\"", &context3); //context3 is only for strings lol
+
+                        printf("PASSED ISVALID CHECK\n");
+
+                        if(nextStr == NULL){
+                            isValidArg = false;
+                            break;
+
+                        } else {
+                            arguments[curArg] = (char *)nextStr;
+                        }
+
                         printf("PASSED isValidArg check 1!\n");
                         //Holds the whole string to then pass into arguments[curArg]
                         char * reallocedArg = (char *)malloc(sizeof(char) * strlen(command) + 1);
@@ -251,10 +289,12 @@ extrasReturn * extras(char * watCommand){
                         //strtok everything lol
                         while(true){
                             printf("INSIDE true loop\n");
+                            printf("reallocedArg -> %s|\n\n", reallocedArg);
                             //Valid end
-                            if(command[strlen(command) - 1] == '\"'){
+                            if(reallocedArg[strlen(reallocedArg) - 1] == '\"'){
                                 reallocedArg[strlen(reallocedArg) - 1] = '\0'; //dont want the ending '"'
-                                arguments[curArg] = reallocedArg; 
+                                printf("PASSING TO STRCPY\n");
+                                arguments[curArg] = *reallocedArg; //this? bad. 
                                 break;
                             }
 
@@ -277,13 +317,11 @@ extrasReturn * extras(char * watCommand){
                             strcat(tempReallocedArg, " ");
                             strcat(tempReallocedArg, command);
                             printf("tempReallocedArg -> %s\n", tempReallocedArg);
+                            reallocedArg = NULL;
                             reallocedArg = tempReallocedArg;
                             free(tempReallocedArg);
                             tempReallocedArg = NULL;
-                        }
-
-                        free(reallocedArg);
-                    }
+                        }*/
 
                     break;
 
@@ -356,7 +394,7 @@ extrasReturn * extras(char * watCommand){
 
                 //We already modify the arguments array inside the string case so no need for this
                 if(watArgumentType[curArg] != 's')
-                    arguments[curArg] = command;
+                    strcpy(arguments[curArg], command);
 
                 curArg ++;
                 printf("passed increment + strcpy\n");
