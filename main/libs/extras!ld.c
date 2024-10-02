@@ -105,7 +105,7 @@ extrasReturn * extras(char * watCommand){
         arguments[i] = NULL;
 
     //TODO: remove this shit lol
-    numArgs = 4;
+    numArgs = 6;
 
     u8 curFlag = 0, curArg = 0;
 
@@ -242,31 +242,46 @@ extrasReturn * extras(char * watCommand){
                         isValidArg = false;
   
                     if(isValidArg){ 
+                        printf("PASSED isValidArg check 1!\n");
                         //Holds the whole string to then pass into arguments[curArg]
                         char * reallocedArg = (char *)malloc(sizeof(char) * strlen(command) + 1);
-                        strcpy(reallocedArg, command);
+                        for(u32 i = 1; i < (u32) strlen(command); i ++)    //dont want the starting '"'
+                            reallocedArg[i - 1] = command[i];
 
                         //strtok everything lol
                         while(true){
+                            printf("INSIDE true loop\n");
                             //Valid end
                             if(command[strlen(command) - 1] == '\"'){
+                                reallocedArg[strlen(reallocedArg) - 1] = '\0'; //dont want the ending '"'
                                 arguments[curArg] = reallocedArg; 
                                 break;
                             }
 
+                            printf("GOING TO STRTOK_R!\n");
                             command = strtok_r(NULL, " ", &context1);
 
+                            printf("GOING TO NULL CHECK!\n");
+                            printf("command -> %s\n", command);
                             //no string end lol
                             if(command == NULL){
                                 isValidArg = false;
                                 break;
                             }
 
+                            printf("GOING TO REALLOC!\n");
+                            printf("reallocedArg -> %s|\n\n", reallocedArg);
+                            printf("strlen(reallocedArg) -> %lld / strlen(command) -> %lld\n", strlen(reallocedArg), strlen(command));
                             //Scary, but we resize the array that holds the string inputted
-                            char * tempReallocedArg = (char *)realloc(reallocedArg, sizeof(char) * (strlen(reallocedArg) + strlen(command) + 1));
+                            char * tempReallocedArg = (char *)realloc(reallocedArg, sizeof(char) * (u32)(strlen(reallocedArg) + strlen(command) + 1));
+                            strcat(tempReallocedArg, " ");
+                            strcat(tempReallocedArg, command);
+                            printf("tempReallocedArg -> %s\n", tempReallocedArg);
                             reallocedArg = tempReallocedArg;
                             free(tempReallocedArg);
+                            tempReallocedArg = NULL;
                         }
+
                         free(reallocedArg);
                     }
 

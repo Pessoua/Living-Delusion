@@ -9,7 +9,7 @@ void DoFuniHere(void){
     extrasReturn * catchNextExtras;
 
     //need to do tis else it wont malloc the str and the str will be READ ONLY
-    char *cmd = strdup("cmd1 -!D -Y \"12 a 12\"");
+    char *cmd = strdup("cmd1 -!D -Y \"12 a\"");
     catchNextExtras = extras(cmd); 
 
     //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value))
@@ -22,17 +22,10 @@ void DoFuniHere(void){
 
 void DoFuniHereBckp(void){
 
-    char abc [50] = "abs\"\"";
-
-    for(int i = 0; i < strlen(abc); i ++){
-        printf("abc[i] -> %c\n", abc[i]);
-        if(abc[i] == '\"')
-            printf("YES! pos %d\n", i);
-
-    }
-
-    if(abc[strlen(abc) - 1] == '\"')
-        printf("YES!\n");
+    char temp [100] = { '\0' };
+    fflush(stdin);
+    fgets(temp, 100, stdin);
+    printf("temp? %s\n", temp);
 
     return;
 }
@@ -46,9 +39,8 @@ int main(void){
 
     DEBUG_MODE = true;
 
-    DoFuniHere();
-    
-    //DoFuniHereBckp();
+    //DoFuniHere(); 
+    DoFuniHereBckp();
 
     return 0;
 } 
