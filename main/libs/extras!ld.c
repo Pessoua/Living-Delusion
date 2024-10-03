@@ -11,6 +11,8 @@ extrasReturn * extras(char * watCommand){
     bool debugMode = false;
 
     extrasReturn * funRet = malloc(sizeof(extrasReturn));
+    if(extrasReturn == NULL)
+        exitEarly(101, "Ran out of memory!");
     funRet->errorType = 0;
 
     //TODO: CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
@@ -120,6 +122,8 @@ extrasReturn * extras(char * watCommand){
 
             if(command == NULL)
                 break;
+
+            free(context4);
         }
 
         //Is a flag.

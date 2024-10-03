@@ -105,9 +105,11 @@
 
 //Macros that arent OS dependant
 #define Error   CLR; \
-                printf("\x1b[31m[ERROR] _> Oppsie! Not a valid command\x1b[0m\n"); \
+                printf("\x1b[31m[ERROR] _> Oopsie! Not a valid command\x1b[0m\n"); \
                 sleep(1); \
-                CLR; 
+                CLR;
+
+#define SafeFree(p) SaferFree((void **)&(p));   //function pointers are scary! (also stolen from "Using and Understanding C Pointers")
                                 
 //VERY temporary thing
 #define dark_blue     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 1);

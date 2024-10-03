@@ -1,4 +1,4 @@
-DOTHAT = gcc -c -O2
+DOTHAT = gcc -c -O2 -Wall -Wextra
 MOVE = move /Y *.o ..
 
 full:

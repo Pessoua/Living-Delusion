@@ -1,13 +1,12 @@
 #include "../LivingDelusion.h"
 
 //Creates random words depending on the ammount of spaces inputted
-char * EncryptedWordsV1(u8 * numOfSpaces){
+char * EncryptedWordsV1(u8 numOfSpaces){
 
     u32 curWord = 0;
-    char * finalStr = (char *) malloc(sizeof(char) * 555);
-    memset(finalStr, '\0', 555);
+    char * finalStr = CharMalloc(555);
 
-    for(u8 i = 0; i < * numOfSpaces; i ++){
+    for(u8 i = 0; i < numOfSpaces; i ++){
         u8 strSize = rand()% 10 + 3;
         strSize += 2;
 
@@ -28,8 +27,7 @@ char * EncryptedWordsV1(u8 * numOfSpaces){
 //Same has above but needs example string
 char * EncryptedWordsV2(const char * exampleLine){
 
-    char * finalStr = (char *)malloc(sizeof(char) * 555);
-    memset(finalStr, '\0', 555);
+    char * finalStr = CharMalloc(555);
 
     u32 curChar = 0, breakVal = strlen(exampleLine);
 
@@ -133,7 +131,7 @@ bool RunThisAtStart(void){
                 break;
 
             default:
-                printf("Unknown, maybe misspelled it\n");
+                printf("Unknown / not suported, maybe misspelled it\n");
                 break;
         }
 
@@ -144,6 +142,7 @@ bool RunThisAtStart(void){
     return pathPreviouslyExist;
 }
 
+//Crash, i guess?
 void ExitEarly(u16 errCode, char * errMsg){
 
     CLR;
@@ -164,4 +163,46 @@ void ExitEarly(u16 errCode, char * errMsg){
     getch();
 
     exit(errCode);
+}
+
+//Safe way to free (stolen from "Using and Understanding C Pointers")
+void SaferFree(void ** pointer){
+    if(pointer != NULL && *pointer != NULL){
+        free(*pointer);
+        *pointer = NULL;
+    }
+
+    return;
+}
+
+//Allocating INT arrays
+int * IntMalloc(size_t size){
+    int * newInt = NULL;
+
+    newInt = (int *)malloc(sizeof(int) * size);
+    memset(newInt, 0, size);
+
+    //Couldnt malloc? show error :D
+    if(newInt == NULL){
+        ExitEarly(101, "Ran out of memory!");
+        return NULL;
+    }
+
+    return newInt;
+}
+
+//Allocating CHAR arrays (strings)
+char * CharMalloc(size_t size){
+    char * newChar = NULL;
+
+    newChar = (char *)malloc(sizeof(char) * size);
+    memset(newChar, '\0', size);
+
+    //Couldnt malloc? show error :D
+    if(newChar == NULL){
+        ExitEarly(101, "Ran out of memory!");
+        return NULL;
+    }
+
+    return newChar;
 }

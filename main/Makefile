@@ -4,7 +4,7 @@ LIB = -L. -lLD_LIB
 
 run: LD.c
 	$(MAKE) -C . link 
-	.\LD -d
+	.\LD -d -i
 
 link: LD.c
 	$(CC) $(FLAGS) LD.c 
@@ -24,8 +24,7 @@ test: LDtest.c
 	.\test
 
 test-that:
-	$(MAKE) -C libs/ extras 
-	$(MAKE) -C libs/ dll
+	$(MAKE) -C libs/ext/ dll 
 	$(MAKE) test
 
 clean:

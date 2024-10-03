@@ -1,37 +1,42 @@
 #include "../../LivingDelusion.h"
 
-u8 Animal(bool is_tut){
+u8 Animal(bool isTutorial){
     
     //Note to reader: This is a backup of the "game_set" global setting, used for the display and movements in minigames table types, 
     //makes you able to alter your gameset to whatever you want without actually altering it
-    char tut_game_set [5];
-    strcpy(tut_game_set, game_set);
+    char tutGameSet [5];
+    strcpy(tutGameSet, game_set);
 
-    bool changed_game_set = true, do_key3 = false;
+    bool changedGameSet = true, doKey3 = false;
 
+    //idk ab this one
     short int i_table_pos_[26];
     short int i_table_pos_50;
     char c_table_pos_[26] [10];
     char c_table_pos_50 [10];
 
-    bool animal_action = false, animal_lead = false, animal_move = false, lure_placed = false, lure_interest = false, remove_lure = false;
-    bool Leave = false, Animal_lead = false, Ended = false, tradded_dimentions = false, is_pit = false, is_beehive = false;
+    bool animalAction = false, animalLead = false, animalMove = false, lurePlaced = false, lureInterest = false, lureRemove = false;
+    bool leave = false, animalLead = false, end = false, changedPlaces = false, isPit = false, isBeehive = false;
 
-    short int animal_pos = rand()% 25 + 1, next_animal_move;
-    u8 animal_got = 0;
+    short int animalPos = rand()% 25 + 1, nextAnimalMove;
+    u8 animalGot = 0;
 
-    coords player;
+    coords player, animal, seed;
     player.x = 0;
+    animal.x = 0;
+    seed.x = 0;
     player.y = 0;
+    animal.y = 0;
+    seed.y = 0;
 
     if(DEBUG_MODE)
-        printf("[DEBUG] _> Starting animal pos? %d\n", animal_pos);
+        printf("[DEBUG] _> Starting animal pos? %d\n", animalPos);
 
     short int X, Y, AX, AY, SX, SY, L, user_pos, seed_pos = 0, stored_move, limit_moves_taken, moves_taken = 0, times_ran_away = 0, ran_away_limit, bckp_user_pos = 13;
     short int next_move, needed_updates, got_updates = 0, seeds_needed, seeds_got = 0, lead_chance, patience = 0, patience_limit = -1, patience_limit_reached = 0, path = 0;
 
     //Tutorial Skipping stuff :>
-    if(is_tut){
+    if(isTutorial){
         if(display_all_tut_once){
             ChangeCurPath("OTHER.tutorials");
             if(access("Animal.txt", F_OK)== 0)
@@ -62,7 +67,7 @@ u8 Animal(bool is_tut){
 
             //Check if its right location
             if(strcmp(cur_loc, hint_loc)== 0)
-                do_key3 = true;
+                doKey3 = true;
         }
     }
 
@@ -75,9 +80,9 @@ u8 Animal(bool is_tut){
     fclose(fcurloc);
 
     if(strcmp(curloc, "NOT")!= 0){
-        is_pit = true;
+        isPit = true;
         if(strcmp(curloc, "Blossom")== 0){
-            is_beehive = true;
+            isBeehive = true;
         } 
     } 
 
@@ -124,7 +129,7 @@ u8 Animal(bool is_tut){
 
     printf("Starting Grid:\n");
 
-    if(animal_pos == 13){
+    if(animalPos == 13){
         while(true){
 
             if(DEBUG_MODE){
@@ -133,15 +138,15 @@ u8 Animal(bool is_tut){
                 CLR;
             }
 
-            animal_pos = rand()% 25 + 1;
+            animalPos = rand()% 25 + 1;
 
-            if(animal_pos != 13)
+            if(animalPos != 13)
                 break;
         }
     }
 
     //Shows starting table
-    if((strcmp(game_set, "Int")== 0 && !is_tut) || (strcmp(tut_game_set, "Int")== 0 && is_tut)){
+    if((strcmp(game_set, "Int")== 0 && !isTutorial) || (strcmp(tutGameSet, "Int")== 0 && isTutorial)){
         printf("[0] [0] [0] [0] [0]\n");
         printf("[0] [0] [1] [0] [0]\n");
         printf("[0] [2] [9] [3] [0]\n");
@@ -156,7 +161,7 @@ u8 Animal(bool is_tut){
         printf("[NONE] [NONE] [NONE] [NONE] [NONE]\n");
 
         //Show STABLE or BOX depending if its pit or not
-        if(!is_pit)
+        if(!isPit)
             printf("             [STABLE]\n");
 
         else
@@ -166,10 +171,10 @@ u8 Animal(bool is_tut){
     X = 3, Y = 3;
 
     while(true){    
-        if(changed_game_set && is_tut){
-            changed_game_set = false;
+        if(changedGameSet && isTutorial){
+            changedGameSet = false;
 
-            if((strcmp(tut_game_set, "Int")== 0 && is_tut)){
+            if((strcmp(tutGameSet, "Int")== 0 && isTutorial)){
                 printf("Listen up, this is important\n");
                 printf("Type 1 to go Up a Square, 2 to go left, 3 to go right and 4 to go down\n");
                 printf("Type 9 to leave WITHOUT collecting animals and 0 to stay in the same spot\n");
@@ -188,7 +193,7 @@ u8 Animal(bool is_tut){
             } else {
                 printf("Listen up, this is important\n");
                 printf("Type \"Up\" to go Up a Square, \"Left\" to go left, \"Right\" to go right and \"Down\" to go down\n");
-                printf("Type \"Leave\" or \"Back\" to leave WITHOUT collecting animals and \"stay\" to stay in the same spot\n");
+                printf("Type \"leave\" or \"Back\" to leave WITHOUT collecting animals and \"stay\" to stay in the same spot\n");
                 printf("Type \"Game\" to switch \"game_set\" types, aka if you are playing with \"INT\" it switches to \"CHAR\" and vice versa (tutorial only command)\n");
                 printf("Now, this gametype works diferently depending if you are in Village or Pit, now i will show how you beat the game in BOTH ways\n\n");
 
@@ -208,7 +213,7 @@ u8 Animal(bool is_tut){
 
         printf("Next move?\n");
 
-        if((strcmp(game_set, "Char")== 0 && !is_tut) || (strcmp(tut_game_set, "Char")== 0 && is_tut)){
+        if((strcmp(game_set, "Char")== 0 && !isTutorial) || (strcmp(tutGameSet, "Char")== 0 && isTutorial)){
 
             StrInp(); 
 
@@ -229,32 +234,32 @@ u8 Animal(bool is_tut){
                 Y += 1; stored_move = 4; }
 
             else if(strcmp(Input, "lead")== 0 || strcmp(Input, "lure")== 0 || strcmp(Input, "remove")== 0){
-                bool inv_animal_action = false; //Just for fun
+                bool inv_animalAction = false; //Just for fun
 
                 if(strcmp(Input, "lead")== 0){
-                    if(!is_pit)
-                        animal_action = true;
+                    if(!isPit)
+                        animalAction = true;
 
                     else
-                        inv_animal_action = true;
+                        inv_animalAction = true;
 
                 } else if(strcmp(Input, "lure")== 0){
-                    if(is_pit)
-                        animal_action = true;
+                    if(isPit)
+                        animalAction = true;
 
                     else
-                        inv_animal_action = true;
+                        inv_animalAction = true;
 
                 } else {
-                    if(is_pit)
-                        remove_lure = true;
+                    if(isPit)
+                        lureRemove = true;
 
                     else
-                        inv_animal_action = true;
+                        inv_animalAction = true;
 
                 }
 
-                if(inv_animal_action){
+                if(inv_animalAction){
                     red;
                     CLR;
                     printf("Wrong place\n");
@@ -266,14 +271,14 @@ u8 Animal(bool is_tut){
 
             else if(strcmp(Input, "stay")== 0){ }
 
-            else if(strcmp(Input, "switch")== 0 && is_tut){
-                if(!is_pit)
-                    is_pit = true;
+            else if(strcmp(Input, "switch")== 0 && isTutorial){
+                if(!isPit)
+                    isPit = true;
 
                 else
-                    is_pit = false;
+                    isPit = false;
 
-                tradded_dimentions = true;
+                changedPlaces = true;
 
                 got_updates = 0;
                 seeds_got = 0; 
@@ -283,21 +288,21 @@ u8 Animal(bool is_tut){
                 path = 0;
 
                 green;
-                if(is_pit)
+                if(isPit)
                     printf("Changed to Pit!\n");
 
                 else
                     printf("Changed to Not Pit!\n");
                 white;
 
-            } else if(strcmp(Input, "game")== 0 && is_tut){
-                changed_game_set = true;
+            } else if(strcmp(Input, "game")== 0 && isTutorial){
+                changedGameSet = true;
 
-                if((strcmp(tut_game_set, "Int")== 0 && is_tut))
-                    strcpy(tut_game_set, "Char");
+                if((strcmp(tutGameSet, "Int")== 0 && isTutorial))
+                    strcpy(tutGameSet, "Char");
 
                 else
-                    strcpy(tut_game_set, "Int");
+                    strcpy(tutGameSet, "Int");
 
                 green;
                 printf("Changed game type!\n");
@@ -305,7 +310,7 @@ u8 Animal(bool is_tut){
 
             } else if(strcmp(Input, "leave")== 0 || strcmp(Input, "back")== 0){
 
-                Leave = true; break;
+                leave = true; break;
 
             } else { Error; }
 
@@ -328,11 +333,11 @@ u8 Animal(bool is_tut){
                 Y += 1; stored_move = 4; }
 
             else if(strcmp(Input, "5")== 0)
-                animal_action = true;
+                animalAction = true;
 
             else if(strcmp(Input, "6")== 0){
-                if(is_pit)
-                    remove_lure = true;
+                if(isPit)
+                    lureRemove = true;
 
                 else {
                     red;
@@ -346,12 +351,12 @@ u8 Animal(bool is_tut){
 
             else if(strcmp(Input, "0")== 0){ }
 
-            else if(strcmp(Input, "7")== 0 && is_tut){
-                if(!is_pit)
-                    is_pit = true;
+            else if(strcmp(Input, "7")== 0 && isTutorial){
+                if(!isPit)
+                    isPit = true;
 
                 else
-                    is_pit = false;
+                    isPit = false;
 
                 got_updates = 0;
                 seeds_got = 0; 
@@ -361,21 +366,21 @@ u8 Animal(bool is_tut){
                 path = 0;
 
                 green;
-                if(is_pit)
+                if(isPit)
                     printf("Changed to Pit!\n");
 
                 else
                     printf("Changed to Not Pit!\n");
                 white;
 
-            } else if(strcmp(Input, "8")== 0 && is_tut){
-                changed_game_set = true;
+            } else if(strcmp(Input, "8")== 0 && isTutorial){
+                changedGameSet = true;
 
-                if((strcmp(tut_game_set, "Int")== 0 && is_tut))
-                    strcpy(tut_game_set, "Char");
+                if((strcmp(tutGameSet, "Int")== 0 && isTutorial))
+                    strcpy(tutGameSet, "Char");
 
                 else
-                    strcpy(tut_game_set, "Int");
+                    strcpy(tutGameSet, "Int");
 
                 green;
                 printf("Changed game type!\n");
@@ -383,7 +388,7 @@ u8 Animal(bool is_tut){
 
             } else if(strcmp(Input, "9")== 0){
 
-                Leave = true; break;
+                leave = true; break;
 
             } else { Error; }
 
@@ -396,11 +401,8 @@ u8 Animal(bool is_tut){
             else if (Y <= 0){ printf("Outside playing field\n"); sleep(1); Y = 1; CLR; }
             else if (Y >= 7){ printf("Outside playing field\n"); sleep(1); user_pos = 28; Y = 6; CLR; }
 
-            //Calculate L with this simple formula
-            L = (Y * 5) - 5;
-
             //Calculating table position
-            user_pos = X + L;
+            user_pos = X + ((Y * 5) - 5);
 
             //Check if user is trying to move out of bounds when he isnt inside of stable AND when he is
             if(user_pos == 26 || user_pos == 27 || user_pos == 29 || user_pos == 30){
@@ -416,14 +418,12 @@ u8 Animal(bool is_tut){
                 CLR;
             }
 
-            //Calculate L with this simple formula
-            L = (Y * 5) - 5;
-
-            user_pos = X + L;
+            //Calculating table position (again)
+            user_pos = X + ((Y * 5) - 5);
             bckp_user_pos = user_pos;
 
             //If user tries to go inside animal in the next position just revert him back to previous pos
-            if(user_pos == animal_pos){
+            if(user_pos == animalPos){
                 if(stored_move == 1)
                     Y += 1;
                 else if(stored_move == 2)
@@ -442,7 +442,7 @@ u8 Animal(bool is_tut){
         if(DEBUG_MODE)
             printf("[DEBUG] _> User X? %d / Y? %d / L? %d / Pos? %d / Bckp Pos? %d\n", X, Y, L, user_pos, bckp_user_pos);
 
-        if((strcmp(game_set, "Int")== 0 && !is_tut) || (strcmp(tut_game_set, "Int")== 0 && is_tut)){
+        if((strcmp(game_set, "Int")== 0 && !isTutorial) || (strcmp(tutGameSet, "Int")== 0 && isTutorial)){
 
             //Reseting all positions to nothing to be modified has playing field
             memset(i_table_pos_, 0, sizeof(i_table_pos_));
@@ -455,7 +455,7 @@ u8 Animal(bool is_tut){
             else
                 i_table_pos_[user_pos] = 9;
 
-            i_table_pos_[animal_pos] = 8;
+            i_table_pos_[animalPos] = 8;
             i_table_pos_[seed_pos] = 6;
 
         } else {
@@ -464,7 +464,7 @@ u8 Animal(bool is_tut){
             for(int i = 1; i < 26; i ++)
                 strcpy(c_table_pos_[i], "NONE");
 
-            if(!is_pit)
+            if(!isPit)
                 strcpy(c_table_pos_50, "STABLE");
 
             else
@@ -477,14 +477,14 @@ u8 Animal(bool is_tut){
             else
                 strcpy(c_table_pos_[user_pos], "YOU");
 
-            strcpy(c_table_pos_[animal_pos], "ANIMAL");
+            strcpy(c_table_pos_[animalPos], "ANIMAL");
             strcpy(c_table_pos_[seed_pos], "LURE");
 
         }
 
         //See if removing seed is possible
-        if(remove_lure){
-            remove_lure = false;
+        if(lureRemove){
+            lureRemove = false;
 
             if(user_pos == seed_pos){
                 printf("You removed the lure!\n");
@@ -492,8 +492,8 @@ u8 Animal(bool is_tut){
                 i_table_pos_[user_pos] = 9;
                 path = 0;
                 SX = 0; SY = 0;
-                lure_placed = false;
-                lure_interest = false;
+                lurePlaced = false;
+                lureInterest = false;
             } else {
                 red;
                 printf("You cannot remove the seed / lure since you are not standing on top of it.\n");
@@ -503,28 +503,28 @@ u8 Animal(bool is_tut){
         }
 
         //Place seed down / put the lead on the animal
-        if(animal_action){
-            animal_action = false;
+        if(animalAction){
+            animalAction = false;
 
             //Lead mechanics
-            if(!is_pit){
+            if(!isPit){
                 path = 0;
 
                 //I think its clear what this does
-                short int distance_from_user_to_animal = animal_pos - user_pos;
+                short int distance_from_user_to_animal = animalPos - user_pos;
                 distance_from_user_to_animal = abs(distance_from_user_to_animal);
 
                 if(distance_from_user_to_animal == 1 || distance_from_user_to_animal == 5){
 
                     //Randomize chance
-                    short int animal_lead_rand = rand()% lead_chance + 1;
+                    short int animalLead_rand = rand()% lead_chance + 1;
 
                     if(DEBUG_MODE)
-                        printf("[DEBUG] _> Animal lead rand? %d\n", animal_lead_rand);
+                        printf("[DEBUG] _> Animal lead rand? %d\n", animalLead_rand);
 
-                    if(animal_lead_rand == 1){
+                    if(animalLead_rand == 1){
                         //Sucess putting the animal on a lead!
-                        Animal_lead = true;
+                        animalLead = true;
                         moves_taken = 0;
                         yellow;
                         printf("You got the animal on lead.\n");
@@ -546,11 +546,11 @@ u8 Animal(bool is_tut){
 
             } else {
                 //Seed mechanics
-                if(!lure_placed){
+                if(!lurePlaced){
                     path = rand()% 3 + 1;
                     seed_pos = user_pos;
-                    lure_placed = true;
-                    lure_interest = true;
+                    lurePlaced = true;
+                    lureInterest = true;
                     SX = X;
                     SY = Y;
                     if(DEBUG_MODE){
@@ -569,12 +569,12 @@ u8 Animal(bool is_tut){
         }
 
         //Lead movement following user
-        if(Animal_lead && !is_pit){
+        if(animalLead && !isPit){
 
             if(moves_taken > limit_moves_taken){
                 //Too much walking
-                animal_move = false;
-                Animal_lead = false;
+                animalMove = false;
+                animalLead = false;
                 red;
                 printf("The animal escaped the lead!\n");
                 white;
@@ -584,8 +584,8 @@ u8 Animal(bool is_tut){
             } else {
 
                 //Animal follows user
-                next_animal_move = stored_move;
-                animal_move = true;
+                nextAnimalMove = stored_move;
+                animalMove = true;
                 moves_taken ++;
             }
 
@@ -596,7 +596,7 @@ u8 Animal(bool is_tut){
         }
 
         //Ai for if seed is placed down or not and pathfind to it
-        if(lure_interest){
+        if(lureInterest){
             short int distance_diference;
 
             if(DEBUG_MODE)
@@ -609,10 +609,10 @@ u8 Animal(bool is_tut){
                 distance_diference = SY - AY;
 
                 if(distance_diference > 0){
-                    next_animal_move = 4;
+                    nextAnimalMove = 4;
                     got_updates ++;
                 } else if(distance_diference < 0){
-                    next_animal_move = 1;
+                    nextAnimalMove = 1;
                     got_updates ++;
                 }
 
@@ -621,10 +621,10 @@ u8 Animal(bool is_tut){
                     distance_diference = SX - AX;
 
                     if(distance_diference > 0){
-                        next_animal_move = 3; 
+                        nextAnimalMove = 3; 
                         got_updates ++;
                     } else if(distance_diference < 0){
-                        next_animal_move = 2;
+                        nextAnimalMove = 2;
                         got_updates ++;
                     }   
                 }
@@ -636,10 +636,10 @@ u8 Animal(bool is_tut){
                 distance_diference = SX - AX;
 
                 if(distance_diference > 0){
-                    next_animal_move = 3; 
+                    nextAnimalMove = 3; 
                     got_updates ++;
                 } else if(distance_diference < 0){
-                    next_animal_move = 2;
+                    nextAnimalMove = 2;
                     got_updates ++;
                 }
 
@@ -648,10 +648,10 @@ u8 Animal(bool is_tut){
                     distance_diference = SY - AY;
 
                     if(distance_diference > 0){
-                        next_animal_move = 4;
+                        nextAnimalMove = 4;
                         got_updates ++;
                     } else if(distance_diference < 0){
-                        next_animal_move = 1;
+                        nextAnimalMove = 1;
                         got_updates ++;
                     }
 
@@ -666,10 +666,10 @@ u8 Animal(bool is_tut){
                     distance_diference = SX - AX;
 
                     if(distance_diference > 0){
-                        next_animal_move = 3; 
+                        nextAnimalMove = 3; 
                         got_updates ++;
                     } else if(distance_diference < 0){
-                        next_animal_move = 2;
+                        nextAnimalMove = 2;
                         got_updates ++;
                     } else {
 
@@ -677,10 +677,10 @@ u8 Animal(bool is_tut){
                         distance_diference = SY - AY;
 
                         if(distance_diference > 0){
-                            next_animal_move = 4;
+                            nextAnimalMove = 4;
                             got_updates ++;
                         } else if(distance_diference < 0){
-                            next_animal_move = 1;
+                            nextAnimalMove = 1;
                             got_updates ++;
                         }
 
@@ -693,10 +693,10 @@ u8 Animal(bool is_tut){
                     distance_diference = SY - AY;
 
                     if(distance_diference > 0){
-                        next_animal_move = 4;
+                        nextAnimalMove = 4;
                         got_updates ++;
                     } else if(distance_diference < 0){
-                        next_animal_move = 1;
+                        nextAnimalMove = 1;
                         got_updates ++;
                     } else {
 
@@ -704,10 +704,10 @@ u8 Animal(bool is_tut){
                         distance_diference = SX - AX;
 
                         if(distance_diference > 0){
-                            next_animal_move = 3; 
+                            nextAnimalMove = 3; 
                             got_updates ++;
                         } else if(distance_diference < 0){
-                            next_animal_move = 2;
+                            nextAnimalMove = 2;
                             got_updates ++;
                         }
 
@@ -717,29 +717,29 @@ u8 Animal(bool is_tut){
 
             }
 
-            if(animal_pos == seed_pos){
+            if(animalPos == seed_pos){
 
                 //Checks if animal ACTUALLY wants the lure
-                if(lure_interest){
+                if(lureInterest){
                     //Update stats
                     seeds_got ++;
-                    next_animal_move = 0;
+                    nextAnimalMove = 0;
                     seed_pos = 0;
                     path = 0;
                     SX = 0; SY = 0;
-                    lure_placed = false;
-                    lure_interest = false;
-                    animal_move = false;
+                    lurePlaced = false;
+                    lureInterest = false;
+                    animalMove = false;
 
                     if(DEBUG_MODE)
                         printf("[DEBUG] _> Seeds got? %d / Got updates? %d\n", seeds_got, got_updates);
 
                     //Update map
-                    if((strcmp(game_set, "Int")== 0 && !is_tut) || (strcmp(tut_game_set, "Int")== 0 && is_tut))
-                        i_table_pos_[animal_pos] = 8;
+                    if((strcmp(game_set, "Int")== 0 && !isTutorial) || (strcmp(tutGameSet, "Int")== 0 && isTutorial))
+                        i_table_pos_[animalPos] = 8;
 
                     else
-                        strcpy(c_table_pos_[animal_pos], "ANIMAL");
+                        strcpy(c_table_pos_[animalPos], "ANIMAL");
 
                 } else {
                     //Nothin happends
@@ -747,95 +747,95 @@ u8 Animal(bool is_tut){
 
             }
 
-            animal_move = true;
+            animalMove = true;
 
             if(DEBUG_MODE)
-                printf("[DEBUG] _> Next animal move? %d\n", next_animal_move);
+                printf("[DEBUG] _> Next animal move? %d\n", nextAnimalMove);
 
         }
 
         //Idle movement if no path is being taken
         //And if its not on a lead
-        if(path == 0 && !Animal_lead){
+        if(path == 0 && !animalLead){
 
             //bettewn 0 and 4
-            next_animal_move = rand()% 5 + 0;
+            nextAnimalMove = rand()% 5 + 0;
             if(DEBUG_MODE)
-                printf("[DEBUG] _> Next animal move chosen? %d\n", next_animal_move);
+                printf("[DEBUG] _> Next animal move chosen? %d\n", nextAnimalMove);
 
-            animal_move = true;         
+            animalMove = true;         
         }
 
         //is next move valid or not? also updates the new vars
-        if(animal_move){
-            short int bckp_animal_pos = animal_pos;
-            bool valid_animal_position = false, inside_user_pos = false, out_of_bounds_pos = false;
+        if(animalMove){
+            short int bckp_animalPos = animalPos;
+            bool valid_animalPosition = false, inside_user_pos = false, out_of_bounds_pos = false;
 
             //Convert into smaller values
-            if(bckp_animal_pos <= 5){
-                AY = 1; AX = bckp_animal_pos;
-            } else if(bckp_animal_pos <= 10){
-                AY = 2; AX = bckp_animal_pos - 5;
-            } else if(bckp_animal_pos <= 15){
-                AY = 3; AX = bckp_animal_pos - 10;
-            } else if(bckp_animal_pos <= 20){
-                AY = 4; AX = bckp_animal_pos - 15;
+            if(bckp_animalPos <= 5){
+                AY = 1; AX = bckp_animalPos;
+            } else if(bckp_animalPos <= 10){
+                AY = 2; AX = bckp_animalPos - 5;
+            } else if(bckp_animalPos <= 15){
+                AY = 3; AX = bckp_animalPos - 10;
+            } else if(bckp_animalPos <= 20){
+                AY = 4; AX = bckp_animalPos - 15;
             } else {
-                AY = 5; AX = bckp_animal_pos - 20;
+                AY = 5; AX = bckp_animalPos - 20;
             }
 
             //Test position
-            if(next_animal_move == 0)
-                bckp_animal_pos += 0;
+            if(nextAnimalMove == 0)
+                bckp_animalPos += 0;
 
-            else if(next_animal_move == 1){
+            else if(nextAnimalMove == 1){
                 AY -= 1;  
 
-                if(Animal_lead)
+                if(animalLead)
                     //Lead iniciated 
-                    bckp_animal_pos = user_pos + 5;
+                    bckp_animalPos = user_pos + 5;
 
                 else
                     //Pathfinding iniciated
-                    bckp_animal_pos -= 5; 
+                    bckp_animalPos -= 5; 
             }
 
-            else if(next_animal_move == 2){ 
+            else if(nextAnimalMove == 2){ 
                 AX -= 1; 
 
-                if(Animal_lead)
-                    bckp_animal_pos = user_pos + 1;
+                if(animalLead)
+                    bckp_animalPos = user_pos + 1;
 
                 else
-                    bckp_animal_pos -= 1; 
+                    bckp_animalPos -= 1; 
             }
 
-            else if(next_animal_move == 3){ 
+            else if(nextAnimalMove == 3){ 
                 AX += 1; 
 
-                if(Animal_lead)
-                    bckp_animal_pos = user_pos - 1;
+                if(animalLead)
+                    bckp_animalPos = user_pos - 1;
 
                 else
-                    bckp_animal_pos += 1;  
+                    bckp_animalPos += 1;  
             }
 
-            else if(next_animal_move == 4){ 
+            else if(nextAnimalMove == 4){ 
                 AY += 1;
 
-                if(Animal_lead)
-                    bckp_animal_pos = user_pos - 5;
+                if(animalLead)
+                    bckp_animalPos = user_pos - 5;
 
                 else
-                    bckp_animal_pos += 5;
+                    bckp_animalPos += 5;
             }
 
             //Special charecter stored?
             else 
-                bckp_animal_pos += 0;
+                bckp_animalPos += 0;
 
             //if future animal position is INSIDE user, say no
-            if(bckp_animal_pos == user_pos){
+            if(bckp_animalPos == user_pos){
                 //Animal cant lose patience if its in idle mode
                 if(path != 0)
                     patience += 1;
@@ -855,19 +855,19 @@ u8 Animal(bool is_tut){
                 out_of_bounds_pos = false;
 
             if(!out_of_bounds_pos && !inside_user_pos)
-                valid_animal_position = true;
+                valid_animalPosition = true;
 
             if(DEBUG_MODE){
-                printf("[DEBUG] _> Valid animal position value? %d [Boolean value]\n", valid_animal_position);
-                printf("[DEBUG] _> AX? %d / AY? %d / Animal Pos? %d\n", AX, AY, animal_pos);
+                printf("[DEBUG] _> Valid animal position value? %d [Boolean value]\n", valid_animalPosition);
+                printf("[DEBUG] _> AX? %d / AY? %d / Animal Pos? %d\n", AX, AY, animalPos);
             }
 
             //If all tests pass
-            if(valid_animal_position)
-                animal_pos = bckp_animal_pos; 
+            if(valid_animalPosition)
+                animalPos = bckp_animalPos; 
 
             //Reset animal and user pos
-            if((strcmp(game_set, "Int")== 0 && !is_tut) || (strcmp(tut_game_set, "Int")== 0 && is_tut)){
+            if((strcmp(game_set, "Int")== 0 && !isTutorial) || (strcmp(tutGameSet, "Int")== 0 && isTutorial)){
                 memset(i_table_pos_, 0, sizeof(i_table_pos_));
                 i_table_pos_50 = 7;
 
@@ -878,13 +878,13 @@ u8 Animal(bool is_tut){
                     i_table_pos_[user_pos] = 9;
 
                 i_table_pos_[seed_pos] = 6;
-                i_table_pos_[animal_pos] = 8;
+                i_table_pos_[animalPos] = 8;
 
             } else {
                 for(int i = 1; i < 26; i ++)
                     strcpy(c_table_pos_[i], "NONE");
 
-                if(!is_pit)
+                if(!isPit)
                     strcpy(c_table_pos_50, "STABLE");
 
                 else
@@ -897,7 +897,7 @@ u8 Animal(bool is_tut){
                     strcpy(c_table_pos_[user_pos], "YOU");
 
                 strcpy(c_table_pos_[seed_pos], "LURE");
-                strcpy(c_table_pos_[animal_pos], "ANIMAL");
+                strcpy(c_table_pos_[animalPos], "ANIMAL");
             }
 
         }
@@ -905,14 +905,14 @@ u8 Animal(bool is_tut){
         //Animal lost patience and went away
         if(patience_limit_reached == 3 || times_ran_away == ran_away_limit){
             red;
-            if(!is_pit)
+            if(!isPit)
                 printf("The animal decided to run away!\n");
 
             else
                 printf("The animal lost patience and went away!\n");
             white;
 
-            Leave = true; break;
+            leave = true; break;
         }
 
         //When animal patience runs out he loses interest in the seed / lure
@@ -921,8 +921,8 @@ u8 Animal(bool is_tut){
             printf("The animal lost interest in the lure!\n");
             white;
 
-            lure_interest = false;
-            animal_move = false;
+            lureInterest = false;
+            animalMove = false;
             patience_limit_reached ++;
             patience = 0;
             path = 0;
@@ -934,45 +934,45 @@ u8 Animal(bool is_tut){
 
         //Objective complete on village side
         //This is VIllage side ending
-        if(user_pos == 28 && Animal_lead){
-            if(is_pit)
+        if(user_pos == 28 && animalLead){
+            if(isPit)
                 printf("[WHY ARE YOU HERE] _> How the fuck?\n");
 
             yellow;
             printf("You put the animal back in the stable!\n");
             white;
 
-            Ended = true;
+            end = true;
         }
 
         //Objective complete on pit side
         //This is pit side ending
         if(seeds_got >= seeds_needed && got_updates >= needed_updates){
-            if(!is_pit)
+            if(!isPit)
                 printf("[WHY ARE YOU HERE] _> How the fuck?\n");
 
             yellow;
             printf("The animal trust you and you took it with you!\n");
             white;
 
-            Ended = true;
+            end = true;
         }
 
-        if(Ended){
+        if(end){
             short int choosing_animal = rand()% 10 + 1;
 
             if(DEBUG_MODE)
                 printf("[DEBUG] Choosing Animal? %d\n", choosing_animal);
 
-            if(!is_tut){
+            if(!isTutorial){
                 if(choosing_animal >= 1 && choosing_animal <= 7)
-                    animal_got = 1;
+                    animalGot = 1;
 
                 else if(choosing_animal >= 8 && choosing_animal <= 9)
-                    animal_got = 2;
+                    animalGot = 2;
 
                 else
-                    animal_got = 3;
+                    animalGot = 3;
 
             } else {
                 if(choosing_animal >= 1 && choosing_animal <= 7)
@@ -991,7 +991,7 @@ u8 Animal(bool is_tut){
         }
 
         //Display ending table
-        if((strcmp(game_set, "Int")== 0 && !is_tut) || (strcmp(tut_game_set, "Int")== 0 && is_tut)){
+        if((strcmp(game_set, "Int")== 0 && !isTutorial) || (strcmp(tutGameSet, "Int")== 0 && isTutorial)){
             for(int i = 1; i < 26; i ++){
                 printf("[%d] ", i_table_pos_[i]);
 
@@ -1011,7 +1011,7 @@ u8 Animal(bool is_tut){
 
                 if(i == 25){
 
-                    if(!is_pit)
+                    if(!isPit)
                         printf("             [%s]\n", c_table_pos_50);
 
                     else
@@ -1022,7 +1022,7 @@ u8 Animal(bool is_tut){
 
     } //Loop end
 
-    if(is_tut){
+    if(isTutorial){
         //Register tutorial has done
         if(display_all_tut_once){
             ChangeCurPath("OTHER.tutorials");
@@ -1051,13 +1051,13 @@ u8 Animal(bool is_tut){
         }
 
     } else {
-        if(Leave)
-            animal_got = 0;
+        if(leave)
+            animalGot = 0;
 
         //TimeCalc("CALC", 0, 1, 0);
 
         //Key 3 hint stuff
-        if(!Leave && do_key3 && rand()% 2 + 1 == 1){
+        if(!leave && doKey3 && rand()% 2 + 1 == 1){
             CLR;
             //Get hint
             ChangeCurPath("STORY.Key3");
@@ -1091,5 +1091,5 @@ u8 Animal(bool is_tut){
         }
     }
 
-    return animal_got;
+    return animalGot;
 }

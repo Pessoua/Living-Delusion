@@ -19,7 +19,6 @@ char User_Name [50];
 //NEEDS TO BE EXTERN
 i64 INT_Input = 0;
 
-
 int backup1_skip_cp; int skip_in_vil; char wiz_inp [15] = "\0"; char Inv_call [5];
 char User_input [10], user_input1 [10], Df [15], help1[3]; char dificulty [50]; int hotel_1_t = 0; int animal_cap_day = -1; char SECRET_BOOK [5] = "NO"; char oracle_inp [10];
 int Nightmare_check; int Cp1_puzzle_trigger = 0; char back_bedroom [15] = "NO"; int pot_h = -1; char pod_order [15] = "NO"; char book_1st_time [5] = "YES";
@@ -69,7 +68,7 @@ int GitItem(void);		//This one is trying its best
 //Art Related + scary stuff ish
 void SomethingHasGoneWrong();   //art
 int Art(const char *CALLER, const int Parameter);   //art
-void ChangeToThisColor(int INT_color, char CHAR_color); //style
+void ChangeToThisColor(int INT_color, char CHAR_color); //style (we dont need this anymore lol)
 
 void Help(); 
 void Credits(); 
@@ -81,7 +80,6 @@ int EndOfBeta(); //stays here ig
 void Game_Start(void); //ext
 int Dificulty(); //ext
 int Extras();   //extras
-int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day); //ext
 int StartingScreen(); //stays here but calls art function instead
 int Inventory(const char *Inv_call, const int ID, const int Quantity); //ext
 void Chest(void);   //ext
@@ -234,8 +232,10 @@ int main(int argc, char *argv[]){
                     break;
 
                 //Get version
-                case 'v':
-                    printf("\x1b[33mVersion - Public Beta 2 (0.2.0)\x1b[0m\n");
+                case 'i':
+                    printf("\x1b[33mLIVING DELUSION - Closed Beta 2 (0.2.0)\n");
+                    printf("PORTABLE VER.\n");
+                    printf("BRANCH - Unstable\x1b[0m\n");
                     break;
 
                 default:
@@ -247,7 +247,8 @@ int main(int argc, char *argv[]){
             printf("\x1b[31mUnknown argv argument \"%s\"\x1b[0m\n", argv[i]);
     }
 
-    SmallStop;
+    if(argc > 1)
+        SmallStop;
 
 	if(!GetNeededPaths()){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
@@ -19227,213 +19228,6 @@ void SpecialLocations(const char * Caller){
 	}
 	
 	return;
-}
-
-int TimeCalc(const char *MODE, const long int timer, const int hour, const long int day){
-	
-	int backUp_time, backUp_hour, h = 10;
-	long int t = 0, d = 0;
-	
-	//Change directory to "TIME"
-	ChangeCurPath("TIME");
-	
-	//Get vars from file
-	if(access("Time.txt", F_OK)== 0){
-		FILE * ftime = fopen("Time.txt", "r");
-		fscanf(ftime, "%d", &t);
-		fscanf(ftime, "%d", &h);
-		fscanf(ftime, "%d", &d);
-		fclose(ftime);
-	}
-		
-	if(strcmp(MODE, "CHECK")== 0){
-		
-		chdir("..");
-		
-		//Check what you want to know
-		if(timer > 0)
-		return t;
-		
-		else if(hour > 0)
-		return h;
-		
-		else if(day > 0)
-		return d;
-		
-	} else if(strcmp(MODE, "CALC")== 0 || strcmp(MODE, "CALC_EXT")== 0){
-		
-		char curloc[10] = { '\0' };
-		
-		ChangeCurPath("STORY.Locations");
-		FILE * fcurloc = fopen("Current.txt", "r");
-		fscanf(fcurloc, "%s", curloc);
-		fclose(fcurloc);
-		
-		//Check if there is a chance to change cur weather
-		if(strcmp(curloc, "NOT")!= 0){
-			int bckp_h = h;
-			h += hour;
-			h -= bckp_h;
-			
-			int bckp_d = d;
-			d += day;
-			
-			//Change weather
-			if(h > 3 || d > bckp_d){
-				//Set Vars.
-				char Current_Weather [10];
-				
-				ChangeCurPath("STORY");
-				
-				int weather = rand()% 10 + 1;
-				
-				if(weather >= 1 && weather <= 4)
-				strcpy(Current_Weather, "Rain");
-					
-				else if(weather == 5)
-				strcpy(Current_Weather, "Thunder");
-				
-				else 
-				strcpy(Current_Weather, "Clear");
-				
-				//Save Current Weather and Weather day in the weather file
-				ChangeCurPath("STORY");
-				FILE * fweather = fopen("Weather.txt", "w");
-				fprintf(fweather, "%s\n", Current_Weather);
-				fclose(fweather);
-				
-				if(DEBUG_MODE){
-					printf("[DEBUG] _> Current Weather? \"%s\"\n", Current_Weather);
-					sleep(3);
-					CLR;
-				}
-			}
-			
-			d = bckp_d;
-			h = bckp_h;
-			
-			//Add it twice if its on pit (double time in pit)
-			h += hour;
-			t += timer;
-			d += day;
-		}
-		
-		//Add the new arguments to the old ones
-		h += hour;
-		t += timer;
-		d += day;
-		
-	    //Checks the calculations need to be made for both positive and negative values
-	    if(t >= 30){
-	        
-	        //Calculates POSITIVE day
-	        if(t >= 720){
-	            while(t >= 720){
-	            d ++;
-				t -= 720;
-	            }
-	    	}
-	    	
-		    //Calculates POSITIVE hour
-		    if(t >= 30){
-		    while(t >= 30){
-			    h ++;
-				t -= 30;
-			    }
-		    } 
-	        
-	    } else if(t <= -30){
-	    	
-	    	//Calculates NEGATIVE day
-	        if(t <= -720){
-	            while(t <= -720){
-	            d --;
-	            t += 720;
-	            }
-	        }
-	        
-	         //Calculates NEGATIVE hour
-		    if(t <= -30){
-		    while(t <= -30){
-		    h --;
-			t += 30;    
-		    }
-			}
-		
-		}
-		
-		backUp_time = t;
-		
-	    //Timer gets reset
-	    t = 0;
-	    t = backUp_time;
-	    
-	    //Calculates the remaning hours after 24 hours pass [positive]
-	    if(h >= 24){
-		    while(h >= 24){
-		    	d ++;
-		        h = 24 - h;
-		        h = abs(h);
-		    }
-		}
-		
-		//Also we check for time dependent things over here
-		ChangeCurPath("OTHER.activepots");
-		
-		int pot_hour = 0, pot_day = 0;
-		char pot_name [25] = { '\0' };
-		bool expired = false;
-		
-		for(int i = 0; i < 10; i ++){
-			expired = false;
-			char file_name [6] = { '\0' };
-			itoa(i, file_name, 10);
-			strcat(file_name, ".txt");
-			if(access(file_name, F_OK)== 0){
-				FILE * fchangepotsactive = fopen(file_name, "r");
-				fscanf(fchangepotsactive, "%d\n", &pot_hour);
-				fscanf(fchangepotsactive, "%d\n", &pot_day);
-				fgets(pot_name, 25, fchangepotsactive);
-				fclose(fchangepotsactive);
-				
-				if(h >= pot_hour){
-					if(d >= pot_day)
-					expired = true;	
-				}
-				
-				else if(d > pot_day)
-				expired = true;
-				
-				if(expired){
-					remove(file_name);
-					pot_name[strlen(pot_name) - 1] =  '\0';
-					printf("Your \"%s\" expired!\n", pot_name);
-					sleep(3);
-					CLR;
-				}
-			}
-		}
-		
-	}
-	
-	ChangeCurPath("TIME");
-	if(strcmp(MODE, "CALC_EXT")== 0){
-		printf("EXTRAS ONLY, AFTER CALC?\n");
-		
-		printf("Timer? %d\n", t);
-		printf("Hour? %d\n", h);
-		printf("Day? %d\n", d);
-	}
-	
-	//Save the time data on the file
-	FILE * ftime = fopen("Time.txt", "w");
-	fprintf(ftime, "%d\n", t);
-	fprintf(ftime, "%d\n", h);
-	fprintf(ftime, "%d\n", d);
-	fclose(ftime);
-	
-	chdir("..");
-    return 0;   //default exit (no err.)
 }
 
 int Inventory(const char *Inv_call, const int ID, const int Quantity){
