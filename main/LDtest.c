@@ -9,11 +9,10 @@ void DoFuniHere(void){
     extrasReturn * catchNextExtras;
 
     //need to do tis else it wont malloc the str and the str will be READ ONLY
-    char *cmd = strdup("cmd1 -!D -Y \"12 a\"");
+    char *cmd = strdup("cmd1 -!D -Y \"THIS IS A STRING\" 12");
     catchNextExtras = extras(cmd); 
 
-    //TODO: flags with arguments: "-!O 2" (!O - Global Optional flag, 2 - what arguments to be optional (AKA, reset argument 2 to its DEFAULT value))
-    //TODO: finish string handler
+    //We are finished.
     
     printf("Error -> %d\n", catchNextExtras->errorType); 
 
@@ -22,10 +21,7 @@ void DoFuniHere(void){
 
 void DoFuniHereBckp(void){
 
-    char temp [100] = { '\0' };
-    fflush(stdin);
-    fgets(temp, 100, stdin);
-    printf("temp? %s\n", temp);
+    //I HATE STRINGS!!!!!!!!!!    
 
     return;
 }

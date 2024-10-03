@@ -8,20 +8,19 @@
 
 extrasReturn * extras(char * watCommand){
     
-    bool debugMode = false, isContext3Update = true;
+    bool debugMode = false;
 
     extrasReturn * funRet = malloc(sizeof(extrasReturn));
     funRet->errorType = 0;
 
-    printf("PASSED 1\n");
-
-    //CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
+    //TODO: CHANGE TO SAVE-1 FOR THE LOVE OF GOD!
 
     char *context1 = NULL, *context2 = NULL, *context3 = NULL, *context4 = NULL, *command; 
 
     //do stuff with output (lul)
     command = strtok_r(watCommand, " ", &context1);
 
+    //empty string lol
     if(command == NULL){
         funRet->errorType = 5;
         return funRet;
@@ -51,8 +50,6 @@ extrasReturn * extras(char * watCommand){
     u16 curLine = 0;
     char nextCmdLine [1024] = "abc";
 
-    printf("PASSED 2\n");
-
     //Entering file and getting stuff to check
     while(fgets(nextCmdLine, 1024, fcmd) != NULL){
         nextCmdLine[strlen(nextCmdLine) - 1] = '\0';
@@ -65,8 +62,6 @@ extrasReturn * extras(char * watCommand){
             watFunction = curLine;
             while(tokenToCheck != NULL){
                 tokenToCheck = strtok_r(NULL, ",", &context2); 
-
-                //TODO: does not detect the full string!
 
                 if(tokenToCheck == NULL)
                     break;
@@ -88,10 +83,9 @@ extrasReturn * extras(char * watCommand){
         }
     }
 
-    printf("PASSED 3\n");
-
     fclose(fcmd);
-    
+   
+    //funtion not found
     if(watFunction == -1){
         funRet->errorType = 1;
         return funRet;
@@ -100,37 +94,32 @@ extrasReturn * extras(char * watCommand){
     //These one store the real user input thats gonna be used later
     char flags [numFlags];
     char arguments [numArgs] [4096];
-
-    //TODO: remove this shit lol
-    numArgs = 6;
+    for(int i = 0; i < numArgs; i ++)
+        arguments[i][0] = '\0';
 
     u8 curFlag = 0, curArg = 0;
 
-    printf("PASSED 4\n");
-
-    //Optional arg stuff
-    u8 optArgsCount = 1;
-    char * optionalArgs = (char *)malloc(sizeof(char));
-
     //Continue with flag / argument searching
     while(true){
-        bool isValid = false;  
+        bool isValid = false, passingOptional = false;  
+
+        if(context1 == NULL)
+            break;
 
         //check if its a possible start of a string (dont displace context buffer if it is)
         if(context1[0] != '\"' || watArgumentType[curArg] != 's'){
             command = strtok_r(NULL, " ", &context1);
 
-            printf("whats inside context1? %s\n", context1);
-
             if(command == NULL)
                 break;
-
-            printf("command -> %s\n", command);
 
         } else {
             context4 = (char *)malloc(sizeof(char) * strlen(context1));
             strcpy(context4, context1);
             command = strtok_r(NULL, " ", &context4);
+
+            if(command == NULL)
+                break;
         }
 
         //Is a flag.
@@ -158,30 +147,8 @@ extrasReturn * extras(char * watCommand){
                         debugMode = true;
                         printf("[EXT DEBUG] _> debug mode activated\n");
                         break;
-
-                    case 'O':  //Optional Arguments
-                        //Get what argument to make optional
-                        command = strtok_r(NULL, " ", &context1);
-
-                        //check if int is valid for argument number
-                        for(u16 i = 0; i < strlen(command); i ++){
-                            if(!isdigit(command[i])){
-                                funRet->errorType = 6;                            
-                                return funRet;
-                            }
-                        }
-
-                        //Set (new) optional argument
-                        char * optionalArgsBckp = (char *)realloc(optionalArgs, sizeof(char) * (optArgsCount + strlen(command) + 1));
-                        strcat(optionalArgsBckp, ",");
-                        strcat(optionalArgsBckp, command);
-
-                        optionalArgs = optionalArgsBckp;
-                        free(optionalArgsBckp);
-
-                        optArgsCount ++;
-                        break;
-
+ 
+                    //invalid (global) flag
                     default:
                         funRet->errorType = 2;
                         return funRet;
@@ -194,7 +161,7 @@ extrasReturn * extras(char * watCommand){
                     flags[curFlag] = command[1];
                     curFlag ++;
 
-                    //Invalid Flag.
+                //Invalid Flag.
                 } else {
                     funRet->errorType = 2;
                     return funRet;
@@ -205,25 +172,24 @@ extrasReturn * extras(char * watCommand){
         //Its an argument
         } else {
 
-            /*if(watArgumentType[curArg] == 's'){
-                if(isContext3Update){
-                    strtok_r(watCommand, "\"", &context3);
-                    isContext3Update = false;
-                } else
-                    strtok_r(NULL, "\"", &context3);
-            }*/
-
-            printf("PASSED NEXT ARG\n");
-            printf("watArgumentType[curArg]? %c\n", watArgumentType[curArg]);
-
             //too many arguments!
             if(curArg > numArgs){
                 funRet->errorType = 4;
                 return funRet;
             }
 
+            //optional argument case
+            char watArgumentTypeCOPY = watArgumentType[curArg];
+
+            //optional arg detected, skip it
+            if(strlen(command)== 1 && command[0] == '?'){
+                watArgumentTypeCOPY = 'l';  //dont want to modify the char array itself but the char thats processed by the switch (l case dosent exist, still passes with no error though!)
+                passingOptional = true;
+
+            }
+                
             bool isValidArg = true, reachedVoid = false;
-            switch(watArgumentType[curArg]){
+            switch(watArgumentTypeCOPY){
                 case 'i':   //int
 
                     for(u16 i = 0; i < strlen(command); i ++){
@@ -245,84 +211,38 @@ extrasReturn * extras(char * watCommand){
 
                 case 'c':   //char
                     
-                    if(strlen(command)!= 1)
+                    //hmm yes yes chars.
+                    if(strlen(command)!= 3 && command[0] == '\'' && command[2] == '\'')
                         isValidArg = false;
+
+                    //getting rid of the ' '
+                    command[0] = command[1];
+                    command[1] = '\0';
 
                     break;
 
                 case 's':   //string
-                    //needs to be like "string" lol
+                    //needs to be like "string" lol     
 
-                    //Checking if str is valid (start)
-                    
-                    printf("context1? %s\n", context1);
+                    //char getStr [strlen(context1)];
+                    char * getStr = strtok_r(context1, "\"", &context3); 
 
-                    char * getStr = strtok_r(context1, "\"", &context3);
-                    printf("getStr? %s\n", getStr);
-
-                    if(getStr[strlen(getStr) - 1] != '\"')
+                    //Checking if str is valid (checking for starting " and ending ")
+                    if(context1[strlen(getStr) - 1] != '\"' && context1[0] != '\"')
                         isValidArg = false;
   
-                    else 
-                         strcpy(arguments[curArg], getStr);
+                    else {
+                        //We use for loop here because im scared of strcpy :D
+                        for(u16 i = 0; i < (u16)strlen(getStr); i ++)
+                            arguments[curArg][i] = getStr[i];
 
-                    printf("arguments[curArg]? %s\n", arguments[curArg]);
+                        arguments[curArg][strlen(getStr)] = '\0';
 
-                        /*char * nextStr = strtok_r(NULL, "\"", &context3); //context3 is only for strings lol
+                    }
 
-                        printf("PASSED ISVALID CHECK\n");
-
-                        if(nextStr == NULL){
-                            isValidArg = false;
-                            break;
-
-                        } else {
-                            arguments[curArg] = (char *)nextStr;
-                        }
-
-                        printf("PASSED isValidArg check 1!\n");
-                        //Holds the whole string to then pass into arguments[curArg]
-                        char * reallocedArg = (char *)malloc(sizeof(char) * strlen(command) + 1);
-                        for(u32 i = 1; i < (u32) strlen(command); i ++)    //dont want the starting '"'
-                            reallocedArg[i - 1] = command[i];
-
-                        //strtok everything lol
-                        while(true){
-                            printf("INSIDE true loop\n");
-                            printf("reallocedArg -> %s|\n\n", reallocedArg);
-                            //Valid end
-                            if(reallocedArg[strlen(reallocedArg) - 1] == '\"'){
-                                reallocedArg[strlen(reallocedArg) - 1] = '\0'; //dont want the ending '"'
-                                printf("PASSING TO STRCPY\n");
-                                arguments[curArg] = *reallocedArg; //this? bad. 
-                                break;
-                            }
-
-                            printf("GOING TO STRTOK_R!\n");
-                            command = strtok_r(NULL, " ", &context1);
-
-                            printf("GOING TO NULL CHECK!\n");
-                            printf("command -> %s\n", command);
-                            //no string end lol
-                            if(command == NULL){
-                                isValidArg = false;
-                                break;
-                            }
-
-                            printf("GOING TO REALLOC!\n");
-                            printf("reallocedArg -> %s|\n\n", reallocedArg);
-                            printf("strlen(reallocedArg) -> %lld / strlen(command) -> %lld\n", strlen(reallocedArg), strlen(command));
-                            //Scary, but we resize the array that holds the string inputted
-                            char * tempReallocedArg = (char *)realloc(reallocedArg, sizeof(char) * (u32)(strlen(reallocedArg) + strlen(command) + 1));
-                            strcat(tempReallocedArg, " ");
-                            strcat(tempReallocedArg, command);
-                            printf("tempReallocedArg -> %s\n", tempReallocedArg);
-                            reallocedArg = NULL;
-                            reallocedArg = tempReallocedArg;
-                            free(tempReallocedArg);
-                            tempReallocedArg = NULL;
-                        }*/
-
+                    //Update context cause we dont want the program yelling at us for fucked up context
+                    strcpy(context1, context3);
+ 
                     break;
 
                 case 'f':   //float
@@ -390,24 +310,24 @@ extrasReturn * extras(char * watCommand){
                 return funRet;
 
             } else if(!reachedVoid){
-                printf("PASSED reachedVoid check\n");
-
                 //We already modify the arguments array inside the string case so no need for this
                 if(watArgumentType[curArg] != 's')
                     strcpy(arguments[curArg], command);
 
+                //Overwriting previous if it is a string type
+                if(passingOptional && watArgumentType[curArg] == 's')
+                    strcpy(arguments[curArg], command);
+
                 curArg ++;
-                printf("passed increment + strcpy\n");
             }
 
         }
-        printf("NEXT LOOP\n");
     }
-	
-    printf("PASSED 5\n");
 
     //Parsing this command with the csv line
     switch(watFunction){
+        //TODO: dont forget optional arguments are with '?'  
+
         case 1:
             //Parse flags
             
@@ -420,14 +340,9 @@ extrasReturn * extras(char * watCommand){
             break;
     }
 
-    free(optionalArgs);
-
-    printf("watFlags -> %s\n", watFlags);
-    printf("watArgumentType -> %s\n", watArgumentType);
-
     if(debugMode)
-        for(int i = 0; i < numArgs; i ++)
-            printf("[EXT DEBUG] _> arguments[i]? %s\n", arguments[i]);
+        for(u8 i = 0; i < numArgs; i ++)
+            printf("[EXT DEBUG] _> arguments[%d]? %s\n", i, arguments[i]);
 
     return funRet;
 }
