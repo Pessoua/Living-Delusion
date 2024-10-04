@@ -17,13 +17,11 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include <Windows.h>
-#include <conio.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <sys/stat.h> 
-#include <errno.h>
 #include <stdint.h>
+#include <stdarg.h> //for file!ld.h
 
 //OS specific garbo
 #if defined(_WIN32) || defined(_WIN64) 

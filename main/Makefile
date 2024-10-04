@@ -24,7 +24,7 @@ test: LDtest.c
 	.\test
 
 test-that:
-	$(MAKE) -C libs/ext/ dll 
+	$(MAKE) -C libs/save/ dll 
 	$(MAKE) test
 
 clean:

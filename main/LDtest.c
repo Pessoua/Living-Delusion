@@ -5,7 +5,10 @@ void DoFuniHereBckp(void);
 
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){ 
- 
+
+    //letuce see if FILE takes dir
+   
+    printf("%d\n", '\n');
     return;
 }
 

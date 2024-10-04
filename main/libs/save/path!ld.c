@@ -18,8 +18,7 @@ void ChangeCurPath(const char * changeToThis){
     char * finalPath = (char *)malloc(PATH_MAX_LEN);
     memset(finalPath, '\0', PATH_MAX_LEN);
 
-    char * argCopy = (char *)malloc(strlen(changeToThis) * sizeof(char) + 5);
-    memset(argCopy, '\0', sizeof(argCopy));
+    char * argCopy = CharMalloc(strlen(changeToThis) + 5);   
     strcpy(argCopy, changeToThis);
 
     strcpy(finalPath, FULL_PATH);
