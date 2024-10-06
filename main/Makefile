@@ -20,8 +20,8 @@ obj-dll:
 
 test: LDtest.c
 	$(CC) $(FLAGS) LDtest.c
-	$(CC) LDtest.o -o test $(LIB)	
-	.\test
+	$(CC) LDtest.o -o LDtest $(LIB)	
+	.\LDtest
 
 test-that:
 	$(MAKE) -C libs/save/ dll 

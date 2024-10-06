@@ -1,12 +1,20 @@
-# Living-Delusion
-Just a project of mine
+# Branch Overview
+This is the ___unstable___ branch, meaning the code you see here is kinda "see only" because you aren't meant to run this code at all since it isnt tested nor finished!
 
-# Branch Related Stuff
-- main is the current __WORKING__ release
-- preview is a __PREVIEW__ of a __FUTURE__ release
-- unstable is a non working release, the code there being still under development!
+# Currently Doing...
+Currently organizing my code, i started using libraries, make systems, adopted naming conventions and error handling!
 
-# Still only testing stuff with git!
-The only (correct) version is gonna be the version on the versions tab!
-If you are here, this code is probably not working yet!
-Im just testing git stuff, nothing here yet
+So heres the naming convention im using:  
+    
+    Thing                          | What case              | Example
+    :----------------------------: | :---------------------:| :---------------:
+    Functions & Structs & Macros   | Pascal                 | ThisIsAFunction
+    Variables                      | Camel                  | iAmAVariable
+    (shared) Constants             | Caps + Snake           | SHARED_CONSTANT_VALUE
+    File Pointers                  | Camel + f at the start | fFilePointer
+
+    (keep in mind im still updating the code so the naming conventions don't aply to ALL the code, but they are mostly present on the new libraries)  
+
+# Documentation?
+    No documentation. Its unstable for a reason  
+    However, __IF__ there is a ``docs/`` directory in the branch, don't asume that it is finished

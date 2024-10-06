@@ -1,14 +1,11 @@
 #include "LivingDelusion.h"
 
-void DoFuniHere(void);
+void DoFuniHere(const char * argStr, ...);
 void DoFuniHereBckp(void);
 
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
-void DoFuniHere(void){ 
+void DoFuniHere(const char * argStr, ...){  
 
-    //letuce see if FILE takes dir
-   
-    printf("%d\n", '\n');
     return;
 }
 
@@ -28,7 +25,7 @@ int main(void){
 
     DEBUG_MODE = true;
 
-    DoFuniHere(); 
+    DoFuniHere("0123456789bcsp", 0, 1, 2, 3, 4, 5, 6, 7, 8.00, 9.00, true, 'a', "string", "C:/LOCAL/IDK"); 
     //DoFuniHereBckp();
 
     return 0;

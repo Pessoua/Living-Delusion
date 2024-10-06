@@ -148,7 +148,7 @@ void ExitEarly(u16 errCode, char * errMsg){
     CLR;
     if(DEBUG_MODE){
         printf("\x1b[31m[DEBUG] _> Exited with error code %d, with \"%s\" error message\n", errCode, errMsg);
-        sleep(2);
+        sleep(5);
     }
     CLR;
 

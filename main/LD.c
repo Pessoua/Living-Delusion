@@ -1420,6 +1420,7 @@ white;
 
 }
 
+//TODO: Better art.
 void Help(){
     
     while(true){
@@ -1581,6 +1582,7 @@ void Credits(){ //Possibly add more
     SmallStop;
 }
 
+//TODO: previews with art
 void Settings(){
 	
 	if(isdigit(FULL_PATH[strlen(FULL_PATH) - 1])!= 1){

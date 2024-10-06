@@ -151,7 +151,7 @@ extern clock_t time_needed;
 extern i64 INT_Input;
 
 //settings
-extern char game_set [15], dificulty[50];
+extern char game_set [15], dificulty[50], lang [2];
 extern bool skip_intro, show_user_turn, display_all_tut_once, skip_tut_display, force_tut_display, show_tut_cutscene;
 extern bool display_tip, div_inv_sect, limit_inv, arr_limit_inv [6];
 
