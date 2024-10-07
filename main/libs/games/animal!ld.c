@@ -16,7 +16,7 @@ u8 Animal(bool isTutorial){
     char c_table_pos_50 [10];
 
     bool animalAction = false, animalLead = false, animalMove = false, lurePlaced = false, lureInterest = false, lureRemove = false;
-    bool leave = false, animalLead = false, end = false, changedPlaces = false, isPit = false, isBeehive = false;
+    bool leave = false, end = false, changedPlaces = false, isPit = false, isBeehive = false;
 
     short int animalPos = rand()% 25 + 1, nextAnimalMove;
     u8 animalGot = 0;

@@ -38,7 +38,7 @@ char * ReadFromFile(const char * wotPath, const char * fileName, u64 whatFileLin
         SeekToCached(fOrigin, cacheCode);
 
     //displace fOrigin pointer till we reach the desired line
-    for(u64 i = 0; i < whatFileLine - 1; i ++)
+    for(u64 i = 0; i < whatFileLine; i ++)
         if(fgets(thisLine, 2048, fOrigin)== NULL)
             ExitEarly(303, "Couldn't displace pointer, fgets returned NULL");
 
@@ -72,7 +72,7 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
     memset(homePath, '\0', PATH_MAX_LEN);
 
     if(getcwd(homePath, PATH_MAX_LEN) == NULL)
-        ExitEarly(204, "Failed to get home path on ReadFromFile, getcwd returned NULL");
+        ExitEarly(204, "Failed to get home path on WriteToFile, getcwd returned NULL");
 
     //Change cur path
     if(strcmp(wotPath, "Local")== 0)
@@ -87,10 +87,6 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
     else
         ExitEarly(203, "Path for \"WriteToFile\" not found");
 
-    //File dosent even exist
-    if(access(fileName, F_OK)!= 0)
-        ExitEarly(301, "File not found for \"WriteToFile\"");
-
     //Open original file to read from and check if it opened right
     FILE * fOrigin = fopen(fileName, "r");
     if(fOrigin == NULL)
@@ -103,11 +99,11 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
     
     char * thisLine = CharMalloc(2048);
 
+    //git starting line
+    fgets(thisLine, 2048, fOrigin);
+
     //in this context, i is the current file line
     for(u64 i = 0; ; i ++){
-        //Reached EOF (end of file)
-        if(fgets(thisLine, 2048, fOrigin)== NULL)
-            break;
 
         if(i == whatFileLine)
             startWrite = true;
@@ -211,9 +207,13 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
             startWrite = false;
 
         } else
-            fprintf(fTemp, "%s\n", thisLine);
+            fprintf(fTemp, "%s", thisLine);
 
         memset(thisLine, '\0', 2048);
+
+        //Reached EOF (end of file)
+        if(fgets(thisLine, 2048, fOrigin)== NULL)
+            break;    
     }
 
     SafeFree(thisLine);
@@ -232,8 +232,6 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
     return;
 }
 
-//The diference bettewn "ShowDialogueMsg" and "GetDialogueMsg" is quite literaly just the return value lol 
-
 //Neeeds an extra argument for "NPC name" to display the NPC name when doing the printf lmao
 void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u32 cacheCode, bool showTopic){
    
@@ -243,11 +241,16 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
 
     char fileName [50] = { '\0' };
 
+    chdir(LOCAL_PATH);
+    chdir("lang");
+
     //fileName is kinda like: (whatTopic.'-'.lang.".txt") Ex: "Start-en.txt"
     strcpy(fileName, whatTopic);
     strcat(fileName, "-");
     strcat(fileName, lang);
     strcat(fileName, ".txt");
+
+    printf("fileName? %s\n", fileName);
 
     if(access(fileName, F_OK)!= 0)
         ExitEarly(301, "Language file not found for \"ShowDialogueMsg\"");
@@ -260,8 +263,6 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
     //Fast search with cache   
     if(cacheCode != 0)
         SeekToCached(fDialogue, cacheCode);
-
-    //TODO: get rid of GetDialogueMsg, put the code here and call it a day
 
     char * dialogueLine = CharMalloc(2048); 
 
@@ -291,84 +292,26 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
     return;
 }
 
-//Here we dont care about followUpLines cuz it would make this worse for the receiving end
-char * GetDialogueMsg(u64 startLine, u32 returnMany, FILE * fThisFile){
-
-    bool closeThisFile = false;
-
-    if(returnMany < 1)
-        returnMany = 1;
-
-    /*
-     * How lang cache works:
-     *
-     * We have a few lines reserved to every "topic" thats on Living Delusion and each "topic" has an ftell value
-     * So when i select a specific "topic" i can quickly fseek into it by just looking at its ftell value
-     * (hopefully that made sense)
-     */
-
-    /*
-     * Argument interperter i guess?
-     * Check lang (char lang [2])     
-     * Set PTR pos
-     * Get the dialogue part?
-     * need 2 think deeply ab this i cant fuck this up lol
-     */
-
-    char fileName [10] = "lang";
-
-    //change to lang directory
-    chdir(LOCAL_PATH);
-    chdir("lang");
-
-    //LD caller (Fp is NULL if its not called by ShowDialogueMsg)
-    if(fThisFile == NULL){
-        closeThisFile = true;
-
-        if(access(fileName, F_OK)!= 0)
-            ExitEarly(301, "Language file not found for \"GetDialogueMsg\"");
-
-        //Open original file to read from and check if it opened right
-        fThisFile = fopen(fileName, "r");
-        if(fThisFile == NULL)
-            ExitEarly(302, "Tried to open language file, pointer returned NULL");
-            
-    }
-
-    //Git the char *'s
-    char * thisLine = CharMalloc(2048);
-    char * nextDialogueLine = CharMalloc(10240);
-    
-    //strcat thisLine if returnMany allows.
-
-    if(closeThisFile)
-        fclose(fThisFile);
-
-    SafeFree(thisLine);
-
-    return nextDialogueLine;
-}
-
 //Helper function (used by other FILE I/O functions), automaticly displaces pointer to the requied position! 
-void SeekToCached(FILE * fThisFile, u32 contentLine){ 
+void SeekToCached(FILE * fThisFile, u32 cacheLine){ 
 
     //very clean function, im proud
 
     i64 displaceVal = 0;
 
-    if(contentLine < 1)
-        contentLine = 1;
+    if(cacheLine < 1)
+        cacheLine = 1;
 
     //File pointer is faulty (probably wouldnt happend but you never know)
     if(fThisFile == NULL)
         ExitEarly(301, "Tried to open file to get cache value, pointer was NULL");
 
     //displace ptr untill the line that contains the cache value
-    for(u32 i = 0; i < contentLine; i ++)
+    for(u32 i = 0; i < cacheLine; i ++)
         if(fscanf(fThisFile, "%lld", &displaceVal)== EOF)
             ExitEarly(308, "Couldn't displace pointer untill cache value nor could read the cache value, fscanf returned EOF");
 
-    //profit.
+    //profit. ((ftell value - strlen(current_str)) -2)
     if(fseek(fThisFile, displaceVal, SEEK_SET) != 0)
         ExitEarly(309, "Couldn't displace pointer to cached value, cached value was faulty, fseek returned NON 0");
 
