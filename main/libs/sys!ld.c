@@ -162,6 +162,47 @@ void ExitEarly(u16 errCode, char * errMsg){
     CenterText("\x1b[31mPress anything to crash the game!\x1b[0m");
     getch();
 
+    //on logs -> (dd/mm/yyyy | hh:mm:ss) - 203, "Error happend!"
+    
+    chdir(LOCAL_PATH);
+    char temp [25] = { '\0' };
+    char date [25] = { '\0' }, fileTime [25] = { '\0' };
+
+    //Open time struct
+    time_t now = time(NULL);
+    struct tm *tm_struct = localtime(&now);
+
+    //Get time
+    itoa(tm_struct->tm_hour, temp, 10);
+    strcpy(fileTime, temp);
+    strcat(fileTime, ":");
+    memset(temp, '\0', sizeof(temp));
+    itoa(tm_struct->tm_min, temp, 10);
+    strcat(fileTime, temp);
+    strcat(fileTime, ":");
+    memset(temp, '\0', sizeof(temp));
+    itoa(tm_struct->tm_sec, temp, 10);
+    strcat(fileTime, temp);
+    memset(temp, '\0', sizeof(temp));
+
+    //Get date
+    itoa(tm_struct->tm_mday, temp, 10);
+    strcpy(date, temp);
+    strcat(date, "/");
+    memset(temp, '\0', sizeof(temp));
+    itoa(tm_struct->tm_mon + 1, temp, 10);
+    strcat(date, temp);
+    strcat(date, "/");
+    memset(temp, '\0', sizeof(temp));
+    itoa(tm_struct->tm_year + 1900 , temp, 10);
+    strcat(date, temp);
+    memset(temp, '\0', sizeof(temp));
+
+    //No need for error handling, its gonna crash soon anyways...
+    FILE * fLogs = fopen("logs.txt", "a");
+    fprintf(fLogs, "(%s | %s) - %d, \"%s\"\n", date, fileTime, errCode, errMsg);
+    fclose(fLogs);
+
     exit(errCode);
 }
 

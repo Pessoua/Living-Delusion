@@ -241,16 +241,14 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
 
     char fileName [50] = { '\0' };
 
-    chdir(LOCAL_PATH);
-    chdir("lang");
+    //chdir(LOCAL_PATH);
+    //chdir("lang");
 
     //fileName is kinda like: (whatTopic.'-'.lang.".txt") Ex: "Start-en.txt"
     strcpy(fileName, whatTopic);
     strcat(fileName, "-");
     strcat(fileName, lang);
     strcat(fileName, ".txt");
-
-    printf("fileName? %s\n", fileName);
 
     if(access(fileName, F_OK)!= 0)
         ExitEarly(301, "Language file not found for \"ShowDialogueMsg\"");
@@ -273,6 +271,9 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
     //Start displaying correct lines
     for(u64 i = 0; i < followUpLines; i ++){
         fgets(dialogueLine, 2048, fDialogue);
+
+        //ignore \n, it fucks up the formating
+        dialogueLine[strlen(dialogueLine) - 1] = '\0';
 
         //this "showTopic" is when an NPC is talking
         if(showTopic)
