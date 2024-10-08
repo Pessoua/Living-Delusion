@@ -28,5 +28,11 @@ dll:
 	$(MOVE)
 	$(MAKE) -C .. dll
 
+mv:
+	$(MOVE)
+
+move:
+	$(MOVE)
+
 clean:
 	del /s *.o

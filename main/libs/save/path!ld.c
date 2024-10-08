@@ -13,7 +13,18 @@ bool ExistDiret(const char * path){
     return false;
 }
 
-//Copy cat of the function above but modified to navigate the "OTHER" dir instead
+//Get current path w error handling
+void GetCurPath(path newPath){
+
+    memset(newPath, '\0', PATH_MAX_LEN);
+
+    if(getcwd(newPath, PATH_MAX_LEN) == NULL)
+        ExitEarly(204, "Failed to get home path on ReadFromFile, getcwd returned NULL");
+
+    return;
+}
+
+//Changes cur path based on FULL_PATH
 void ChangeCurPath(const char * changeToThis){
     char * finalPath = (char *)malloc(PATH_MAX_LEN);
     memset(finalPath, '\0', PATH_MAX_LEN);

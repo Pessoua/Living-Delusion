@@ -53,5 +53,11 @@ dll:
 	$(LINK)
 	$(MOVE)
 
+mv:
+	$(MOVE)
+
+move:
+	$(MOVE)
+
 clean:
 	del /s *.o

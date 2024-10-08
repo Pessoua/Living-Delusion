@@ -4,10 +4,7 @@ char * ReadFromFile(const char * wotPath, const char * fileName, u64 whatFileLin
 
     //Store homepath to return to it LTR
     path homePath;
-    memset(homePath, '\0', PATH_MAX_LEN);
-
-    if(getcwd(homePath, PATH_MAX_LEN) == NULL)
-        ExitEarly(204, "Failed to get home path on ReadFromFile, getcwd returned NULL");
+    GetCurPath(homePath);
 
     //Change cur path
     if(strcmp(wotPath, "Local")== 0)
@@ -69,11 +66,8 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
         
     //Store homepath to return to it LTR
     path homePath;
-    memset(homePath, '\0', PATH_MAX_LEN);
-
-    if(getcwd(homePath, PATH_MAX_LEN) == NULL)
-        ExitEarly(204, "Failed to get home path on WriteToFile, getcwd returned NULL");
-
+    GetCurPath(homePath);
+    
     //Change cur path
     if(strcmp(wotPath, "Local")== 0)
         chdir(LOCAL_PATH);
@@ -235,14 +229,18 @@ void WriteToFile(const char * wotPath, const char * fileName, u64 whatFileLine, 
 //Neeeds an extra argument for "NPC name" to display the NPC name when doing the printf lmao
 void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u32 cacheCode, bool showTopic){
    
+    //Store homepath to return to it LTR
+    path homePath;
+    GetCurPath(homePath); 
+
     //for loop needs to execute at least once.
     if(followUpLines < 1)
         followUpLines = 1;
 
     char fileName [50] = { '\0' };
 
-    //chdir(LOCAL_PATH);
-    //chdir("lang");
+    chdir(LOCAL_PATH);
+    chdir("lang");
 
     //fileName is kinda like: (whatTopic.'-'.lang.".txt") Ex: "Start-en.txt"
     strcpy(fileName, whatTopic);
@@ -289,6 +287,8 @@ void ShowDialogueMsg(const char * whatTopic, u64 startLine, u64 followUpLines, u
 
     SafeFree(dialogueLine);
     fclose(fDialogue);
+
+    chdir(homePath);
 
     return;
 }
