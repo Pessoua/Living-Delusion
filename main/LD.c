@@ -48,7 +48,7 @@ void SpecialLocations(const char * Caller); //on locale
 void ReadTextFile(const char *FileName, const char *specifications);    //Go to file!ld.h or save!ld.h if file is deleted
 bool MakeSaveFiles(const char * what);                                  //Go to save!ld.h
 void FormatTextEXT(const char * mode, const char * line, bool new_line, int skip_starting_displacement, const char * wantedcolors, bool has_var_port, int only_do_THIS_number_of_lines, int repeat_THIS_many_times);
-    //^Go to style!ld.h
+    //^Go to style!ld.h (already implemented BTW)
 void ChangeCurPath(const char * please_change_to_this_line);
 void CatCurPath(const char * cat_this_line);
     //^Both go to path!ld.h
@@ -60,7 +60,7 @@ HWND WINAPI GetConsoleWindowNT(void);
 //Get
 bool GetNeededPaths(void);  //path
 int GetTimeSpent(void);     //sys
-void GetAppResources(const char * please_change_to_this_line);  //path
+void GetAppResources(const char * please_change_to_this_line);  //path (we dont need this anymore i dont think)
 char * GetItemName(int ID); //save
 int GitItem(void);		//This one is trying its best
     //^Git goes to Art
@@ -530,7 +530,7 @@ void Game_Start(void){
 							sleep(1);
 							strcat(cur_save_dir, Input);
 							mkdir(cur_save_dir);
-							MakeSaveFiles("new");
+						    MakeSaveFiles("new");
 							
 						//Select Save dir and switch to MakeSaveFiles to handle the rest
 						} else {

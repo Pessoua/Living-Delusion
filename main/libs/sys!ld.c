@@ -92,7 +92,7 @@ i64 IntInp(void){
     return actualReturn;
 }
 
-//Stuff for LD to run better
+//Stuff for LD to run better (retuns false, means we made fresh new paths, returns true means its not new)
 bool RunThisAtStart(void){
     if(OS_NAME[0] == 'U')
         ExitEarly(1, "Unknown operating system!");
