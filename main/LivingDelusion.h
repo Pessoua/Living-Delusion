@@ -80,6 +80,7 @@
                         CLR;
     //Linux specifics
     #ifdef __linux__
+        #include <linux/limits.h>
 
     //Apple specifics
     #elif defined(__APPLE__) || defined(__MACH__)

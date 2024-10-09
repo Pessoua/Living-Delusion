@@ -58,7 +58,6 @@ int DisplayCenterList(const char * wat_mer);
 HWND WINAPI GetConsoleWindowNT(void);
 
 //Get
-bool GetNeededPaths(void);  //path
 int GetTimeSpent(void);     //sys
 void GetAppResources(const char * please_change_to_this_line);  //path (we dont need this anymore i dont think)
 char * GetItemName(int ID); //save
@@ -195,7 +194,21 @@ int main(int argc, char *argv[]){
 	setlocale(LC_ALL, "");							// makes it able to put stuff like "á" or "õ"
 	system("title LIVING DELUSION [OPEN BETA 2]"); 	// makes the window name has "LIVING DELUSION [OPEN BETA 2]"
 
-    //RunThisAtStart();
+    if(!RunThisAtStart()){
+        printf("LIVING DELUSION, PUBLIC BETA [2]\n");
+        printf("Hi, this is a C/C++ project made while learning the C language!\n");
+        printf("Keep in mind, this is a BETA BUILD of this project so everything you see is subject to change!\n");
+        printf("The source code is in my Github [@Juan.]\n");
+        printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
+
+        SmallStop;
+
+        MidScreenText("\x1b[33mHave fun :)\x1b[0m");
+        for(int i = 0; i < (GetTerminalSize("rows") / 2) - 1; i ++)
+            printf("\n");
+
+        sleep(2);
+    }
 
     //Argc stuff, modifying some settings via command line
     for(u8 i = 1; i < argc; i ++){
@@ -249,24 +262,6 @@ int main(int argc, char *argv[]){
 
     if(argc > 1)
         SmallStop;
-
-	if(!GetNeededPaths()){
-		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
-		printf("Hi, this is a C/C++ project made while learning the C language!\n");
-		printf("Keep in mind, this is a BETA BUILD of this project so everything you see is subject to change!\n");
-		printf("The source code is in my Github [@Juan.]\n");
-		printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
-		
-		SmallStop;
-		
-		yellow;
-		MidScreenText("Have fun :)");
-		for(int i = 0; i < (GetTerminalSize("rows") /2) - 1; i ++)
-		printf("\n");
-		
-		white;
-		sleep(2);
-	}
 	
 	StartingScreen();
 	
@@ -20391,199 +20386,6 @@ void ReadTextFile(const char *FileName, const char *specifications){
 	free(FileNametemp);
 	
 	return;
-}
-
-bool GetNeededPaths(void){
-	
-	bool appdata_done = true;
-	
-	//get the directory the program has been iniciated on
-	getcwd(STARTING_PATH, MAX_PATH); 				
-	
-	char * temp = (char *)malloc(MAX_PATH);
-	memset(temp, '\0', sizeof(temp));
-	strcpy(temp, STARTING_PATH);
-	strcat(temp, "//NEEDED");
-	//Fucking this name up for some reason
-	
-	memset(LOCAL_PATH, '\0', sizeof(LOCAL_PATH));
-	
-	//Register LOCAL appdata path
-	const char *md = "LOCALAPPDATA";
-	char *localappdata = getenv(md);
-	strcpy(LOCAL_PATH, localappdata);
-	
-	//Move to local appdata and rename it to living delusion
-	if(ExistDiret(temp)){
-		system("move NEEDED %LOCALAPPDATA%");
-		strcpy(temp, localappdata);
-		strcat(temp, "\\NEEDED");
-		
-		char * temp1 = (char *)malloc(MAX_PATH);
-		strcpy(temp1, localappdata);
-		strcat(temp1, "\\LIVING_DELUSION");
-		rename(temp, temp1);
-		strcpy(LOCAL_PATH, temp1);
-		free(temp1);
-		appdata_done = false;
-		
-	} else {
-		strcat(LOCAL_PATH, "\\LIVING_DELUSION");
-		
-		if(!ExistDiret(LOCAL_PATH)){
-			//Error msg (crash)
-			CLR;
-			red;
-			MidScreenText("LOCAL APPDATA HAS BEEN MODIFED");
-			CenterText("PLEASE CHECK %LOCALAPPDATA% FOR ANY MODIFIED DIRECTORIES RELATED TO LIVING DELUSION");
-			CenterText("PRESS ANYTHING TO CRASH GAME");
-			getch();
-			white;
-			exit(1);
-		}
-	}
-	
-	free(temp);
-	
-	bool there_is_dir = true;
-	memset(FULL_PATH, '\0', sizeof(FULL_PATH));
-	
-	GetAppResources("Path (if exists)");
-	
-	//Check if theres a custom path made
-	if(access("path.txt", F_OK)== 0){
-		//Make assist var
-		char final_dir [MAX_PATH];
-		memset(final_dir, '\0', sizeof(final_dir));
-		
-		//Get the (valid) dir inside the file
-		FILE * fdir = fopen("path.txt", "r");
-		fgets(final_dir, MAX_PATH, fdir);
-		fclose(fdir);
-		
-		bool valid_dir = true;
-		
-		//Cheking if its under or over allowed ASCII value
-		for(int i = 0; i < sizeof(final_dir); i ++){
-			int checking_char = final_dir[i];
-			
-			//Switch to default save if yes
-			if(checking_char > 127 || checking_char < 0){
-				const char *md = "APPDATA";
-				char *appdata = getenv(md);
-				
-				strcpy(FULL_PATH, appdata);
-				chdir(FULL_PATH);
-				
-				//Error msg (non computable dir)
-				CLR;
-				red;
-				printf("Your path.txt folder has an invalid directory on it (OVER ASCII LIMIT), please change it in the settings\n");
-				printf("Check your local directory: %s\\Resources\\Path (if it exists)\n", LOCAL_PATH);
-				printf("In the mean time the save file will be in your %%APPDATA%% folder, (%s)\n", FULL_PATH);
-				SmallStop;
-				white;
-				
-				valid_dir = false;
-				break;
-			} 
-		}
-		
-		//Check if dosent dir exist
-		if(valid_dir && ExistDiret(final_dir)== 0){
-			//Swich back to default save if yes
-			const char *md = "APPDATA";
-			char *appdata = getenv(md);
-				
-			strcpy(FULL_PATH, appdata);
-			chdir(FULL_PATH);
-				
-			//Error msg (non existant dir)
-			CLR;
-			red;
-			printf("Your path.txt folder has an invalid directory on it (NON EXISTANT), please change it in the settings\n");
-			printf("Check your starting directory: %s\\Resources\\Path (if it exists)\n", LOCAL_PATH);
-			printf("In the mean time the save file will be in your %%APPDATA%% folder, (%s)\n", FULL_PATH);
-			SmallStop;
-			white;
-				
-			valid_dir = false;
-		}
-		
-		//Directory is actually right
-		if(valid_dir){
-			//Change the dir!
-			chdir(final_dir);
-			
-			//Also modify "FULL_PATH" for saving the other stuff
-			strcpy(FULL_PATH, final_dir);
-		}
-		
-	//If theres no custom save, go to appdata instead
-	} else {
-		//Default save lul
-		const char *md = "APPDATA";
-		char *appdata = getenv(md);
-		
-		strcpy(FULL_PATH, appdata);
-		chdir(FULL_PATH);
-	}
-	
-	//Check if dir exists and switch to it
-	char check_dir [MAX_PATH];
-	strcpy(check_dir, FULL_PATH);
-	strcat(check_dir, "\\LIVING_DELUSION");
-	
-	chdir(FULL_PATH);
-	
-	//Mk new dir
-	if(!ExistDiret(check_dir)){
-		
-		there_is_dir = false;
-    	strcat(FULL_PATH, "\\LIVING_DELUSION");
-    	mkdir("LIVING_DELUSION");
-    	chdir(FULL_PATH);
-    	
-    	//Boop, extra stuff saved bettewn acts
-		mkdir(".out");
-		chdir(".out");
-		
-		//Register save and act
-		FILE * fsave = fopen(".save.txt", "w");
-		fprintf(fsave, "%s\n", current_save);
-		fprintf(fsave, "1\n");
-		fclose(fsave);
-		
-		//Used ltr down the line
-		FILE * fmore = fopen(".more.txt", "w");
-		fprintf(fmore, "0:0:0:0\n");
-		fclose(fmore);
-		
-		//Warning :>
-		FILE * fwarn = fopen(".warning.txt", "w");
-		fputs("BE CAREFULL WHEN MODIFING SAVE FILES\n", fwarn);
-		fputs("THESE FILES ARE VERY SENSITIVE AND CAN LEAD TO EXTREME GAME CHANGES\n", fwarn);
-		fputs("ONLY MODIFY THIS IF YOU READ THE SOURCE CODE (or if you want to break all of your saves)\n", fwarn);
-		fclose(fwarn);
-    	
-	} else
-	strcat(FULL_PATH, "\\LIVING_DELUSION");
-	
-	chdir(FULL_PATH);
-	
-	if(DEBUG_MODE){
-		CLR;
-		printf("[DEBUG] _> REGISTERED PATHS:\n\n");
-		printf("[DEBUG] _> STARTER:\t %s\n", STARTING_PATH);
-		printf("[DEBUG] _> LOCAL:\t %s\n", LOCAL_PATH);
-		printf("[DEBUG] _> ROAMING:\t %s\n\n", FULL_PATH);
-		SmallStop;
-	}
-	
-	if(!there_is_dir && !appdata_done)
-	return false;
-	
-	return true;
 }
 
 bool MakeSaveFiles(const char * what){
