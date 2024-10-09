@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
 		printf("LIVING DELUSION, PUBLIC BETA [2]\n");
 		printf("Hi, this is a C/C++ project made while learning the C language!\n");
 		printf("Keep in mind, this is a BETA BUILD of this project so everything you see is subject to change!\n");
-		printf("The source code is in my Github [@Pessoua]\n");
+		printf("The source code is in my Github [@Juan.]\n");
 		printf("[English isnt my first language so there might be small spelling mistakes]\n\n");
 		
 		SmallStop;
@@ -325,7 +325,7 @@ int StartingScreen(){
 	    printf("0   | a |  33333           333          33                  33333    0\n");
 	    printf("0   | s 33       33           333    33        333  33     3    333  0\n");
 	    printf("0000000000000000000000000000000000000000000000000000000000000000000000\n");
-	    printf("ATENTION, YOU ARE PLAYING THE BETA OF THIS \"GAME\", PLEASE INFORM PESSOUA OF ANY BUGS OR CHANGES THAT SHOULD BE MADE\n");
+	    printf("BETA BUILD, NOT EVERYTHING WORKS\n");
         printf("Enter command [&/]\n");
 
         StrInp();

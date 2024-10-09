@@ -20,6 +20,9 @@ typedef struct {
     i8 x, y;
 } coords;
 
+//USE UNION FOR FUCKEN TABLES!
+//ALSO STORE VALUES WITH uint_8 (a - z, A - Z, 0 - 9)
+
 #include "games/animal!ld.h"
 #include "games/crop!ld.h"
 #include "games/fish!ld.h"

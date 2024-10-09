@@ -95,7 +95,7 @@ i64 IntInp(void){
 //Stuff for LD to run better (retuns false, means we made fresh new paths, returns true means its not new)
 bool RunThisAtStart(void){
     if(OS_NAME[0] == 'U')
-        ExitEarly(1, "Unknown operating system!");
+        ExitEarly(1, "Unknown / Non suported operating system. (STARTUP ERR.)");
 
     bool pathPreviouslyExist = false;
      
@@ -111,7 +111,7 @@ bool RunThisAtStart(void){
     }
 
     //get paths and also get the return value to determin if its a new player or a reset
-    //pathPreviouslyExist = GetNeededPaths();
+    pathPreviouslyExist = GetNeededPaths();
     
     //Some debug info
     if(DEBUG_MODE){
@@ -137,6 +137,11 @@ bool RunThisAtStart(void){
 
         printf("[DEBUG]_> \x1b[31mFOREGROUND Red Color test\x1b[0m\n");
         printf("[DEBUG]_> \x1b[41mBACKGROUND Red Color test\x1b[0m\n");
+
+        printf("\n[DEBUG] _> REGISTERED PATHS:\n");
+        printf("[DEBUG] _> STARTER:\t %s\n", STARTING_PATH);
+        printf("[DEBUG] _> LOCAL:\t %s\n", LOCAL_PATH);
+        printf("[DEBUG] _> FULL:\t %s\n\n", FULL_PATH);
     }
 
     return pathPreviouslyExist;

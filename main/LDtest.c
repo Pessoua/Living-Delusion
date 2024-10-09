@@ -6,6 +6,8 @@ void DoFuniHereBckp(void);
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){
 
+    printf("bool returned -> %d\n", RunThisAtStart());
+
     return;
 }
 
@@ -23,7 +25,7 @@ int main(void){
     setlocale(LC_ALL, "");                          
     system("title (test ver.) LIVING DELUSION [OPEN BETA 2]");
 
-    //DEBUG_MODE = true;
+    DEBUG_MODE = true;
 
     DoFuniHere(); 
     //DoFuniHereBckp();
