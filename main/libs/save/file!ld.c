@@ -307,6 +307,9 @@ void SeekToCached(FILE * fThisFile, u32 cacheLine){
     if(fThisFile == NULL)
         ExitEarly(301, "Tried to open file to get cache value, pointer was NULL");
 
+    //just making sure
+    fseek(fThisFile, 0, SEEK_SET);
+
     //displace ptr untill the line that contains the cache value
     for(u32 i = 0; i < cacheLine; i ++)
         if(fscanf(fThisFile, "%lld", &displaceVal)== EOF)

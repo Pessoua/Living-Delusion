@@ -6,17 +6,19 @@ void DoFuniHereBckp(void);
 //Testing functions when idk if my custom funcions work well or not (also testing other stuff)
 void DoFuniHere(void){
 
-    for(u8 i = 0; i < 255; i ++)
-        printf("\x1b[38;5;%dmAre these enough colors? (%d)\x1b[0m\n", i, i);
-   
-    printf("\x1b[38;5;255mLast color?\x1b[0m\n");
+    Art("test", 1, NULL);  
 
     return;
 }
 
 void DoFuniHereBckp(void){
 
-    //bip
+    char * a = "this line";
+
+    for(u8 i = 0; a[i + 1]; i ++)
+        a[i] = a[i + 1];
+
+    printf("\n");
 
     return;
 }
@@ -30,8 +32,8 @@ int main(void){
 
     DEBUG_MODE = true;
 
-    DoFuniHere(); 
-    //DoFuniHereBckp();
+    //DoFuniHere(); 
+    DoFuniHereBckp();
 
     return 0;
 } 

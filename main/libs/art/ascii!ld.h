@@ -16,6 +16,6 @@ typedef struct {
     char filter [15];
 } ArtOptions;
 
-u32 Art(char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers);
+u32 Art(const char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers);
 
 #endif /* LD_ART_ASCII_H */

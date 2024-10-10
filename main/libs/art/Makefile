@@ -12,7 +12,7 @@ table: table!ld.c
 	$(DOTHAT) table!ld.c
 
 ascii: ascii!ld.c
-	$(DOTHAT) table!ld.c
+	$(DOTHAT) ascii!ld.c
 
 tricks: tricks!ld.c
 	$(DOTHAT) tricks!ld.c

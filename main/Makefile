@@ -24,8 +24,8 @@ test: LDtest.c
 	.\LDtest
 
 test-that:
-	$(MAKE) -C libs/save/ path
-	$(MAKE) -C libs/save/ mv
+	$(MAKE) -C libs/art/ ascii
+	$(MAKE) -C libs/art/ mv
 	$(MAKE) -C libs/ dll
 	$(MAKE) test
 

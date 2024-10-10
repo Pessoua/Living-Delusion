@@ -3,10 +3,14 @@
 //Soo, callerTopic determines the name of the file and typeWanted is the cache value :D
 //For reference, 1 plant stage is the 1st type of the Topic plant, 2 plant stage is the 2nd type of the Topic plant
 //They all stop of either EOF or when "ART_TYPE_END" is reached
-u32 Art(char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers){
+u32 Art(const char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers){
 
     bool enableInternalModif = false;
     u8 colorPallet [17];
+    u32 expectedRowSize = 0;
+    char fileName [strlen(callerTopic) + 4], * artContext = NULL, contextBckp [2048];
+    
+    memset(fileName, '\0', strlen(callerTopic) + 4);
 
     for(u8 i = 0; i < 17; i ++)
         colorPallet[i] = i;
@@ -18,18 +22,20 @@ u32 Art(char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers){
     if(ArtModifiers != NULL)
         enableInternalModif = true;
 
-    chdir(LOCAL_PATH);
-    chdir("art");
+    //TODO: uncomment this
+    //chdir(LOCAL_PATH);
+    //chdir("art");
 
-    strcat(callerTopic, ".txt");
+    strcpy(fileName, callerTopic);
+    strcat(fileName, ".txt");
 
     //error handling file related things
-    if(access(callerTopic, F_OK)!= 0)
+    if(access(fileName, F_OK)!= 0)
         ExitEarly(401, "Expected to find an art file to display some art, file not found");
 
     char artLine [2048];
 
-    FILE * fThisArt = fopen(callerTopic);
+    FILE * fThisArt = fopen(fileName, "r");
     if(fThisArt == NULL)
         ExitEarly(401, "Art file pointer returned NULL");
 
@@ -45,7 +51,7 @@ u32 Art(char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers){
 
         else if(strcmp(ArtModifiers->filter, "gray")== 0){
             //grayscale or smt (232 to 255 but only even numbers)
-            for(u8 i = 232, j = 0; i < 256; i ++){
+            for(u8 i = 232, j = 0; i < 255; i ++){
                 if(i % 2 == 0){
                     colorPallet[j] = i;
                     j ++;
@@ -56,11 +62,65 @@ u32 Art(char * callerTopic, u8 typeWanted, ArtOptions * ArtModifiers){
     }
 
     //So we only want to stop reading when EOF is reached or "ART_TYPE_END\n" is called
-    while(fgets(artLine, 2048, fThisArt)!= NULL && strcmp(artLine, "ART_TYPE_END\n")!= 0){
+    while(true){
+
+        if(fgets(artLine, 2048, fThisArt)== NULL)
+            break;
+
+        if(strcmp(artLine, "ART_TYPE_END\n")== 0)
+            break;
         
+        u8 displacement = 0;
+
+        char * safeLine = strtok(artLine, "|/");
+
+        //printf("artContext ->%s\n", artContext);
+
+        if(safeLine == NULL)
+            printf("%s", artLine);        
+
+        //Getting colors
+        while(true){
+            //strcpy(contextBckp, artContext);
+
+            if(safeLine == NULL)
+                break;
+
+            displacement += (u8)strlen(safeLine) + 2;
+            printf("%s", safeLine);
+            u16 formatCode = artLine[displacement];
+
+            /*printf("artContext? %s\n", artContext);
+
+            //Also ignore code
+            for(u16 i = strlen(safeLine); i < strlen(artLine); i ++)
+                contextBckp[i] = artContext[i + 1];
+
+            artContext = contextBckp;
+            printf("artContext? %s\n", artContext);
+            printf("contextBckp? %s\n", contextBckp);*/
+
+            switch(formatCode){
+               
+                case 48 ... 57:
+                case 97 ... 109:
+                    printf(" __DEFAULT COLOR CODE__ ");
+                    break;
+
+                default:
+                    printf("\x1b[0m");
+                    break;
+            }
+
+            safeLine = strtok(NULL, "|/");
+        }
     }
 
+    //TODO: remove tis
+    printf("\n");
+
     //end.
+    printf("\x1b[0m");
     fclose(fThisArt);
     chdir(homePath);
 
